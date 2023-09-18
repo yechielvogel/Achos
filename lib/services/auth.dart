@@ -1,0 +1,98 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:tzivos_hashem_milwaukee/screens/authenticate/sign_in.dart';
+import 'package:tzivos_hashem_milwaukee/services/database.dart';
+
+import '/models/ueser.dart';
+
+class AuthService {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Ueser? _userFromFirebaseUser(
+    User? user,
+  ) {
+    return user != null ? Ueser(uid: user.uid, uesname: user.displayName) : null;
+  }
+
+  Stream<Ueser?> get user {
+    return _auth
+        .authStateChanges()
+        .map((User? user) => _userFromFirebaseUser(user));
+  }
+  
+
+  //sign in anon
+  Future signInAnon() async {
+    try {
+      UserCredential result = await _auth.signInAnonymously();
+      User? user = result.user;
+      return _userFromFirebaseUser(user!);
+    } catch (e) {
+      print(e.toString());
+    }
+    return null;
+  }
+
+  //sign in with email and password
+  Future signInWithEmailAndPassword(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      User? user = result.user;
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // register with email and password
+  Future registerWithEmailAndPassword(
+      String email, String password, name) async {
+    try {
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password);
+      User? user = result.user;
+      await user!.updateDisplayName(name);
+
+      // Reload the user to get the updated information.
+      await user!.reload();
+      name = _auth.currentUser!.displayName;
+      user = _auth.currentUser;
+      // await DatabaseService(uid: user!.uid).updateUserData('yes');
+      return _userFromFirebaseUser(user);
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+
+  // sign out
+  Future signOut() async {
+    try {
+      return _auth.signOut();
+    } catch (e) {
+      print(e.toString());
+      return null;
+    }
+  }
+  //get name
+// Future<String?> getUserName(String uid) async {
+//   try {
+//     final DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('users').doc(uid).get();
+//     if (userDoc.exists) {
+//       final userData = userDoc.data() as Map<String, dynamic>?; // Explicitly cast to Map<String, dynamic>
+//       if (userData != null) {
+//         return userData['name'] as String?;
+//       }
+//     }
+//     return null; // User document not found or 'name' not present
+//   } catch (e) {
+//     print(e.toString());
+//     return null;
+//   }
+// }
+}

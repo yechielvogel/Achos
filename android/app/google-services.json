@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "262732659192",
+    "project_id": "tzivoshashemmilwaukee",
+    "storage_bucket": "tzivoshashemmilwaukee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:262732659192:android:2e00ef5a51f3da46ec3e0d",
+        "android_client_info": {
+          "package_name": "com.yechielvogel.tzivos_hashem_milwaukee"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "262732659192-09n7qot2s6k01nlkro30h7st5lau59uh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDgEnlhB7C2NWZvvrJUId5U49JknAqBzM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "262732659192-09n7qot2s6k01nlkro30h7st5lau59uh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
