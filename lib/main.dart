@@ -8,6 +8,7 @@ import 'package:tzivos_hashem_milwaukee/screens/home/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
+import 'models/admins.dart';
 import 'models/hachlata_home_all.dart';
 import 'models/category.dart';
 import 'models/ueser.dart';
@@ -48,8 +49,8 @@ class MyApp extends StatelessWidget {
           value: DatabaseService(Uid: 'test').hachlatahome,
           initialData: null,
         ),
-        StreamProvider<List<HachlataHomeAll?>?>.value(
-          value: DatabaseService(Uid: 'test').hachlatahomeall,
+        StreamProvider<List<Admins?>?>.value(
+          value: DatabaseService(Uid: 'test').admin,
           initialData: null,
         ),
       ],

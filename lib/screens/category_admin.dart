@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
+import 'package:tzivos_hashem_milwaukee/screens/stats_admin.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
 import '../models/category.dart';
@@ -43,8 +44,9 @@ class MySettingsAdminState extends State<MySettingsAdmin> {
               splashColor: Colors.transparent,
               hoverColor: Colors.transparent,
               highlightColor: Colors.transparent,
-              onPressed: () async {
-                setState(() {});
+              onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => StatsAdmin()));
               })
         ],
         iconTheme: IconThemeData(

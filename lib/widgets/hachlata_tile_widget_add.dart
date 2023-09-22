@@ -1,6 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import 'package:tzivos_hashem_milwaukee/screens/add_hachloto_admin.dart';
@@ -40,28 +42,26 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<Ueser?>(context);
-
     Color? tileColor = isClicked ? darkGreen : lightGreen;
 
     return GestureDetector(
       onTap: () async {
+        HapticFeedback.heavyImpact();
         globals.hachlata_home_doc_name = (user!.uesname! + widget.hachlataName);
-
-        await DatabaseService(Uid: 'test').updateHachlataHome(
-            user!.uesname.toString(),
-            widget.hachlataName,
-            'N/A',
-            'Color(0xFFCBBD7F);');
-        // toggleColor();
-        // HachlataTile();
+        if (widget.isclicked == Color(0xFFCBBD7F)) {
+          await DatabaseService(Uid: 'test').updateHachlataHome(
+              user!.uesname.toString(),
+              widget.hachlataName,
+              'N/A',
+              'Color(0xFFCBBD7F);');
+        } else
+          await DatabaseService(Uid: 'test').delteHachlataHome();
       },
       onLongPress: () async {
         await showDialog(
             context: context,
             builder: (BuildContext context) {
               HapticFeedback.heavyImpact();
-
-              // Define the content of your dialog here
               return PopUpDiscription(
                 hachlataName: widget.hachlataName,
               );
@@ -71,26 +71,48 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
         padding: const EdgeInsets.only(right: 8, left: 8),
         child: Column(
           children: [
-            Container(
-              decoration: BoxDecoration(
-                color: widget.isclicked,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20.0),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(20),
+              child: Dismissible(
+                direction: DismissDirection.endToStart,
+                key: Key(widget.hachlataName),
+                onDismissed: (direction) async {
+                  if (direction == DismissDirection.endToStart) {
+                    HapticFeedback.heavyImpact();
+                    globals.hachlata_name_for_widget = widget.hachlataName;
+                    await DatabaseService(Uid: 'test').delteHachlataCategory();
+                  }
+                },
+                background: Container(
+                  alignment: Alignment.centerRight,
+                  decoration: BoxDecoration(
+                    color: globals.lightPink,
+                  ),
+                  child: Padding(
+                    padding: EdgeInsets.only(right: 20),
+                    child: Icon(
+                      Icons.delete,
+                      color: bage,
+                    ),
+                  ),
                 ),
-              ),
-              height: 59,
-              // width: 195,
-              child: Center(
-                child: Text(
-                  widget.hachlataName,
-                  style: TextStyle(
-                      color: bage, fontSize: 12, fontWeight: FontWeight.bold),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: widget.isclicked,
+                  ),
+                  height: 58,
+                  child: Center(
+                    child: Text(
+                      widget.hachlataName,
+                      style: TextStyle(
+                          color: bage,
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
                 ),
               ),
             ),
-            // SizedBox(
-            //   height: 15,
-            // ),
           ],
         ),
       ),

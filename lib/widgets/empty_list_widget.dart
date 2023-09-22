@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
@@ -25,7 +26,7 @@ class _EmptyListWidgetState extends State<EmptyListWidget> {
         // width: 195,
         child: Center(
           child: Text(
-            'Press the settings button to add hachlatas',
+            'Press the menu bar to start adding hachlatas',
             style: TextStyle(
               color: bage,
               fontSize: 15,

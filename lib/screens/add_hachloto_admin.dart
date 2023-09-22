@@ -1,19 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
 import 'package:tzivos_hashem_milwaukee/widgets/pop_up_name_hachloto.dart';
-
 import '../models/add_hachlata_home.dart';
-import '../models/hachlata_home_all.dart';
 import '../models/ueser.dart';
 import '../shared/globals.dart' as globals;
-import '../widgets/hachlata_category_widget.dart';
-import '../widgets/hachlata_tile_widget.dart';
 import '../widgets/hachlata_tile_widget_add.dart';
-import '../widgets/pop_up_name_hachloto_category.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AddHachlotoAdmin extends StatefulWidget {
   const AddHachlotoAdmin({super.key});
@@ -103,9 +98,28 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
                       final hachlataName =
                           hachlataItemsForCurrentCategory[index]!.name ?? '';
                       print(tileColors);
-                      return AddHachlataTileWidget(
-                        hachlataName: hachlataName,
-                        isclicked: tileColors[index],
+                      return Container(
+                        margin: EdgeInsets.symmetric(vertical: 12),
+                        // child: Slidable(
+                        //   endActionPane:
+                        //       ActionPane(motion: StretchMotion(), children: [
+                        //     SlidableAction(
+                        //       borderRadius:
+                        //           BorderRadius.all(Radius.circular(20.0)),
+                        //       backgroundColor: globals.lightPink,
+                        //       foregroundColor: globals.bage,
+                        //       icon: CupertinoIcons.delete,
+                        //       onPressed: (context) => Container(),
+                        //       spacing: 0,
+                        //     )
+                        //   ]),
+                          child: Container(
+                            child: AddHachlataTileWidget(
+                              hachlataName: hachlataName,
+                              isclicked: tileColors[index],
+                            ),
+                          ),
+                        // ),
                       );
                       // Pass the name
                     }

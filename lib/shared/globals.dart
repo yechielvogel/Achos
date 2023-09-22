@@ -12,6 +12,8 @@ String hachlata_home_doc_name = '';
 String done_hachlata_doc_name = '';
 String current_category = '';
 String current_user = '';
+String focused_day = '';
+String current_namesofuser = '';
 
 List<Widget> HachlataWidgetList = [];
 List<Widget> AddHachlataWidgetList = [];

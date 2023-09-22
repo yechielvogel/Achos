@@ -1,7 +1,6 @@
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tzivos_hashem_milwaukee/services/auth.dart';
-import 'package:tzivos_hashem_milwaukee/models/ueser.dart';
 import 'package:tzivos_hashem_milwaukee/shared/loading.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -105,6 +106,7 @@ class PopUpNameHachlotoState extends State<PopUpNameHachloto> {
             ),
             onPressed: () async {
               HapticFeedback.heavyImpact();
+              Navigator.of(context).pop();
               await updateVariable();
               await DatabaseService(Uid: 'test').updateHachlataCategory(
                   _nameController2.text,
@@ -117,7 +119,7 @@ class PopUpNameHachlotoState extends State<PopUpNameHachloto> {
               ;
 
               // Close the dialog
-              Navigator.of(context).pop();
+              // Navigator.of(context).pop();
             },
             child: Text(
               'Save',

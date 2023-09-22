@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
+import 'package:tzivos_hashem_milwaukee/models/admins.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import '../models/hachlata_home_all.dart';
 import '../models/add_hachlata_home.dart';
@@ -21,6 +22,8 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('addHachlataHome');
   final CollectionReference doneHachlata =
       FirebaseFirestore.instance.collection('doneHachlata');
+  final CollectionReference admins =
+      FirebaseFirestore.instance.collection('admins');
 
   // addHachlata
   Future updateDoneHachlata(
@@ -32,6 +35,10 @@ class DatabaseService {
     return await addHachlataHome
         .doc(globals.done_hachlata_doc_name)
         .set({'uid': uid, 'name': name, 'date': date, 'color': color});
+  }
+
+  Future delteDoneHachlata() async {
+    return await addHachlataHome.doc(globals.done_hachlata_doc_name).delete();
   }
 
   // snap shot for hachlatacategory
@@ -67,6 +74,10 @@ class DatabaseService {
       'date': date,
       'color': color,
     });
+  }
+
+  Future delteHachlataHome() async {
+    return await addHachlataHome.doc(globals.hachlata_home_doc_name).delete();
   }
 
   List<HachlataHomeAll>? _hachlataHomeAllListFromSnapshot(
@@ -124,6 +135,10 @@ class DatabaseService {
     });
   }
 
+  Future delteHachlataCategory() async {
+    return addHachlataCategory.doc(globals.hachlata_name_for_widget).delete();
+  }
+
   // snap shot for hachlatacategory
 // hachlatacategory list from snapshot
   List<AddHachlata>? _hachlataCategoryListFromSnapshot(QuerySnapshot snapshot) {
@@ -168,8 +183,33 @@ class DatabaseService {
           []; // Provide an empty list as the default value if it's null
     });
   }
-}
 
+  // admins
+  Future updateAdmin(String name, String uid) async {
+    return await admins.doc().set({
+      'name': name,
+      'uid': uid,
+    });
+  }
+
+  List<Admins>? _adminsListFromSnapshot(QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return Admins(
+        name: doc['name'] as String,
+        uid: doc['uid'] as String,
+      );
+    }).toList();
+  }
+
+  // getCatagory stream
+  Stream<List<Admins>> get admin {
+    return admins.snapshots().map((querySnapshot) {
+      final admins = _adminsListFromSnapshot(querySnapshot);
+      return admins ??
+          []; // Provide an empty list as the default value if it's null
+    });
+  }
+}
 
 //   final CollectionReference doneHachlata =
 //       FirebaseFirestore.instance.collection('doneHachlata');

@@ -1,9 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
-
 import '../screens/category_admin.dart';
 import '../shared/globals.dart' as globals;
 
@@ -34,12 +34,12 @@ class PopUpChooseNameState extends State<PopUpChooseName> {
   Widget build(BuildContext context) {
     return AlertDialog(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(20.0), // Set the border radius here
+        borderRadius: BorderRadius.circular(20.0),
       ),
       backgroundColor: globals.bage,
       title: Center(
         child: Text(
-          'Choose a name',
+          'New category',
           style: TextStyle(color: globals.lightPink),
         ),
       ),
@@ -66,21 +66,15 @@ class PopUpChooseNameState extends State<PopUpChooseName> {
             style: ElevatedButton.styleFrom(
               backgroundColor: globals.lightPink,
               shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(20.0), // Set the border radius here
+                borderRadius: BorderRadius.circular(20.0),
               ),
             ),
             onPressed: () async {
               HapticFeedback.heavyImpact();
-              await updateVariable();
-              await DatabaseService(Uid: 'test').updateCategory(globals
-                  .hachlata_name_for_category_widget); // await hachlataCategoryTileWidget.addHachlataCategoryTile();
-              setState(() {
-                hachlataCategoryTileWidget.addHachlataCategoryTile();
-              });
-
-              // Close the dialog
               Navigator.of(context).pop();
+              await updateVariable();
+              await DatabaseService(Uid: 'test')
+                  .updateCategory(globals.hachlata_name_for_category_widget);
             },
             child: Text(
               'Save',

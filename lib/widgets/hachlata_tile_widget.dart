@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -43,12 +44,16 @@ class _HachlataTileWidgetState extends State<HachlataTileWidget> {
         HapticFeedback.heavyImpact();
         toggleColor();
         globals.done_hachlata_doc_name =
-            (user!.uesname! + widget.hachlataName + dateOnly.toString());
-        DatabaseService(Uid: 'test').updateDoneHachlata(
-            user!.uesname.toString(),
-            widget.hachlataName,
-            dateOnly.toString(),
-            'Color(0xFF063C3C);');
+            (user!.uesname! + widget.hachlataName + globals.focused_day);
+        // dateOnly.toString()
+        if (widget.isclicked == Color(0xFFCBBD7F)) {
+          DatabaseService(Uid: 'test').updateDoneHachlata(
+              user!.uesname.toString(),
+              widget.hachlataName,
+              globals.focused_day,
+              'Color(0xFF063C3C);');
+        } else
+          DatabaseService(Uid: 'test').delteDoneHachlata();
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 8, left: 8),

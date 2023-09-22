@@ -1,10 +1,7 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:tzivos_hashem_milwaukee/widgets/pop_up_name_hachloto.dart';
-
 import '../shared/globals.dart';
-import '../widgets/hachlata_tile_widget.dart';
-import '../widgets/pop_up_name_hachloto_category.dart';
 
 class AddHachloto extends StatefulWidget {
   const AddHachloto({super.key});

@@ -1,8 +1,7 @@
-// in wrapper file if user == 'admin' then it should show admin_home screen
+import 'package:flutter/cupertino.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home.dart';
@@ -13,14 +12,14 @@ import 'package:tzivos_hashem_milwaukee/screens/category_admin.dart';
 // import '../../services/auth.dart';
 import '../../shared/globals.dart' as globals;
 import '../../models/ueser.dart';
-import '../../widgets/empty_list_widget.dart';
+import '../widgets/stats_hachlata_tile_widget.dart';
 
-class HomeAdmin extends StatefulWidget {
+class StatsAdminIndividual extends StatefulWidget {
   @override
-  HomeAdminState createState() => HomeAdminState();
+  StatsAdminIndividualState createState() => StatsAdminIndividualState();
 }
 
-class HomeAdminState extends State<HomeAdmin> {
+class StatsAdminIndividualState extends State<StatsAdminIndividual> {
   // final AuthService _auth = AuthService();
 
   bool isPressed = false;
@@ -53,7 +52,7 @@ class HomeAdminState extends State<HomeAdmin> {
 
     hachlataItemsForHome = hachlataHome?.where((item) {
           if (item != null) {
-            if (item.uid == user!.uesname) {
+            if (item.uid == globals.current_namesofuser) {
               if (item.date == 'N/A') {
                 return true; // Include items with 'N/A' dates
               }
@@ -134,108 +133,18 @@ class HomeAdminState extends State<HomeAdmin> {
 
     hachlataItemsForHome = filterHachlataList(hachlataItemsForHome);
 
-    // DoneHachlata? matchingDoneHachlata;
-
-    // if (doneHachlata != null) {
-    //   try {
-    //     matchingDoneHachlata = doneHachlata.firstWhere(
-    //       (doneHachlataItem) {
-    //         if (doneHachlataItem?.name == user!.uesname) {
-    //           // Parse the date from doneHachlataItem.date
-    //           final dbDate = DateTime.parse(doneHachlataItem?.date ?? '');
-
-    //           // Compare the focused date (with time set to midnight) and the database date
-    //           return dbDate.year == focusedDate.year &&
-    //               dbDate.month == focusedDate.month &&
-    //               dbDate.day == focusedDate.day;
-    //         }
-
-    //         return false;
-    //       },
-    //     );
-    //   } catch (e) {
-    //     matchingDoneHachlata = null;
-    //   }
-    // }
-
-    // if (matchingDoneHachlata == null) {
-    //   globals.tilecolor = globals.lightGreen;
-    // } else {
-    //   globals.tilecolor = globals.darkGreen;
-    // } // Replace 'current_category' with the actual current category value
-
     return Scaffold(
       backgroundColor: globals.bage,
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
-              isPressed ? CupertinoIcons.person_fill : CupertinoIcons.person,
-              color: globals.lightPink,
-            ),
-            splashColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onPressed: () async {
-              HapticFeedback.heavyImpact();
-              setState(() {
-                isPressed = true;
-              });
-              showModalBottomSheet(
-                  // backgroundColor: lightPink,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  context: context,
-                  builder: (context) => AccountPage()).whenComplete(
-                () {
-                  setState(() {
-                    isPressed = false;
-                  });
-                  // _auth.signOut();
-                  print('name is ${user!.uesname}');
-                },
-              );
-            }),
-        title: Center(
-          child: Image.asset(
-            'lib/assets/Asset3@3x.png',
-            width: 60,
-            height: 60,
-          ),
+        title: Text(
+          globals.current_namesofuser,
+          style: TextStyle(color: globals.lightPink),
         ),
         backgroundColor: globals.bage,
         elevation: 0,
-        actions: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SizedBox(
-              width: 40,
-              height: 40,
-              child: IconButton(
-                  icon: Icon(
-                    CupertinoIcons.bars,
-                  ),
-                  color: globals.lightPink,
-                  splashColor: Colors.transparent,
-                  hoverColor: Colors.transparent,
-                  highlightColor: Colors.transparent,
-                  onPressed: () async {
-                    Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) =>
-                            MySettingsAdmin())); // Replace with your widget
-                    //   setState(() {
-                    //     addHachlataTile();
-                    //     // isPressed = true;
-                    //   });
-
-                    //   print(HachlataWidgetList.length);
-                    // },
-                  }),
-            ),
-          ),
-        ],
+        iconTheme: IconThemeData(
+          color: globals.lightPink,
+        ),
       ),
       body: Column(
         children: [
@@ -302,26 +211,18 @@ class HomeAdminState extends State<HomeAdmin> {
             child: GridView.builder(
               itemCount: hachlataItemsForHome.length,
               shrinkWrap: true,
-
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: 2,
                 crossAxisSpacing: 1,
                 childAspectRatio: 2.5,
               ),
               // physics: NeverScrollableScrollPhysics(), // Disable grid scroll
-
               itemBuilder: (context, index) {
-                //   if (hachlataItemsForHome.isEmpty) {
-                //   print('length${hachlataItemsForHome.length}');
-
-                //   return const EmptyListWidget();
-                // }
                 if (hachlataItemsForHome != null &&
                     hachlataItemsForHome.length > index) {
                   final hachlataName = hachlataItemsForHome[index]!.name ?? '';
                   var tilecolor = hachlataItemsForHome[index]!.color ?? '';
                   Color finaltilecolor;
-                  print('length${hachlataItemsForHome.length}');
                   if (tilecolor == 'Color(0xFFCBBD7F);') {
                     finaltilecolor = globals.lightGreen;
                   } else {
@@ -329,7 +230,7 @@ class HomeAdminState extends State<HomeAdmin> {
                   }
                   filterHachlataList(hachlataItemsForHome);
 
-                  return HachlataTileWidget(
+                  return StatsHachlataTileWidget(
                       hachlataName: hachlataName, isclicked: finaltilecolor);
                   // Pass the name
                 }
@@ -344,4 +245,3 @@ class HomeAdminState extends State<HomeAdmin> {
     );
   }
 }
-// widgetList[index],

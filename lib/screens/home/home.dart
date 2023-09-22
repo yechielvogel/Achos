@@ -4,8 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tzivos_hashem_milwaukee/screens/account_page.dart';
-import 'package:tzivos_hashem_milwaukee/services/auth.dart';
-import 'package:tzivos_hashem_milwaukee/widgets/hachlata_tile_widget.dart';
+// import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/screens/category.dart';
 import '../../shared/globals.dart';
 import '../../widgets/empty_list_widget.dart';
@@ -16,7 +15,7 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  final AuthService _auth = AuthService();
+  // final AuthService _auth = AuthService();
   bool isPressed = false;
   bool isHachlataListEmpty() {
     return HachlataWidgetList.isEmpty;
