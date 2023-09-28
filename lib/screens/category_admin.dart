@@ -7,7 +7,7 @@ import 'package:tzivos_hashem_milwaukee/screens/stats_admin.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
 import '../models/category.dart';
-import '../widgets/hachlata_category_widget.dart';
+import '../widgets/hachlata_category_widget_admin.dart.dart';
 import '../widgets/pop_up_name_hachloto_category.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -20,7 +20,7 @@ class MySettingsAdmin extends StatefulWidget {
 
 class MySettingsAdminState extends State<MySettingsAdmin> {
   Future<void> addHachlataCategoryTile() async {
-    HachlataCategoryWidgetList.add(HachlataCategoryTileWidget(
+    HachlataCategoryWidgetList.add(HachlataCategoryTileWidgetAdmin(
       categoryName: '',
     ));
   }
@@ -67,7 +67,7 @@ class MySettingsAdminState extends State<MySettingsAdmin> {
                 if (catagory != null && catagory.length > index) {
                   final categoryName =
                       catagory[index]!.name ?? ''; // Get the category name
-                  return HachlataCategoryTileWidget(
+                  return HachlataCategoryTileWidgetAdmin(
                       categoryName: categoryName); // Pass the name
                 }
                 // Create a tile widget for each category's name

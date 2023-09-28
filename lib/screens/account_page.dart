@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:provider/provider.dart';
+import 'package:tzivos_hashem_milwaukee/services/notifications.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 
 import '../models/ueser.dart';
@@ -17,9 +19,20 @@ final AuthService _auth = AuthService();
 
 class AccountPageState extends State<AccountPage> {
   @override
+  late final Notifications service;
+
+  void initState() {
+    service = Notifications();
+    service.initialize();
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     final user = Provider.of<Ueser?>(context);
-
+    if (user?.uesname == null) {
+      displayusernameinaccount = tempuesname;
+    } else
+      displayusernameinaccount = user!.uesname!;
     return Container(
       decoration: BoxDecoration(
           color: bage,
@@ -35,7 +48,7 @@ class AccountPageState extends State<AccountPage> {
                 const EdgeInsets.only(top: 30, bottom: 40, right: 30, left: 30),
             child: Container(
                 child: Text(
-              'Welcome ${user?.uesname}',
+              'Welcome ${displayusernameinaccount}',
               style: TextStyle(
                 color: lightPink,
                 fontSize: 20,
@@ -53,6 +66,11 @@ class AccountPageState extends State<AccountPage> {
                 ),
               ),
               onPressed: () async {
+                await service.ScheduledNotification(
+                    id: 0,
+                    title: 'GrowWithTheFlow',
+                    body: 'Remember to do your Hachlatas',
+                    seconds: 4);
                 HapticFeedback.heavyImpact();
                 _auth.signOut();
 

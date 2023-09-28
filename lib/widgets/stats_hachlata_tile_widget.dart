@@ -8,7 +8,7 @@ import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import '../models/ueser.dart';
 import '../services/database.dart';
 import '../shared/globals.dart';
-import 'hachlata_category_widget.dart';
+import 'hachlata_category_widget_admin.dart.dart';
 
 class StatsHachlataTileWidget extends StatefulWidget {
   final String hachlataName;

@@ -81,6 +81,9 @@ class _RegisterState extends State<Register> {
                           onChanged: (val) {
                             {
                               setState(() => name = val);
+                              setState(() {
+                                tempuesname = name;
+                              });
                             }
                           },
                         ),

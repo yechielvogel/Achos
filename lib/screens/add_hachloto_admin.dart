@@ -7,7 +7,7 @@ import 'package:tzivos_hashem_milwaukee/widgets/pop_up_name_hachloto.dart';
 import '../models/add_hachlata_home.dart';
 import '../models/ueser.dart';
 import '../shared/globals.dart' as globals;
-import '../widgets/hachlata_tile_widget_add.dart';
+import '../widgets/hachlata_tile_widget_add_admin.dart.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
 class AddHachlotoAdmin extends StatefulWidget {
@@ -113,12 +113,12 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
                         //       spacing: 0,
                         //     )
                         //   ]),
-                          child: Container(
-                            child: AddHachlataTileWidget(
-                              hachlataName: hachlataName,
-                              isclicked: tileColors[index],
-                            ),
+                        child: Container(
+                          child: AddHachlataTileWidgetAdmin(
+                            hachlataName: hachlataName,
+                            isclicked: tileColors[index],
                           ),
+                        ),
                         // ),
                       );
                       // Pass the name

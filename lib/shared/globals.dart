@@ -14,6 +14,8 @@ String current_category = '';
 String current_user = '';
 String focused_day = '';
 String current_namesofuser = '';
+String tempuesname = '';
+String displayusernameinaccount = '';
 
 List<Widget> HachlataWidgetList = [];
 List<Widget> AddHachlataWidgetList = [];

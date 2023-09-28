@@ -11,7 +11,7 @@ import '../models/ueser.dart';
 import '../services/auth.dart';
 import '../services/database.dart';
 import '../shared/globals.dart';
-import 'hachlata_category_widget.dart';
+import 'hachlata_category_widget_admin.dart.dart';
 
 class AddHachlataTileWidget extends StatefulWidget {
   final String hachlataName;
@@ -71,45 +71,17 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
         padding: const EdgeInsets.only(right: 8, left: 8),
         child: Column(
           children: [
-            ClipRRect(
-              borderRadius: BorderRadius.circular(20),
-              child: Dismissible(
-                direction: DismissDirection.endToStart,
-                key: Key(widget.hachlataName),
-                onDismissed: (direction) async {
-                  if (direction == DismissDirection.endToStart) {
-                    HapticFeedback.heavyImpact();
-                    globals.hachlata_name_for_widget = widget.hachlataName;
-                    await DatabaseService(Uid: 'test').delteHachlataCategory();
-                  }
-                },
-                background: Container(
-                  alignment: Alignment.centerRight,
-                  decoration: BoxDecoration(
-                    color: globals.lightPink,
-                  ),
-                  child: Padding(
-                    padding: EdgeInsets.only(right: 20),
-                    child: Icon(
-                      Icons.delete,
-                      color: bage,
-                    ),
-                  ),
-                ),
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: widget.isclicked,
-                  ),
-                  height: 58,
-                  child: Center(
-                    child: Text(
-                      widget.hachlataName,
-                      style: TextStyle(
-                          color: bage,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
+            Container(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: widget.isclicked,
+              ),
+              height: 58,
+              child: Center(
+                child: Text(
+                  widget.hachlataName,
+                  style: TextStyle(
+                      color: bage, fontSize: 12, fontWeight: FontWeight.bold),
                 ),
               ),
             ),

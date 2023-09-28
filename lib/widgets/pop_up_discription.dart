@@ -7,7 +7,7 @@ import '../models/add_hachlata.dart';
 import '../screens/category_admin.dart';
 import '../services/database.dart';
 import '../shared/globals.dart';
-import 'hachlata_tile_widget_add.dart';
+import 'hachlata_tile_widget_add_admin.dart.dart';
 
 class PopUpDiscription extends StatefulWidget {
   final String hachlataName;
@@ -50,7 +50,7 @@ class PopUpDiscriptionState extends State<PopUpDiscription> {
           padding: const EdgeInsets.all(15),
           child: Text(
             discription,
-            style: TextStyle(color: globals.bage, fontSize: 25),
+            style: TextStyle(color: globals.bage, fontSize: 15),
           ),
         ),
         decoration: BoxDecoration(

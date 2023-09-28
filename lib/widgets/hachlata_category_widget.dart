@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 
 import '../models/category.dart';
+import '../screens/add_hachloto.dart';
 import '../screens/add_hachloto_admin.dart';
 import '../shared/globals.dart';
 
@@ -37,9 +38,8 @@ class HachlataCategoryTileWidgetState
 
     return GestureDetector(
       onTap: () {
-        HapticFeedback.heavyImpact();
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => AddHachlotoAdmin()));
+            .push(MaterialPageRoute(builder: (context) => AddHachloto()));
         setState(() {
           globals.current_category = widget.categoryName;
         });

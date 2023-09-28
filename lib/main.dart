@@ -1,5 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
@@ -9,7 +7,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
 import 'models/admins.dart';
-import 'models/hachlata_home_all.dart';
 import 'models/category.dart';
 import 'models/ueser.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
@@ -51,10 +48,15 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider<List<Admins?>?>.value(
           value: DatabaseService(Uid: 'test').admin,
+          catchError: (context, error) {
+            print("Error in stream: $error");
+            // You can return a default value or handle the error in some way
+            return null;
+          },
           initialData: null,
         ),
       ],
-      child: MaterialApp(
+      child: const MaterialApp(
         home: Wrapper(),
       ),
     );
