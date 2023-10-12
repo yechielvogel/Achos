@@ -8,12 +8,15 @@ import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
 import 'models/admins.dart';
 import 'models/category.dart';
+import 'models/change_settings_switch.dart';
 import 'models/ueser.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  await initializeDateFormatting();
   runApp(const MyApp());
 }
 
@@ -48,6 +51,15 @@ class MyApp extends StatelessWidget {
         ),
         StreamProvider<List<Admins?>?>.value(
           value: DatabaseService(Uid: 'test').admin,
+          catchError: (context, error) {
+            print("Error in stream: $error");
+            // You can return a default value or handle the error in some way
+            return null;
+          },
+          initialData: null,
+        ),
+        StreamProvider<List<ChangeSettingsSwitch?>?>.value(
+          value: DatabaseService(Uid: 'test').changesettingsswitch,
           catchError: (context, error) {
             print("Error in stream: $error");
             // You can return a default value or handle the error in some way

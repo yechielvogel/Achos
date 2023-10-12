@@ -20,32 +20,33 @@ class _StatsAdminState extends State<StatsAdmin> {
 
     final hachlatahome = Provider.of<List<AddHachlataHome?>?>(context);
 
- 
-if (hachlatahome != null) {
-  Set<String> namesofusers = Set<String>();
+    if (hachlatahome != null) {
+      Set<String> namesofusers = Set<String>();
 
-  List<AddHachlataHome?> Items = [];
+      List<AddHachlataHome?> Items = [];
 
-  for (AddHachlataHome? item in hachlatahome) {
-    if (item != null && item.date != 'N/A' && !namesofusers.contains(item.uid)) {
-      namesofusers.add(item.uid); 
-      Items.add(item); 
+      for (AddHachlataHome? item in hachlatahome) {
+        if (item != null &&
+            item.date != 'N/A' &&
+            !namesofusers.contains(item.uid)) {
+          namesofusers.add(item.uid);
+          Items.add(item);
+        }
+      }
+
+      hachlataItemsEveryone = Items;
+    } else {
+      hachlataItemsEveryone = [];
     }
-  }
-
-  hachlataItemsEveryone = Items;
-} else {
-  hachlataItemsEveryone = []; 
-}
 
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: globals.lightPink,
+          color: globals.newpink,
         ),
         title: Text(
           "Stats",
-          style: TextStyle(color: globals.lightPink),
+          style: TextStyle(color: globals.newpink),
         ),
         elevation: 0.0,
         backgroundColor: globals.bage,

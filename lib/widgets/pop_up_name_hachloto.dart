@@ -45,7 +45,7 @@ class PopUpNameHachlotoState extends State<PopUpNameHachloto> {
       title: Center(
         child: Text(
           'New Hachlata',
-          style: TextStyle(color: globals.lightPink),
+          style: TextStyle(color: globals.newpink),
         ),
       ),
       content: Column(
@@ -54,7 +54,7 @@ class PopUpNameHachlotoState extends State<PopUpNameHachloto> {
           Padding(
             padding: const EdgeInsets.only(bottom: 10),
             child: TextFormField(
-              cursorColor: globals.darkGreen,
+              cursorColor: globals.doneHachlata,
               decoration: InputDecoration(
                 hintText: 'Name',
                 hintStyle: TextStyle(color: globals.bage),
@@ -74,7 +74,7 @@ class PopUpNameHachlotoState extends State<PopUpNameHachloto> {
             ),
           ),
           TextFormField(
-            cursorColor: globals.darkGreen,
+            cursorColor: globals.doneHachlata,
             decoration: InputDecoration(
               hintText: 'Description',
               hintStyle: TextStyle(color: globals.bage),
@@ -98,7 +98,7 @@ class PopUpNameHachlotoState extends State<PopUpNameHachloto> {
         Center(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: globals.lightPink,
+              backgroundColor: globals.newpink,
               shape: RoundedRectangleBorder(
                 borderRadius:
                     BorderRadius.circular(20.0), // Set the border radius here

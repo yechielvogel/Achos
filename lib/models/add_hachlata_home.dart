@@ -2,12 +2,16 @@ class AddHachlataHome {
   final String uid;
   final String name;
   final String date;
+  final String hebrewdate;
+
   final String color;
+  
 
   AddHachlataHome(
       {required this.uid,
       required this.name,
       required this.date,
+      required this.hebrewdate,
       required this.color});
   // this code helps the add hachlata admin check if the hachlata tiles are at home or not
   @override

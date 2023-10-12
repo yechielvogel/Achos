@@ -57,15 +57,17 @@ class AddHachlotoState extends State<AddHachloto> {
                 name: '',
                 color: '',
                 date: '',
+                hebrewdate: '',
                 uid: ''), // Return an AddHachlataHome object instead of null
           );
 
           if (homeItem ==
-              AddHachlataHome(name: '', color: '', date: '', uid: '')) {
+              AddHachlataHome(
+                  name: '', color: '', date: '', hebrewdate: '', uid: '')) {
             return Color(0xFFCBBD7F); // Light green
           }
 
-          return Color(0xFF063C3C); // Dark green
+          return Color(0xFFC16C9E); // Dark green
         }
         return Color(0xFFCBBD7F);
       },

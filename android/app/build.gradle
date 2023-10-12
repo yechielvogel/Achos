@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '1'
+    flutterVersionCode = '2'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0'
+    flutterVersionName = '1.0.1'
 }
 
 apply plugin: 'com.android.application'
@@ -30,6 +30,7 @@ android {
     namespace "com.example.tzivos_hashem_milwaukee"
     compileSdkVersion flutter.compileSdkVersion
     ndkVersion flutter.ndkVersion
+  
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8

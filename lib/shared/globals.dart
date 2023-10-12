@@ -11,11 +11,17 @@ String hachlata_name_for_category_widget = 'test';
 String hachlata_home_doc_name = '';
 String done_hachlata_doc_name = '';
 String current_category = '';
+String current_category_choose = '';
+int current_category_choose_int = 0;
+int global_hachlata_number = 0;
+
+
 String current_user = '';
 String focused_day = '';
 String current_namesofuser = '';
 String tempuesname = '';
 String displayusernameinaccount = '';
+DateTime today = DateTime.now();
 
 List<Widget> HachlataWidgetList = [];
 List<Widget> AddHachlataWidgetList = [];
@@ -24,7 +30,8 @@ List<Widget> HachlataCategoryWidgetList = [];
 Color lightPink = Color(0xFFEBB1C5);
 Color bage = Color(0xFFF3E3DF);
 Color lightGreen = Color(0xFFCBBD7F);
-Color darkGreen = Color(0xFF063C3C);
+Color doneHachlata = Color(0xFFC16C9E);
+Color newpink = Color(0xFFC16C9E);
 
 var tilecolor = lightGreen;
 

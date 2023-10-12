@@ -31,7 +31,7 @@ class _signInState extends State<signIn> {
                 title: Center(
                   child: Text(
                     'Sign In',
-                    style: TextStyle(color: lightPink),
+                    style: TextStyle(color: newpink),
                   ),
                 )),
             body: Container(
@@ -44,7 +44,7 @@ class _signInState extends State<signIn> {
                           height: 20,
                         ),
                         TextFormField(
-                          cursorColor: darkGreen,
+                          cursorColor: doneHachlata,
                           decoration: InputDecoration(
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -62,7 +62,7 @@ class _signInState extends State<signIn> {
                                 borderSide:
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
-                              color: lightPink,
+                              color: newpink,
                               // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
@@ -82,7 +82,7 @@ class _signInState extends State<signIn> {
                           height: 20,
                         ),
                         TextFormField(
-                          cursorColor: darkGreen,
+                          cursorColor: doneHachlata,
                           decoration: InputDecoration(
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -100,7 +100,7 @@ class _signInState extends State<signIn> {
                                 borderSide:
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
-                              color: lightPink,
+                              color: newpink,
                               // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
@@ -131,7 +131,7 @@ class _signInState extends State<signIn> {
                                     borderRadius: BorderRadius.circular(
                                         20), // Adjust the value for desired roundness
                                   ),
-                                  backgroundColor: lightPink),
+                                  backgroundColor: newpink),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   setState(() => loading = true);
@@ -165,7 +165,7 @@ class _signInState extends State<signIn> {
                                     borderRadius: BorderRadius.circular(
                                         20), // Adjust the value for desired roundness
                                   ),
-                                  backgroundColor: lightPink),
+                                  backgroundColor: newpink),
                               onPressed: () async {
                                 widget.toggleView();
                                 print('register');
@@ -193,7 +193,7 @@ class _signInState extends State<signIn> {
                         ),
                         Text(
                           error,
-                          style: TextStyle(color: lightPink, fontSize: 14),
+                          style: TextStyle(color: newpink, fontSize: 14),
                         )
                       ],
                     ))),

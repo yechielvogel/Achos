@@ -138,12 +138,12 @@ class StatsAdminIndividualState extends State<StatsAdminIndividual> {
       appBar: AppBar(
         title: Text(
           globals.current_namesofuser,
-          style: TextStyle(color: globals.lightPink),
+          style: TextStyle(color: globals.newpink),
         ),
         backgroundColor: globals.bage,
         elevation: 0,
         iconTheme: IconThemeData(
-          color: globals.lightPink,
+          color: globals.newpink,
         ),
       ),
       body: Column(
@@ -156,7 +156,7 @@ class StatsAdminIndividualState extends State<StatsAdminIndividual> {
             ),
             child: Container(
               decoration: BoxDecoration(
-                color: globals.lightGreen,
+                color: globals.newpink,
                 borderRadius: const BorderRadius.all(
                   Radius.circular(20.0),
                 ),
@@ -174,9 +174,9 @@ class StatsAdminIndividualState extends State<StatsAdminIndividual> {
                       fontSize: 20,
                       fontWeight: FontWeight.bold),
                   leftChevronIcon: Icon(Icons.arrow_back_ios,
-                      color: globals.darkGreen), // Change the color here
+                      color: globals.bage), // Change the color here
                   rightChevronIcon: Icon(Icons.arrow_forward_ios,
-                      color: globals.darkGreen), // Change the color here
+                      color: globals.bage), // Change the color here
                 ),
                 availableGestures: AvailableGestures.all,
                 selectedDayPredicate: (day) => isSameDay(day, today),
@@ -189,15 +189,17 @@ class StatsAdminIndividualState extends State<StatsAdminIndividual> {
                       color: globals.bage, // Change the text color
                     ),
                     todayDecoration: BoxDecoration(
-                      color: globals
-                          .bage, // Customize the background color for today
+                      color: Colors
+                          .white, // Customize the background color for today
                       shape: BoxShape.circle,
                     ),
+                    todayTextStyle: TextStyle(color: globals.newpink),
                     selectedDecoration: BoxDecoration(
                       color: globals
-                          .darkGreen, // Customize the background color for selected days
+                          .bage, // Customize the background color for selected days
                       shape: BoxShape.circle,
-                    )),
+                    ),
+                    selectedTextStyle: TextStyle(color: globals.newpink)),
                 firstDay: DateTime.utc(2023, 07, 7),
                 lastDay: DateTime.utc(2033, 07, 7),
                 onDaySelected: _onDaySelected,
@@ -226,7 +228,7 @@ class StatsAdminIndividualState extends State<StatsAdminIndividual> {
                   if (tilecolor == 'Color(0xFFCBBD7F);') {
                     finaltilecolor = globals.lightGreen;
                   } else {
-                    finaltilecolor = globals.darkGreen;
+                    finaltilecolor = globals.doneHachlata;
                   }
                   filterHachlataList(hachlataItemsForHome);
 

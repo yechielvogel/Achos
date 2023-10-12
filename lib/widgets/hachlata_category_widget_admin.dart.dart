@@ -9,12 +9,12 @@ import '../screens/add_hachloto_admin.dart';
 import '../shared/globals.dart';
 
 class HachlataCategoryTileWidgetAdmin extends StatefulWidget {
-  final String categoryName;
+  final String categoryName;   
 
   const HachlataCategoryTileWidgetAdmin({super.key, required this.categoryName});
 
-  @override
-  HachlataCategoryTileWidgetAdminState createState() =>
+  @override   
+  HachlataCategoryTileWidgetAdminState createState() =>  
       HachlataCategoryTileWidgetAdminState();
 }
 

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
-
+import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals ;
 import '../../services/auth.dart';
 import '../../shared/loading.dart';
 
@@ -35,7 +35,7 @@ class _RegisterState extends State<Register> {
                 title: Center(
                   child: Text(
                     'Register',
-                    style: TextStyle(color: lightPink),
+                    style: TextStyle(color: newpink),
                   ),
                 )),
             body: Container(
@@ -48,7 +48,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextFormField(
-                          cursorColor: darkGreen,
+                          cursorColor: doneHachlata,
                           decoration: InputDecoration(
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -66,7 +66,7 @@ class _RegisterState extends State<Register> {
                                 borderSide:
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
-                              color: lightPink,
+                              color: newpink,
                               // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
@@ -82,7 +82,7 @@ class _RegisterState extends State<Register> {
                             {
                               setState(() => name = val);
                               setState(() {
-                                tempuesname = name;
+                                globals.tempuesname = name;
                               });
                             }
                           },
@@ -91,7 +91,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextFormField(
-                          cursorColor: darkGreen,
+                          cursorColor: doneHachlata,
                           decoration: InputDecoration(
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -109,7 +109,7 @@ class _RegisterState extends State<Register> {
                                 borderSide:
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
-                              color: lightPink,
+                              color: newpink,
                               // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
@@ -129,7 +129,7 @@ class _RegisterState extends State<Register> {
                           height: 20,
                         ),
                         TextFormField(
-                          cursorColor: darkGreen,
+                          cursorColor: doneHachlata,
                           decoration: InputDecoration(
                             focusedErrorBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(20),
@@ -147,7 +147,7 @@ class _RegisterState extends State<Register> {
                                 borderSide:
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
-                              color: lightPink,
+                              color: newpink,
                               // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
@@ -178,7 +178,7 @@ class _RegisterState extends State<Register> {
                                     borderRadius: BorderRadius.circular(
                                         20), // Adjust the value for desired roundness
                                   ),
-                                  backgroundColor: lightPink),
+                                  backgroundColor: newpink),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
                                   setState(() => loading = true);
@@ -210,7 +210,7 @@ class _RegisterState extends State<Register> {
                                     borderRadius: BorderRadius.circular(
                                         20), // Adjust the value for desired roundness
                                   ),
-                                  backgroundColor: lightPink),
+                                  backgroundColor: newpink),
                               onPressed: () async {
                                 widget.toggleView();
 

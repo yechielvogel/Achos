@@ -54,7 +54,7 @@ class MySettingsState extends State<MySettings> {
           color: lightPink,
         ),
         title: Text(
-          "Category's",
+          "Categories",
           style: TextStyle(color: lightPink),
         ),
         elevation: 0.0,

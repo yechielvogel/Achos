@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
 import 'package:tzivos_hashem_milwaukee/models/admins.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
+import '../models/change_settings_switch.dart';
 import '../models/hachlata_home_all.dart';
 import '../models/add_hachlata_home.dart';
 import '../models/category.dart';
@@ -24,17 +25,50 @@ class DatabaseService {
       FirebaseFirestore.instance.collection('doneHachlata');
   final CollectionReference admins =
       FirebaseFirestore.instance.collection('admins');
+  final CollectionReference changeSettingsSwitch =
+      FirebaseFirestore.instance.collection('changeSettingsSwitch');
+
+// changeSettingsSwitch
+  Future updateChangeSettingsSwitch(
+    
+    bool off,
+  ) async {
+    return await changeSettingsSwitch.doc('on').set({
+      'off': off,
+    });
+  }
+
+  // stream
+  List<ChangeSettingsSwitch>? _changeSettingsSwitchFromSnapshot(
+      QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return ChangeSettingsSwitch(
+        off: doc['off'] as bool,
+      );
+    }).toList();
+  }
+
+  // getCatagory stream
+  Stream<List<ChangeSettingsSwitch>> get changesettingsswitch {
+    return changeSettingsSwitch.snapshots().map((querySnapshot) {
+      final changesettings = _changeSettingsSwitchFromSnapshot(querySnapshot);
+      return changesettings ??
+          []; // Provide an empty list as the default value if it's null
+    });
+  }
 
   // addHachlata
   Future updateDoneHachlata(
     String uid,
     String name,
     String date,
+    String hebrewdate,
+
     String color,
   ) async {
     return await addHachlataHome
         .doc(globals.done_hachlata_doc_name)
-        .set({'uid': uid, 'name': name, 'date': date, 'color': color});
+        .set({'uid': uid, 'name': name, 'date': date, 'hebrew date': hebrewdate, 'color': color});
   }
 
   Future delteDoneHachlata() async {
@@ -66,12 +100,14 @@ class DatabaseService {
     String uid,
     String name,
     String date,
+    String hebrewdate,
     String color,
   ) async {
     return await addHachlataHome.doc(globals.hachlata_home_doc_name).set({
       'uid': uid,
       'name': name,
       'date': date,
+      'hebrew date': hebrewdate,
       'color': color,
     });
   }
@@ -87,6 +123,7 @@ class DatabaseService {
         uid: doc['uid'] as String,
         name: doc['name'] as String,
         date: doc['date'] as String,
+        hebrewdate: doc['hebrew date'] as String,
         color: doc['color'] as String,
       );
     }).toList();
@@ -109,6 +146,7 @@ class DatabaseService {
         uid: doc['uid'] as String,
         name: doc['name'] as String,
         date: doc['date'] as String,
+        hebrewdate: doc['hebrew date'] as String,
         color: doc['color'] as String,
       );
     }).toList();

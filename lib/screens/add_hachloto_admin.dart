@@ -54,29 +54,31 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
               name: '',
               color: '',
               date: '',
+              hebrewdate: '',
               uid: ''), // Return an AddHachlataHome object instead of null
         );
 
         if (homeItem ==
-            AddHachlataHome(name: '', color: '', date: '', uid: '')) {
+            AddHachlataHome(
+                name: '', color: '', date: '', hebrewdate: '', uid: '')) {
           return Color(0xFFCBBD7F); // Light green
         }
 
-        return Color(0xFF063C3C); // Dark green
+        return Color(0xFFC16C9E); // Dark green
       },
     );
 
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: globals.lightPink,
+          color: globals.newpink,
         ),
         elevation: 0.0,
         backgroundColor: globals.bage,
         title: Text(
           "Hachlata's",
           style: TextStyle(
-            color: globals.lightPink,
+            color: globals.newpink,
           ),
         ),
       ),
@@ -106,7 +108,7 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
                         //     SlidableAction(
                         //       borderRadius:
                         //           BorderRadius.all(Radius.circular(20.0)),
-                        //       backgroundColor: globals.lightPink,
+                        //       backgroundColor: globals.newpink,
                         //       foregroundColor: globals.bage,
                         //       icon: CupertinoIcons.delete,
                         //       onPressed: (context) => Container(),
@@ -117,6 +119,7 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
                           child: AddHachlataTileWidgetAdmin(
                             hachlataName: hachlataName,
                             isclicked: tileColors[index],
+                            rebuildCallback: () {},
                           ),
                         ),
                         // ),
@@ -130,7 +133,7 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: globals.lightPink,
+        backgroundColor: globals.newpink,
         foregroundColor: globals.bage,
         child: const Icon(CupertinoIcons.add),
         onPressed: () async {
@@ -181,14 +184,14 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
 //     return Scaffold(
 //       appBar: AppBar(
 //         iconTheme: IconThemeData(
-//           color: lightPink,
+//           color: newpink,
 //         ),
 //         elevation: 0.0,
 //         backgroundColor: bage,
 //         title: Text(
 //           "Hachlata's",
 //           style: TextStyle(
-//             color: lightPink,
+//             color: newpink,
 //           ),
 //         ),
 //       ),
@@ -222,7 +225,7 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
 //         ],
 //       ),
 //       floatingActionButton: FloatingActionButton(
-//         backgroundColor: lightPink,
+//         backgroundColor: newpink,
 //         foregroundColor: bage,
 //         child: const Icon(CupertinoIcons.add),
 //         onPressed: () async {

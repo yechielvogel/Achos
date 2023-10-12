@@ -7,6 +7,7 @@ import 'package:tzivos_hashem_milwaukee/screens/stats_admin.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
 import '../models/category.dart';
+import '../models/change_settings_switch.dart';
 import '../widgets/hachlata_category_widget_admin.dart.dart';
 import '../widgets/pop_up_name_hachloto_category.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -19,6 +20,8 @@ class MySettingsAdmin extends StatefulWidget {
 }
 
 class MySettingsAdminState extends State<MySettingsAdmin> {
+  bool isSettingson = false;
+
   Future<void> addHachlataCategoryTile() async {
     HachlataCategoryWidgetList.add(HachlataCategoryTileWidgetAdmin(
       categoryName: '',
@@ -28,33 +31,64 @@ class MySettingsAdminState extends State<MySettingsAdmin> {
   @override
   Widget build(BuildContext context) {
     final catagory = Provider.of<List<Category?>?>(context);
+    final changesettingsswitch =
+        Provider.of<List<ChangeSettingsSwitch?>?>(context);
+
+    // Check if changesettingsswitch is not null and not empty
+    if (changesettingsswitch != null &&
+        changesettingsswitch.isNotEmpty &&
+        changesettingsswitch.any((element) => element?.off == true)) {
+      isSettingson = true;
+    } else {
+      isSettingson = false;
+    }
     // print(catagory);
     catagory?.forEach((catagory) {
       print(catagory!.name);
+      print(catagory.toString().length);
     });
 
     return Scaffold(
       appBar: AppBar(
         actions: <Widget>[
-          IconButton(
-              icon: Icon(
-                CupertinoIcons.chart_bar,
-              ),
-              color: lightPink,
-              splashColor: Colors.transparent,
-              hoverColor: Colors.transparent,
-              highlightColor: Colors.transparent,
-              onPressed: () {
-                Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => StatsAdmin()));
-              })
+          Padding(
+            padding: const EdgeInsets.only(right: 5),
+            child: CupertinoSwitch(
+              value: isSettingson,
+              onChanged: (value) async {
+                setState(() {
+                  isSettingson = !value;
+                });
+                await DatabaseService(Uid: 'test').updateChangeSettingsSwitch(
+                  value,
+                );
+              },
+              activeColor: doneHachlata,
+              trackColor: lightGreen,
+              thumbColor: bage,
+            ),
+          ),
+
+          // IconButton(
+          //     icon: Icon(
+          //       CupertinoIcons.chart_bar,
+          //     ),
+          //     color: newpink,
+          //     splashColor: Colors.transparent,
+          //     hoverColor: Colors.transparent,
+          //     highlightColor: Colors.transparent,
+          //     onPressed: () {
+          //       Navigator.of(context).push(
+          //           MaterialPageRoute(builder: (context) => StatsAdmin()));
+          //     }
+          //     )
         ],
         iconTheme: IconThemeData(
-          color: lightPink,
+          color: newpink,
         ),
         title: Text(
-          "Category's",
-          style: TextStyle(color: lightPink),
+          "Categories",
+          style: TextStyle(color: newpink),
         ),
         elevation: 0.0,
         backgroundColor: bage,
@@ -74,7 +108,7 @@ class MySettingsAdminState extends State<MySettingsAdmin> {
                 // return HachlataCategoryTileWidget();
               })),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: lightPink,
+        backgroundColor: newpink,
         foregroundColor: bage,
         child: const Icon(CupertinoIcons.add),
         onPressed: () async {

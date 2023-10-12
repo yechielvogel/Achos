@@ -40,11 +40,11 @@ class PopUpChooseNameState extends State<PopUpChooseName> {
       title: Center(
         child: Text(
           'New category',
-          style: TextStyle(color: globals.lightPink),
+          style: TextStyle(color: globals.newpink),
         ),
       ),
       content: TextFormField(
-        cursorColor: globals.darkGreen,
+        cursorColor: globals.doneHachlata,
         decoration: InputDecoration(
           hintText: 'Name',
           hintStyle: TextStyle(color: globals.bage),
@@ -64,7 +64,7 @@ class PopUpChooseNameState extends State<PopUpChooseName> {
         Center(
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: globals.lightPink,
+              backgroundColor: globals.newpink,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20.0),
               ),

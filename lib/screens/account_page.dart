@@ -50,7 +50,7 @@ class AccountPageState extends State<AccountPage> {
                 child: Text(
               'Welcome ${displayusernameinaccount}',
               style: TextStyle(
-                color: lightPink,
+                color: newpink,
                 fontSize: 20,
               ),
             )),
@@ -59,18 +59,18 @@ class AccountPageState extends State<AccountPage> {
             padding: const EdgeInsets.only(bottom: 30, right: 30, left: 30),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: lightPink,
+                backgroundColor: newpink,
                 shape: RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.circular(20.0), // Set the border radius here
                 ),
               ),
               onPressed: () async {
-                await service.ScheduledNotification(
-                    id: 0,
-                    title: 'GrowWithTheFlow',
-                    body: 'Remember to do your Hachlatas',
-                    seconds: 4);
+                // await service.ScheduledNotification(
+                //     id: 0,
+                //     title: 'GrowWithTheFlow',
+                //     body: 'Remember to do your Hachlatas',
+                //     seconds: 4);
                 HapticFeedback.heavyImpact();
                 _auth.signOut();
 

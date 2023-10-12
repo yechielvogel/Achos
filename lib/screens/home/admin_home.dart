@@ -1,4 +1,3 @@
-// in wrapper file if user == 'admin' then it should show admin_home screen
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,43 +12,72 @@ import 'package:tzivos_hashem_milwaukee/screens/category_admin.dart';
 // import '../../services/auth.dart';
 import '../../shared/globals.dart' as globals;
 import '../../models/ueser.dart';
-import '../../widgets/empty_list_widget.dart';
+import '../../widgets/calendar.dart';
+import '../stats_admin.dart';
+import 'package:external_app_launcher/external_app_launcher.dart';
 
-class HomeAdmin extends StatefulWidget {
+class HomeAdmin extends StatefulWidget {   
   @override
   HomeAdminState createState() => HomeAdminState();
 }
 
 class HomeAdminState extends State<HomeAdmin> {
-  // final AuthService _auth = AuthService();
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle =
+      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text(
+      'Index 0: Account',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 1: Calendar',
+      style: optionStyle,
+    ),
+    Text(
+      'Index 2: Stats',
+      style: optionStyle,
+    ),
+  ];
 
-  bool isPressed = false;
-  // bool isHachlataListEmpty() {
-  //   return HachlataWidgetList.isEmpty;
-  // }
-  // // List<Widget> HachlataWidgetList = [];
-
-  // void addHachlataTile() {
-  //   setState(() {
-  //     HachlataWidgetList.add(HachlataTileWidget());
-  //   });
-  // }
-
-  DateTime today = DateTime.now();
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
+  void _onItemTapped(int index) {
     setState(() {
-      today = day;
+      _selectedIndex = index;
     });
   }
 
+  // final AuthService _auth = AuthService();
+
+  bool isPressed = false;
+
+  // DateTime today = DateTime.now();
+  // void _onDaySelected(DateTime day, DateTime focusedDay) {
+  //   setState(() {
+  //     today = day;
+  //   });
+  // }
+
   @override
   Widget build(BuildContext context) {
+    void updateGlobalsToday(DateTime newToday) {
+      setState(() {
+        globals.today = newToday;
+      });
+    }
+
     List<AddHachlataHome?> hachlataItemsForHome = [];
 
     final hachlataHome = Provider.of<List<AddHachlataHome?>?>(context);
-    final focusedDate = DateTime(today.year, today.month, today.day);
+    final focusedDate =
+        DateTime(globals.today.year, globals.today.month, globals.today.day);
     globals.focused_day = focusedDate.toString();
     final user = Provider.of<Ueser?>(context);
+
+    // for (var item in hachlataHome!)
+    //   if (item!.date.contains('2023')) {
+    //     globals.global_hachlata_number += 1;
+
+    // }
 
     hachlataItemsForHome = hachlataHome?.where((item) {
           if (item != null) {
@@ -81,7 +109,8 @@ class HomeAdminState extends State<HomeAdmin> {
       Map<String, AddHachlataHome?> itemsMap = {};
 
       // Get today's date year, month, and day
-      DateTime focusedDate = DateTime(today.year, today.month, today.day);
+      DateTime focusedDate =
+          DateTime(globals.today.year, globals.today.month, globals.today.day);
 
       for (AddHachlataHome? item in inputList) {
         if (item != null) {
@@ -167,40 +196,24 @@ class HomeAdminState extends State<HomeAdmin> {
     return Scaffold(
       backgroundColor: globals.bage,
       appBar: AppBar(
-        leading: IconButton(
-            icon: Icon(
-              isPressed ? CupertinoIcons.person_fill : CupertinoIcons.person,
-              color: globals.lightPink,
-            ),
-            splashColor: Colors.transparent,
-            hoverColor: Colors.transparent,
-            highlightColor: Colors.transparent,
-            onPressed: () async {
-              HapticFeedback.heavyImpact();
-              setState(() {
-                isPressed = true;
-              });
-              showModalBottomSheet(
-                  // backgroundColor: lightPink,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.vertical(
-                      top: Radius.circular(20),
-                    ),
-                  ),
-                  context: context,
-                  builder: (context) => AccountPage()).whenComplete(
-                () {
-                  setState(() {
-                    isPressed = false;
-                  });
-                  // _auth.signOut();
-                  print('name is ${user!.uesname}');
-                },
-              );
-            }),
+        leading: Container(),
+        // Padding(
+        //   padding: const EdgeInsets.all(10.0),
+        //   child: Container(
+        //       child: Center(
+        //           child: Text(
+        //         globals.global_hachlata_number.toString(),
+        //         style: TextStyle(color: globals.bage),
+        //       )),
+        //       decoration: BoxDecoration(
+        //         shape: BoxShape.circle,
+        //         color: globals.newpink,
+        //       )),
+        // ),
+        // leadingWidth: 40,
         title: Center(
           child: Image.asset(
-            'lib/assets/Asset3@3x.png',
+            'lib/assets/NewLogo.png',
             width: 60,
             height: 60,
           ),
@@ -215,9 +228,9 @@ class HomeAdminState extends State<HomeAdmin> {
               height: 40,
               child: IconButton(
                   icon: Icon(
-                    CupertinoIcons.bars,
+                    CupertinoIcons.gear,
                   ),
-                  color: globals.lightPink,
+                  color: globals.newpink,
                   splashColor: Colors.transparent,
                   hoverColor: Colors.transparent,
                   highlightColor: Colors.transparent,
@@ -237,67 +250,9 @@ class HomeAdminState extends State<HomeAdmin> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(
-              top: 8,
-              right: 8,
-              left: 8,
-            ),
-            child: Container(
-              decoration: BoxDecoration(
-                color: globals.lightGreen,
-                borderRadius: const BorderRadius.all(
-                  Radius.circular(20.0),
-                ),
-              ),
-              child: TableCalendar(
-                rowHeight: 60,
-                daysOfWeekStyle: DaysOfWeekStyle(
-                    weekendStyle: TextStyle(color: globals.bage),
-                    weekdayStyle: TextStyle(color: globals.bage)),
-                headerStyle: HeaderStyle(
-                  formatButtonVisible: false,
-                  titleCentered: true,
-                  titleTextStyle: TextStyle(
-                      color: globals.bage,
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold),
-                  leftChevronIcon: Icon(Icons.arrow_back_ios,
-                      color: globals.darkGreen), // Change the color here
-                  rightChevronIcon: Icon(Icons.arrow_forward_ios,
-                      color: globals.darkGreen), // Change the color here
-                ),
-                availableGestures: AvailableGestures.all,
-                selectedDayPredicate: (day) => isSameDay(day, today),
-                focusedDay: today,
-                calendarStyle: CalendarStyle(
-                    weekendTextStyle: TextStyle(color: globals.bage),
-                    outsideDaysVisible: false,
-                    defaultTextStyle: TextStyle(
-                      fontSize: 16.0, // Change the font size
-                      color: globals.bage, // Change the text color
-                    ),
-                    todayDecoration: BoxDecoration(
-                      color: globals
-                          .bage, // Customize the background color for today
-                      shape: BoxShape.circle,
-                    ),
-                    selectedDecoration: BoxDecoration(
-                      color: globals
-                          .darkGreen, // Customize the background color for selected days
-                      shape: BoxShape.circle,
-                    )),
-                firstDay: DateTime.utc(2023, 07, 7),
-                lastDay: DateTime.utc(2033, 07, 7),
-                onDaySelected: _onDaySelected,
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
+      body: Padding(
+        padding: const EdgeInsets.only(top: 10),
+        child: Column(children: [
           Expanded(
             child: GridView.builder(
               itemCount: hachlataItemsForHome.length,
@@ -325,7 +280,7 @@ class HomeAdminState extends State<HomeAdmin> {
                   if (tilecolor == 'Color(0xFFCBBD7F);') {
                     finaltilecolor = globals.lightGreen;
                   } else {
-                    finaltilecolor = globals.darkGreen;
+                    finaltilecolor = globals.doneHachlata;
                   }
                   filterHachlataList(hachlataItemsForHome);
 
@@ -339,9 +294,86 @@ class HomeAdminState extends State<HomeAdmin> {
               },
             ),
           ),
-        ],
+        ]),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: globals.bage,
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.person, color: Color(0xFFC16C9E)),
+              label: 'Account',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(CupertinoIcons.calendar, color: Color(0xFFC16C9E)),
+              label: 'Calendar',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                CupertinoIcons.chart_bar,
+                color: Color(0xFFC16C9E),
+              ),
+              label: 'Stats',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(
+                CupertinoIcons.book,
+                color: Color(0xFFC16C9E),
+              ),
+              label: 'Daily Study',
+            ),
+          ],
+          selectedItemColor: Color(0xFFC16C9E),
+          unselectedItemColor: Color(0xFFC16C9E),
+          selectedFontSize: 10,
+          unselectedFontSize: 10,
+          type: BottomNavigationBarType.fixed,
+          onTap: (index) async {
+            // Navigate to different pages based on the tapped icon
+            switch (index) {
+              case 0:
+                showModalBottomSheet(
+                    // backgroundColor: lightPink,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    context: context,
+                    builder: (context) => AccountPage());
+                break;
+              case 1:
+                showModalBottomSheet(
+                    // backgroundColor: lightPink,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(20),
+                      ),
+                    ),
+                    context: context,
+                    builder: (context) =>
+                        MyCalendar(onDaySelectedCallback: updateGlobalsToday));
+                break;
+              case 2:
+                Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => StatsAdmin()));
+
+                break;
+              case 3:
+                await LaunchApp.openApp(
+                  androidPackageName: 'org.chabad.android.DailyStudy',
+                  iosUrlScheme: 'chabad-org-daily-torah-study://',
+                  appStoreLink:
+                      'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                  // openStore: false
+                );
+
+                // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                // For testing purpose you can enter com.instagram.android
+
+                break;
+            }
+          }),
     );
   }
 }
-// widgetList[index],

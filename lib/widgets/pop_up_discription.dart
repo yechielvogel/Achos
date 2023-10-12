@@ -42,7 +42,7 @@ class PopUpDiscriptionState extends State<PopUpDiscription> {
       title: Center(
         child: Text(
           'Description',
-          style: TextStyle(color: globals.lightPink),
+          style: TextStyle(color: globals.newpink),
         ),
       ),
       content: Container(
