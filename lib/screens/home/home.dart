@@ -16,6 +16,7 @@ import '../../models/ueser.dart';
 import '../../widgets/calendar.dart';
 import '../../widgets/settings_off_widget.dart';
 import '../../widgets/this_is_not_avalible_yet.dart';
+import '../category.dart';
 import '../stats_admin.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 
@@ -256,7 +257,7 @@ class HomeState extends State<Home> {
                   if (isSettingsOn) {
                     Navigator.of(context).push(
                       MaterialPageRoute(
-                        builder: (context) => MySettingsAdmin(),
+                        builder: (context) => MySettings(),
                       ),
                     );
                   } else {
@@ -340,8 +341,8 @@ class HomeState extends State<Home> {
               label: 'Stats',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.book,
+              icon: ImageIcon(
+                AssetImage('lib/assets/chabadorgachos1@3x.png'),
                 color: Color(0xFFC16C9E),
               ),
               label: 'Daily Study',
@@ -390,7 +391,7 @@ class HomeState extends State<Home> {
               case 3:
                 await LaunchApp.openApp(
                   androidPackageName: 'org.chabad.android.DailyStudy',
-                  iosUrlScheme: 'chabad-org-daily-torah-study://',
+                  iosUrlScheme: 'org.chabad.DailyStudy://',
                   appStoreLink:
                       'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
                   // openStore: false

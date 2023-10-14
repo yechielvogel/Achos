@@ -16,7 +16,7 @@ import '../../widgets/calendar.dart';
 import '../stats_admin.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 
-class HomeAdmin extends StatefulWidget {   
+class HomeAdmin extends StatefulWidget {
   @override
   HomeAdminState createState() => HomeAdminState();
 }
@@ -297,6 +297,7 @@ class HomeAdminState extends State<HomeAdmin> {
         ]),
       ),
       bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
           backgroundColor: globals.bage,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -315,8 +316,8 @@ class HomeAdminState extends State<HomeAdmin> {
               label: 'Stats',
             ),
             BottomNavigationBarItem(
-              icon: Icon(
-                CupertinoIcons.book,
+              icon: ImageIcon(
+                AssetImage('lib/assets/chabadorgachos1@3x.png'),
                 color: Color(0xFFC16C9E),
               ),
               label: 'Daily Study',
@@ -361,7 +362,7 @@ class HomeAdminState extends State<HomeAdmin> {
               case 3:
                 await LaunchApp.openApp(
                   androidPackageName: 'org.chabad.android.DailyStudy',
-                  iosUrlScheme: 'chabad-org-daily-torah-study://',
+                  iosUrlScheme: 'org.chabad.DailyStudy://',
                   appStoreLink:
                       'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
                   // openStore: false

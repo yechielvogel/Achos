@@ -12,7 +12,9 @@ class AuthService {
   Ueser? _userFromFirebaseUser(
     User? user,
   ) {
-    return user != null ? Ueser(uid: user.uid, uesname: user.displayName) : null;
+    return user != null
+        ? Ueser(uid: user.uid, uesname: user.displayName)
+        : null;
   }
 
   Stream<Ueser?> get user {
@@ -20,7 +22,6 @@ class AuthService {
         .authStateChanges()
         .map((User? user) => _userFromFirebaseUser(user));
   }
-  
 
   //sign in anon
   Future signInAnon() async {
@@ -78,7 +79,47 @@ class AuthService {
       print(e.toString());
       return null;
     }
+
+    // delete account
   }
+  // delete account
+
+  Future<void> deleteUserAccount() async {
+    try {
+      await FirebaseAuth.instance.currentUser!.delete();
+    } on FirebaseAuthException catch (e) {
+      print(e.toString());
+
+      if (e.code == "requires-recent-login") {
+        await _reauthenticateAndDelete();
+      } else {
+        // Handle other Firebase exceptions
+      }
+    } catch (e) {
+      print(e.toString());
+
+      // Handle general exception
+    }
+  }
+
+  Future<void> _reauthenticateAndDelete() async {
+    try {
+      final providerData = FirebaseAuth.instance.currentUser?.providerData.first;
+
+      if (AppleAuthProvider().providerId == providerData!.providerId) {
+        await FirebaseAuth.instance.currentUser!
+            .reauthenticateWithProvider(AppleAuthProvider());
+      } else if (GoogleAuthProvider().providerId == providerData.providerId) {
+        await FirebaseAuth.instance.currentUser!
+            .reauthenticateWithProvider(GoogleAuthProvider());
+      }
+
+      await FirebaseAuth.instance.currentUser?.delete();
+    } catch (e) {
+      // Handle exceptions
+    }
+  }
+
   //get name
 // Future<String?> getUserName(String uid) async {
 //   try {

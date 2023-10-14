@@ -43,18 +43,25 @@ class Wrapper extends StatelessWidget {
     if (admins != null) {
       bool isAdmin = admins.any((admin) => admin?.uid == user.uid);
       if (isAdmin) {
-        if (istherehachlatas.length > firstcategorylist!.length) {
-          print('admin is there hachlatas${istherehachlatas.length}');
-          return HomeAdmin();
-        } else
-          globals.current_category_choose = firstcategorylist.first!.name;
-        print(istherehachlatas.length);
-        print(globals.current_category_choose);
-        // return HomeAdmin();
-        return ChooseHachlataOnStartAdmin();
+        if (firstcategorylist != null) {
+          if (istherehachlatas.length != 0 &&
+              istherehachlatas.length > firstcategorylist.length) {
+            print('admin is there hachlatas${istherehachlatas.length}');
+            return HomeAdmin();
+          }
+          if (istherehachlatas.length == 0 ||
+              istherehachlatas.length < firstcategorylist.length) {
+            globals.current_category_choose = firstcategorylist.first!.name;
+            print(istherehachlatas.length);
+            print(globals.current_category_choose);
+            // return HomeAdmin();
+            return ChooseHachlataOnStartAdmin();
 
-        // print('Logged in as admin ${user.uid}');
-        // return HomeAdmin();
+            // print('Logged in as admin ${user.uid}');
+          }
+        } else
+          print('return home admin line 63');
+        return HomeAdmin(); // return HomeAdmin();
       }
     }
     if (firstcategorylist != null) {
@@ -71,10 +78,12 @@ class Wrapper extends StatelessWidget {
         // return HomeAdmin();
         return ChooseHachlataOnStart();
       } else
-        print('else home');
+        print('else home line 79');
       return Home();
     } else
-      return Home();
+      print('else home line 82');
+
+    return Home();
   }
 }
 

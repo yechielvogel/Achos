@@ -68,8 +68,9 @@ class MyApp extends StatelessWidget {
           initialData: null,
         ),
       ],
-      child: const MaterialApp(
+      child: const MaterialApp(   
         home: Wrapper(),
+        debugShowCheckedModeBanner: false,
       ),
     );
   }

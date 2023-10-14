@@ -18,7 +18,7 @@ class MySettings extends StatefulWidget {
   @override
   State<MySettings> createState() => MySettingsState();
 }
-
+   
 class MySettingsState extends State<MySettings> {
   Future<void> addHachlataCategoryTile() async {
     HachlataCategoryWidgetList.add(HachlataCategoryTileWidget(

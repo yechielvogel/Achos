@@ -57,29 +57,118 @@ class AccountPageState extends State<AccountPage> {
           ),
           Padding(
             padding: const EdgeInsets.only(bottom: 30, right: 30, left: 30),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: newpink,
-                shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(20.0), // Set the border radius here
-                ),
-              ),
-              onPressed: () async {
-                // await service.ScheduledNotification(
-                //     id: 0,
-                //     title: 'GrowWithTheFlow',
-                //     body: 'Remember to do your Hachlatas',
-                //     seconds: 4);
-                HapticFeedback.heavyImpact();
-                _auth.signOut();
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: newpink,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          20.0), // Set the border radius here
+                    ),
+                  ),
+                  onPressed: () async {
+                    // await service.ScheduledNotification(
+                    //     id: 0,
+                    //     title: 'GrowWithTheFlow',
+                    //     body: 'Remember to do your Hachlatas',
+                    //     seconds: 4);
+                    HapticFeedback.heavyImpact();
+                    _auth.signOut();
 
-                Navigator.of(context).pop();
-              },
-              child: Text(
-                'Sign Out',
-                style: TextStyle(color: bage),
-              ),
+                    Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Sign Out',
+                    style: TextStyle(color: bage),
+                  ),
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: newpink,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          20.0), // Set the border radius here
+                    ),
+                  ),
+                  onPressed: () async {
+                    HapticFeedback.heavyImpact();
+                    Navigator.of(context).pop();
+                    ;
+                    showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          backgroundColor: bage,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                          title: const Text(
+                            'Delete your Account?',
+                            style: TextStyle(color: Color(0xFFC16C9E)),
+                          ),
+                          content: const Text(
+                            '''If you select Delete we will delete your account on our server.
+
+Your app data will also be deleted and you won't be able to retrieve it.
+
+Since this is a security-sensitive operation, you eventually are asked to login before your account can be deleted.''',
+                            style: TextStyle(color: Color(0xFFC16C9E)),
+                          ),
+                          actions: [
+                            Container(
+                              child: ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: newpink,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20.0),
+                                  ),
+                                ),
+                                onPressed: () async {
+                                  HapticFeedback.heavyImpact();
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text(
+                                  'Cancel',
+                                  style: TextStyle(color: bage),
+                                ),
+                              ),
+                            ),
+                            ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: newpink,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20.0),
+                                ),
+                              ),
+                              onPressed: () async {
+                                HapticFeedback.heavyImpact();
+                                _auth.deleteUserAccount();
+                                Navigator.of(context).pop();
+                                // Call the delete account function
+                              },
+                              child: Text(
+                                'Delete',
+                                style: TextStyle(color: bage),
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    );
+
+                    // Navigator.of(context).pop();
+                  },
+                  child: Text(
+                    'Delete Account',
+                    style: TextStyle(color: bage),
+                  ),
+                ),
+              ],
             ),
           )
         ],

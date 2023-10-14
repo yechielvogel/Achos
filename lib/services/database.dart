@@ -247,6 +247,8 @@ class DatabaseService {
           []; // Provide an empty list as the default value if it's null
     });
   }
+  // delete account function 
+  
 }
 
 //   final CollectionReference doneHachlata =
