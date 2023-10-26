@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:kosher_dart/kosher_dart.dart';
 
 List<String> AdminUIDs = [
   'J2qdDlOv3Vf28QaDfwyeZdc2iQo2',
@@ -15,17 +16,21 @@ String current_category_choose = '';
 int current_category_choose_int = 0;
 int global_hachlata_number = 0;
 
+String currentHachlataChooseName = '';
+Color currentHachlataChooseColor = Color(0xFFCBBD7F);
 
 String current_user = '';
 String focused_day = '';
 String current_namesofuser = '';
 String tempuesname = '';
 String displayusernameinaccount = '';
+String random_notification = '';
+String hebrew_focused_day = JewishDate().toString();
 DateTime today = DateTime.now();
 
 List<Widget> HachlataWidgetList = [];
 List<Widget> AddHachlataWidgetList = [];
-
+List<int> selectedIndices = [];
 List<Widget> HachlataCategoryWidgetList = [];
 Color lightPink = Color(0xFFEBB1C5);
 Color bage = Color(0xFFF3E3DF);

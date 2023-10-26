@@ -217,7 +217,10 @@ class HomeAdminState extends State<HomeAdmin> {
             width: 60,
             height: 60,
           ),
+          
         ),
+                centerTitle: true,
+
         backgroundColor: globals.bage,
         elevation: 0,
         actions: <Widget>[
@@ -359,6 +362,7 @@ class HomeAdminState extends State<HomeAdmin> {
                     MaterialPageRoute(builder: (context) => StatsAdmin()));
 
                 break;
+                //remove for android
               case 3:
                 await LaunchApp.openApp(
                   androidPackageName: 'org.chabad.android.DailyStudy',

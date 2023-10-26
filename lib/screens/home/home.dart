@@ -14,9 +14,12 @@ import '../../models/change_settings_switch.dart';
 import '../../shared/globals.dart';
 import '../../models/ueser.dart';
 import '../../widgets/calendar.dart';
+import '../../widgets/leader_board.dart';
+import '../../widgets/new_user_stats.dart';
 import '../../widgets/settings_off_widget.dart';
 import '../../widgets/this_is_not_avalible_yet.dart';
 import '../category.dart';
+import '../new_stats_and_leaderboard.dart';
 import '../stats_admin.dart';
 import 'package:external_app_launcher/external_app_launcher.dart';
 
@@ -237,6 +240,8 @@ class HomeState extends State<Home> {
             height: 60,
           ),
         ),
+        centerTitle: true,
+
         backgroundColor: bage,
         elevation: 0,
         actions: <Widget>[
@@ -323,6 +328,7 @@ class HomeState extends State<Home> {
         ]),
       ),
       bottomNavigationBar: BottomNavigationBar(
+          elevation: 0,
           backgroundColor: bage,
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(
@@ -340,6 +346,7 @@ class HomeState extends State<Home> {
               ),
               label: 'Stats',
             ),
+            // remove for android
             BottomNavigationBarItem(
               icon: ImageIcon(
                 AssetImage('lib/assets/chabadorgachos1@3x.png'),
@@ -386,8 +393,23 @@ class HomeState extends State<Home> {
                       // Define the content of your dialog here
                       return ThisIsNotAvailableYet();
                     });
+                // await showModalBottomSheet(
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.vertical(
+                //         top: Radius.circular(20),
+                //       ),
+                //     ),
+                //     isScrollControlled: false,
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       // Define the content of your dialog here
+                //       // return SingleChildScrollView(child: UserStats());
+                //       return UserStats();
+                //       // return ThisIsNotAvailableYet();
+                //     });
 
                 break;
+              //remove for android
               case 3:
                 await LaunchApp.openApp(
                   androidPackageName: 'org.chabad.android.DailyStudy',

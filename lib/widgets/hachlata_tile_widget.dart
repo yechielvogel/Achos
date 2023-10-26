@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:kosher_dart/kosher_dart.dart';
 import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
+import 'package:tzivos_hashem_milwaukee/widgets/pop_up_discription.dart';
 
 import '../models/add_hachlata_home.dart';
 import '../models/ueser.dart';
@@ -32,6 +33,24 @@ class _HachlataTileWidgetState extends State<HachlataTileWidget> {
     });
   }
 
+  bool isDateInCurrentWeek() {
+    // Parse the date string into a DateTime object
+    DateTime date = globals.today;
+    DateTime now = DateTime.now();
+    // Get the current date and time
+    DateTime todaysdate = DateTime(now.year, now.month, now.day);
+    DateTime sevenDaysAgo = now.subtract(Duration(days: 7));
+    // Check if the dates are in the same week
+    if (date.isAfter(sevenDaysAgo) &&
+        date.isBefore(todaysdate) &&
+        !date.isAfter(todaysdate)) {
+      // Check if the date is within 7 days ago
+      return true;
+    }
+
+    return false;
+  }
+
   @override
   Widget build(BuildContext context) {
     JewishDate jewishDate = JewishDate();
@@ -39,7 +58,7 @@ class _HachlataTileWidgetState extends State<HachlataTileWidget> {
     String hebrewDate = hebrewDateFormatter.format(jewishDate);
     DateTime today = DateTime.now().toLocal();
     final dateOnly = DateTime(today.year, today.month, today.day);
-
+    String dateOnlytostring = dateOnly.toString();
     // DateTime dateOnly = DateTime(today.year, today.month, today.day);
     final user = Provider.of<Ueser?>(context);
     // Color? tileColor = widget.isclicked ? darkGreen : lightGreen;
@@ -60,25 +79,38 @@ class _HachlataTileWidgetState extends State<HachlataTileWidget> {
       displayusernameinaccount = user!.uesname!;
     return GestureDetector(
       onTap: () {
-        HapticFeedback.heavyImpact();
-        toggleColor();
-        globals.done_hachlata_doc_name = (displayusernameinaccount +
-            widget.hachlataName +
-            globals.focused_day);
-        // dateOnly.toString()
-        if (widget.isclicked == Color(0xFFCBBD7F)) {
-          DatabaseService(Uid: 'test').updateDoneHachlata(
-              displayusernameinaccount.toString(),
-              widget.hachlataName,
-              globals.focused_day,
-              hebrewDate,
-              'Color(0xFFC16C9E);');
-          updateGlobalHachlataNumber();
-        } else
-          DatabaseService(Uid: 'test').delteDoneHachlata();
+        if (isDateInCurrentWeek() == true) {
+          HapticFeedback.heavyImpact();
+          toggleColor();
+          globals.done_hachlata_doc_name = (displayusernameinaccount +
+              widget.hachlataName +
+              globals.focused_day);
+          // dateOnly.toString()
+          if (widget.isclicked == Color(0xFFCBBD7F)) {
+            DatabaseService(Uid: 'test').updateDoneHachlata(
+                displayusernameinaccount.toString(),
+                widget.hachlataName,
+                globals.focused_day,
+                globals.hebrew_focused_day,
+                'Color(0xFFC16C9E);');
+            print('hebrew day to upload${hebrew_focused_day}');
+            updateGlobalHachlataNumber();
+          } else
+            DatabaseService(Uid: 'test').delteDoneHachlata();
+        }
+      },
+      onLongPress: () async {
+        await showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              HapticFeedback.heavyImpact();
+              return PopUpDiscription(
+                hachlataName: widget.hachlataName,
+              );
+            });
       },
       child: Padding(
-        padding: const EdgeInsets.only(right: 8, left: 8),
+        padding: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
         child: Column(
           children: [
             Container(

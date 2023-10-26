@@ -19,11 +19,11 @@ final AuthService _auth = AuthService();
 
 class AccountPageState extends State<AccountPage> {
   @override
-  late final Notifications service;
+  // late final Notifications service;
 
   void initState() {
-    service = Notifications();
-    service.initialize();
+    // service = Notifications();
+    // service.initialize();
     super.initState();
   }
 
@@ -33,6 +33,7 @@ class AccountPageState extends State<AccountPage> {
       displayusernameinaccount = tempuesname;
     } else
       displayusernameinaccount = user!.uesname!;
+    // Notifications();
     return Container(
       decoration: BoxDecoration(
           color: bage,
@@ -121,40 +122,52 @@ Since this is a security-sensitive operation, you eventually are asked to login 
                           ),
                           actions: [
                             Container(
-                              child: ElevatedButton(
-                                style: ElevatedButton.styleFrom(
-                                  backgroundColor: newpink,
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20.0),
-                                  ),
-                                ),
-                                onPressed: () async {
-                                  HapticFeedback.heavyImpact();
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text(
-                                  'Cancel',
-                                  style: TextStyle(color: bage),
-                                ),
-                              ),
-                            ),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                backgroundColor: newpink,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20.0),
-                                ),
-                              ),
-                              onPressed: () async {
-                                HapticFeedback.heavyImpact();
-                                _auth.deleteUserAccount();
-                                Navigator.of(context).pop();
-                                // Call the delete account function
-                              },
-                              child: Text(
-                                'Delete',
-                                style: TextStyle(color: bage),
-                              ),
+                              padding: EdgeInsets.only(right: 8, left: 8),
+                              child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        backgroundColor: newpink,
+                                        padding:
+                                            EdgeInsets.only(right: 8, left: 8),
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        HapticFeedback.heavyImpact();
+                                        Navigator.of(context).pop();
+                                      },
+                                      child: Text(
+                                        'Cancel',
+                                        style: TextStyle(color: bage),
+                                      ),
+                                    ),
+                                    ElevatedButton(
+                                      style: ElevatedButton.styleFrom(
+                                        padding:
+                                            EdgeInsets.only(right: 8, left: 8),
+                                        backgroundColor: newpink,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(20.0),
+                                        ),
+                                      ),
+                                      onPressed: () async {
+                                        HapticFeedback.heavyImpact();
+                                        _auth.deleteUserAccount();
+                                        Navigator.of(context).pop();
+                                        // Call the delete account function
+                                      },
+                                      child: Text(
+                                        'Delete',
+                                        style: TextStyle(color: bage),
+                                      ),
+                                    )
+                                  ]),
                             ),
                           ],
                         );

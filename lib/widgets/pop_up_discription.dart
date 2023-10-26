@@ -44,7 +44,9 @@ class PopUpDiscriptionState extends State<PopUpDiscription> {
           'Description',
           style: TextStyle(color: globals.newpink),
         ),
+        
       ),
+      
       content: Container(
         child: Padding(
           padding: const EdgeInsets.all(15),
@@ -52,6 +54,7 @@ class PopUpDiscriptionState extends State<PopUpDiscription> {
             discription,
             style: TextStyle(color: globals.bage, fontSize: 15),
           ),
+          
         ),
         decoration: BoxDecoration(
           color: lightGreen,

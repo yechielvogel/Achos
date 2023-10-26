@@ -18,7 +18,7 @@ class MySettings extends StatefulWidget {
   @override
   State<MySettings> createState() => MySettingsState();
 }
-   
+
 class MySettingsState extends State<MySettings> {
   Future<void> addHachlataCategoryTile() async {
     HachlataCategoryWidgetList.add(HachlataCategoryTileWidget(
@@ -51,12 +51,14 @@ class MySettingsState extends State<MySettings> {
         //       })
         // ],
         iconTheme: IconThemeData(
-          color: lightPink,
+          color: newpink,
         ),
         title: Text(
           "Categories",
-          style: TextStyle(color: lightPink),
+          style: TextStyle(color: newpink),
         ),
+        centerTitle: true,
+
         elevation: 0.0,
         backgroundColor: bage,
       ),

@@ -30,7 +30,6 @@ class DatabaseService {
 
 // changeSettingsSwitch
   Future updateChangeSettingsSwitch(
-    
     bool off,
   ) async {
     return await changeSettingsSwitch.doc('on').set({
@@ -63,18 +62,41 @@ class DatabaseService {
     String name,
     String date,
     String hebrewdate,
-
     String color,
   ) async {
-    return await addHachlataHome
-        .doc(globals.done_hachlata_doc_name)
-        .set({'uid': uid, 'name': name, 'date': date, 'hebrew date': hebrewdate, 'color': color});
+    return await addHachlataHome.doc(globals.done_hachlata_doc_name).set({
+      'uid': uid,
+      'name': name,
+      'date': date,
+      'hebrew date': hebrewdate,
+      'color': color
+    });
   }
 
   Future delteDoneHachlata() async {
     return await addHachlataHome.doc(globals.done_hachlata_doc_name).delete();
   }
 
+  Future delteAllHachlata() async {
+    return await addHachlataHome.doc(globals.done_hachlata_doc_name).delete();
+  }
+
+  Future<void> deleteAllHachlatas() async {
+    // Get a reference to the Firestore collection
+    CollectionReference<Map<String, dynamic>> hachlataCollection =
+        FirebaseFirestore.instance.collection('addHachlataHome');
+
+    // Query documents based on the condition (where globals.done_hachlata_doc_name is present)
+    QuerySnapshot<Map<String, dynamic>> querySnapshot = await hachlataCollection
+        .where(globals.done_hachlata_doc_name, isEqualTo: true)
+        .get();
+
+    // Iterate through the documents and delete each one
+    for (QueryDocumentSnapshot<Map<String, dynamic>> docSnapshot
+        in querySnapshot.docs) {
+      await docSnapshot.reference.delete();
+    }
+  }
   // snap shot for hachlatacategory
 // hachlatacategory list from snapshot
   // List<DoneHachlata>? _donehachlataListFromSnapshot(QuerySnapshot snapshot) {
@@ -247,42 +269,30 @@ class DatabaseService {
           []; // Provide an empty list as the default value if it's null
     });
   }
-  // delete account function 
-  
+
+  void createMonthlyCollection() {
+    // DateTime hebrew_focused_day = DateTime.now();
+    
+    CollectionReference testMonthlyCollection =
+        FirebaseFirestore.instance.collection(globals.hebrew_focused_day);
+  }
 }
 
-//   final CollectionReference doneHachlata =
-//       FirebaseFirestore.instance.collection('doneHachlata');
+// final CollectionReference<Map<String, dynamic>> addHachlataHome =
+//     FirebaseFirestore.instance.collection('addHachlataHome');
 
-//   // addHachlata
-//   Future updateDoneHachlata(
-//     String name,
-//     String uid,
-//     String date,
-//   ) async {
-//     return await doneHachlata.doc(globals.done_hachlata_doc_name).set({
-//       'name': name,
-//       'uid': uid,
-//       'date': date,
-//     });
-//   }
+// Future<void> deleteAllHachlata() async {
+//   // Get all documents in the collection
+//   QuerySnapshot<Map<String, dynamic>> querySnapshot =
+//       await addHachlataHome.get();
 
-//   // snap shot for hachlatacategory
-// // hachlatacategory list from snapshot
-//   List<DoneHachlata>? _donehachlataListFromSnapshot(QuerySnapshot snapshot) {
-//     return snapshot.docs.map((doc) {
-//       return DoneHachlata(
-//         name: doc['name'] as String,
-//         uid: doc['uid'] as String,
-//         date: doc['date'] as String,
-//       );
-//     }).toList();
+//   // Iterate through the documents
+//   for (QueryDocumentSnapshot<Map<String, dynamic>> docSnapshot
+//       in querySnapshot.docs) {
+//     // Check if the document contains the specified field
+//     if (docSnapshot.data().containsKey(globals.tempuesname)) {
+//       // Delete the document
+//       await docSnapshot.reference.delete();
+//     }
 //   }
-
-//   // getDoneHachlataStream stream
-//   Stream<List<DoneHachlata>> get donehachlata {
-//     return doneHachlata.snapshots().map<List<DoneHachlata>>((querySnapshot) {
-//       final doneHachlata = _donehachlataListFromSnapshot(querySnapshot);
-//       return doneHachlata ?? [];
-//     });
-//   }
+// }

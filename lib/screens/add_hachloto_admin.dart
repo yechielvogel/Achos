@@ -81,6 +81,7 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
             color: globals.newpink,
           ),
         ),
+        centerTitle: true,
       ),
       backgroundColor: globals.bage,
       body: Column(
@@ -119,7 +120,7 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
                           child: AddHachlataTileWidgetAdmin(
                             hachlataName: hachlataName,
                             isclicked: tileColors[index],
-                            rebuildCallback: () {},
+                            rebuildCallback: () {},    
                           ),
                         ),
                         // ),

@@ -48,6 +48,7 @@ class _StatsAdminState extends State<StatsAdmin> {
           "Stats",
           style: TextStyle(color: globals.newpink),
         ),
+        centerTitle: true,
         elevation: 0.0,
         backgroundColor: globals.bage,
       ),

@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tzivos_hashem_milwaukee/screens/authenticate/sign_in.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
+import 'package:tzivos_hashem_milwaukee/services/database.dart';
 
 import '/models/ueser.dart';
 
@@ -87,11 +88,13 @@ class AuthService {
   Future<void> deleteUserAccount() async {
     try {
       await FirebaseAuth.instance.currentUser!.delete();
+      // await deleteAllHachlata();
     } on FirebaseAuthException catch (e) {
       print(e.toString());
 
       if (e.code == "requires-recent-login") {
         await _reauthenticateAndDelete();
+        // await deleteAllHachlata();
       } else {
         // Handle other Firebase exceptions
       }
@@ -104,7 +107,8 @@ class AuthService {
 
   Future<void> _reauthenticateAndDelete() async {
     try {
-      final providerData = FirebaseAuth.instance.currentUser?.providerData.first;
+      final providerData =
+          FirebaseAuth.instance.currentUser?.providerData.first;
 
       if (AppleAuthProvider().providerId == providerData!.providerId) {
         await FirebaseAuth.instance.currentUser!

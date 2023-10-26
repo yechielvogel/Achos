@@ -42,7 +42,7 @@ class _ChooseHachlataOnStartAdminState
         globals.current_category_choose_int < categories!.length) {
       globals.current_category_choose =
           categories[globals.current_category_choose_int]?.name ?? '';
-    } else {   
+    } else {
       print('returning home');
       return HomeAdmin();
     }
@@ -56,16 +56,17 @@ class _ChooseHachlataOnStartAdminState
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: globals.lightPink,
+          color: globals.newpink,
         ),
         elevation: 0.0,
         backgroundColor: globals.bage,
         title: Text(
-          "Choose Hachlatas",
+          "Choose ${globals.current_category_choose} החלטות",
           style: TextStyle(
-            color: globals.lightPink,
+            color: globals.newpink,
           ),
         ),
+        centerTitle: true,
       ),
       backgroundColor: globals.bage,
       body: Column(

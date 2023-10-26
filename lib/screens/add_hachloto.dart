@@ -76,16 +76,17 @@ class AddHachlotoState extends State<AddHachloto> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: globals.lightPink,
+          color: globals.newpink,
         ),
         elevation: 0.0,
         backgroundColor: globals.bage,
         title: Text(
           "Hachlata's",
           style: TextStyle(
-            color: globals.lightPink,
+            color: globals.newpink,
           ),
         ),
+        centerTitle: true,
       ),
       backgroundColor: globals.bage,
       body: Column(

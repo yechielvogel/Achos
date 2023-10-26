@@ -4,7 +4,7 @@ import 'package:kosher_dart/kosher_dart.dart';
 import 'package:provider/provider.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
-
+import 'package:gtext/gtext.dart';
 import '../models/add_hachlata_home.dart';
 import '../models/ueser.dart';
 import 'package:intl/intl.dart';
@@ -21,8 +21,9 @@ class MyCalendarState extends State<MyCalendar> {
   bool isPressed = false;
 
   // DateTime today = DateTime.now();
-  void _onDaySelected(DateTime day, DateTime focusedDay) {
+  void _onDaySelected(DateTime day, DateTime focusedDay) {      
     setState(() {
+      globals.hebrew_focused_day = JewishDate.fromDateTime(day).toString();
       // today = day;
       globals.today = day;
       // print(globals.today);
@@ -38,12 +39,23 @@ class MyCalendarState extends State<MyCalendar> {
     String hebrewDate = hebrewDateFormatter.format(jewishDate);
     String hebrewday = jewishDate.getJewishDayOfMonth().toString();
     String hebrewmonth = jewishDate.toString();
-    hebrewmonth = hebrewmonth.replaceAll(RegExp(r'[0-9]'), '');
+    String hebrewdaynew = '';
+    // hebrewmonth = hebrewmonth.replaceAll(RegExp(r'[0-9]'), '');
 
     JewishDate convertToHebrewDate(DateTime gregorianDate) {
       JewishDate jewishDate = JewishDate.fromDateTime(gregorianDate);
       return jewishDate;
     }
+
+    // Future<void> isItRoshChodesh() async {
+    //   if (hebrewday == '1') {
+    //     hebrewdaynew = hebrewmonth.toString();
+    //     print('new hebrew date $hebrewdaynew');
+    //   } else {
+    //     hebrewdaynew = hebrewday;
+    //   }
+    //   return;
+    // }
 
     final focusedDate =
         DateTime(globals.today.year, globals.today.month, globals.today.day);
@@ -104,8 +116,16 @@ class MyCalendarState extends State<MyCalendar> {
               calendarBuilders: CalendarBuilders(
                 // todayBuilder: ,
                 defaultBuilder: (context, date, events) {
-                  var jewishDate = convertToHebrewDate(date);
+                  var gregorianDate = date;
 
+                  var jewishDate = convertToHebrewDate(gregorianDate);
+                  GText('${jewishDate}', toLang: 'iw');
+                  String monthName = DateFormat('MMMM').format(date);
+                  var jewishdate2 = date;
+                  var jewishDate1 = convertToHebrewDate(jewishdate2);
+                  String hebrewmonthconvert = jewishDate1.toString();
+                  hebrewmonth =
+                      hebrewmonthconvert.replaceAll(RegExp(r'[0-9]'), '');
                   return Column(
                     children: [
                       Container(
@@ -122,12 +142,10 @@ class MyCalendarState extends State<MyCalendar> {
                       Container(
                         margin: const EdgeInsets.all(4.0),
                         alignment: Alignment.bottomCenter,
-
-                        // decoration: BoxDecoration(
-                        //   borderRadius: BorderRadius.circular(50),
-                        // ),
                         child: Text(
-                          '${jewishDate.getJewishDayOfMonth()}',
+                          (jewishDate.getJewishDayOfMonth() == 1)
+                              ? '${hebrewmonth.toString()}'
+                              : '${jewishDate.getJewishDayOfMonth()}',
                           style: TextStyle(fontSize: 8, color: globals.bage),
                         ),
                       ),
@@ -137,7 +155,14 @@ class MyCalendarState extends State<MyCalendar> {
                 selectedBuilder: (context, date, events) {
                   var gregorianDate = date;
                   var jewishDate = convertToHebrewDate(gregorianDate);
+                  String monthName = DateFormat('MMMM').format(date);
+                  var jewishdate2 = date;
+                  var jewishDate1 = convertToHebrewDate(jewishdate2);
+                  String hebrewmonthconvert = jewishDate1.toString();
+                  hebrewmonth =
+                      hebrewmonthconvert.replaceAll(RegExp(r'[0-9]'), '');
 
+                  // isItRoshChodesh();
                   return Container(
                     margin: const EdgeInsets.only(bottom: 9.0),
                     width: 50,
@@ -163,9 +188,13 @@ class MyCalendarState extends State<MyCalendar> {
                           margin: const EdgeInsets.all(4.0),
                           alignment: Alignment.bottomCenter,
                           child: Text(
-                            '${hebrewday.toString()}',
+                            (jewishDate.getJewishDayOfMonth() == 1)
+                                ? '${hebrewmonth.toString()}'
+                                : '${jewishDate.getJewishDayOfMonth()}',
                             style: TextStyle(
-                                fontSize: 8, color: globals.doneHachlata),
+                              fontSize: 8,
+                              color: globals.doneHachlata,
+                            ),
                           ),
                         ),
                       ],
@@ -174,7 +203,14 @@ class MyCalendarState extends State<MyCalendar> {
                 },
                 todayBuilder: (context, date, events) {
                   var gregorianDate = date;
-                  var jewishDate = convertToHebrewDate(gregorianDate);
+                  String monthName = DateFormat('MMMM').format(date);
+                  var jewishdate2 = date;
+                  var jewishDate1 = convertToHebrewDate(jewishdate2);
+                  String hebrewmonthconvert = jewishDate1.toString();
+                  hebrewmonth =
+                      hebrewmonthconvert.replaceAll(RegExp(r'[0-9]'), '');
+
+                  // isItRoshChodesh();
 
                   return Container(
                     margin: const EdgeInsets.only(bottom: 9.0),
@@ -201,9 +237,13 @@ class MyCalendarState extends State<MyCalendar> {
                           margin: const EdgeInsets.all(4.0),
                           alignment: Alignment.bottomCenter,
                           child: Text(
-                            '${hebrewday.toString()}',
+                            (jewishDate.getJewishDayOfMonth() == 1)
+                                ? '${hebrewmonth.toString()}'
+                                : '${jewishDate.getJewishDayOfMonth()}',
                             style: TextStyle(
-                                fontSize: 8, color: globals.doneHachlata),
+                              fontSize: 8,
+                              color: globals.doneHachlata,
+                            ),
                           ),
                         ),
                       ],

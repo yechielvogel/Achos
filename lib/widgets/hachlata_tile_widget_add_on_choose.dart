@@ -16,23 +16,23 @@ import '../services/database.dart';
 import '../shared/globals.dart';
 import 'hachlata_category_widget_admin.dart.dart';
 
-class AddHachlataTileWidgetAdmin extends StatefulWidget {
+class AddHachlataTileWidgetOnChoose extends StatefulWidget {
   final String hachlataName;
   final Color isclicked;
   final VoidCallback rebuildCallback;
-  const AddHachlataTileWidgetAdmin(
+  const AddHachlataTileWidgetOnChoose(
       {super.key,
       required this.hachlataName,
       required this.isclicked,
       required this.rebuildCallback});
 
   @override
-  _AddHachlataTileWidgetAdminState createState() =>
-      _AddHachlataTileWidgetAdminState();
+  _AddHachlataTileWidgetOnChooseState createState() =>
+      _AddHachlataTileWidgetOnChooseState();
 }
 
-class _AddHachlataTileWidgetAdminState
-    extends State<AddHachlataTileWidgetAdmin> {
+class _AddHachlataTileWidgetOnChooseState
+    extends State<AddHachlataTileWidgetOnChoose> {
   void _rebuildOtherFile() {
     setState(() {
       globals.current_category_choose_int += 1;
@@ -111,7 +111,7 @@ class _AddHachlataTileWidgetAdminState
                 },
                 background: Container(
                   alignment: Alignment.centerRight,
-                  decoration: BoxDecoration(   
+                  decoration: BoxDecoration(
                     color: globals.lightPink,
                   ),
                   child: Padding(

@@ -42,6 +42,7 @@ class PopUpChooseNameState extends State<PopUpChooseName> {
           'New category',
           style: TextStyle(color: globals.newpink),
         ),
+        
       ),
       content: TextFormField(
         cursorColor: globals.doneHachlata,

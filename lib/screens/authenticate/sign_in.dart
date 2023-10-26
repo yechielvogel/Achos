@@ -33,7 +33,8 @@ class _signInState extends State<signIn> {
                     'Sign In',
                     style: TextStyle(color: newpink),
                   ),
-                )),
+                ),        centerTitle: true,
+),
             body: Container(
                 padding: EdgeInsets.symmetric(vertical: 20, horizontal: 50),
                 child: Form(

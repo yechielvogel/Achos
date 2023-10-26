@@ -90,6 +90,7 @@ class MySettingsAdminState extends State<MySettingsAdmin> {
           "Categories",
           style: TextStyle(color: newpink),
         ),
+        centerTitle: true,
         elevation: 0.0,
         backgroundColor: bage,
       ),

@@ -11,10 +11,9 @@ import 'home/admin_home.dart';
 import 'home/home.dart';
 
 class ChooseHachlataOnStart extends StatefulWidget {
-  
-
-  const ChooseHachlataOnStart({Key? key,})
-      : super(key: key);
+  const ChooseHachlataOnStart({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<ChooseHachlataOnStart> createState() => _ChooseHachlataOnStartState();
@@ -29,7 +28,7 @@ class _ChooseHachlataOnStartState extends State<ChooseHachlataOnStart> {
       setState(() {
         // globals.current_category_choose_int += 1;
       }); // Trigger a rebuild in the other file
-    }    
+    }
 
     List<AddHachlata?> hachlataItemsForCurrentCategory = [];
 
@@ -63,21 +62,22 @@ class _ChooseHachlataOnStartState extends State<ChooseHachlataOnStart> {
     return Scaffold(
       appBar: AppBar(
         iconTheme: IconThemeData(
-          color: globals.lightPink,
+          color: globals.newpink,
         ),
         elevation: 0.0,
         backgroundColor: globals.bage,
         title: Text(
-          "Choose Hachlatas",
+          "Choose ${globals.current_category_choose} החלטות",
           style: TextStyle(
             color: globals.lightPink,
           ),
         ),
+        centerTitle: true,
       ),
       backgroundColor: globals.bage,
       body: Column(
         children: [
-          Expanded(    
+          Expanded(
               child: GridView.builder(
                   itemCount: hachlataItemsForCurrentCategory.length,
                   shrinkWrap: true,
@@ -126,3 +126,15 @@ class _ChooseHachlataOnStartState extends State<ChooseHachlataOnStart> {
     );
   }
 }
+
+
+
+
+//  await DatabaseService(Uid: 'test').updateHachlataHome(
+//               displayusernameinaccount.toString(),
+//               widget.hachlataName,
+//               'N/A',
+//               'N/A',
+//               'Color(0xFFCBBD7F);');
+
+          // "Choose ${globals.current_category_choose} החלטות",
