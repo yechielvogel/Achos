@@ -2,7 +2,7 @@ name: Backup Firestore
 
 on:
   schedule:
-    - cron: '55 4 * * *'
+    - cron: '58 4 * * *'
   
 
 env:
