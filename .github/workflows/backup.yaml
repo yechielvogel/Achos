@@ -10,7 +10,7 @@ env:
 
   PROJECT_ID: tzivoshashemmilwaukee
 
-  BUCKET: gs://backupachostest1
+  BUCKET: gs://backupachostest1  
    
 
 
