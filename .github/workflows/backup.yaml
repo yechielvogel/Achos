@@ -1,25 +1,26 @@
 name: Backup Firestore
 
 on:
-  push:   
+  push:
     branches:
-      - main  # Replace 'main' with your branch name if needed
+      - main
 
 env:
   PROJECT_ID: tzivoshashemmilwaukee
-  BUCKET: gs://backupachostest1  
+  BUCKET: gs://backupachostest1
 
 jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - uses: google-github-actions/setup-gcloud@main
+      - uses: actions/setup-python@v2
         with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
+          python-version: '3.x'
 
-      - run: gcloud auth activate-service-account --key-file=${{ secrets.GCP_SA_KEY }}
-      
+      - run: |
+          echo "${{ secrets.GCP_SA_KEY }}" | base64 --decode > key.json
+          gcloud auth activate-service-account --key-file=key.json
+
       - run: gcloud info
 
       - run: gcloud config set project $PROJECT_ID
