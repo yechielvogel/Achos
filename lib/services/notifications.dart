@@ -21,10 +21,10 @@ class NotificationService {
   List<String> notifications = [
     'Did you grow with the flow today? 💐💐',
     'ACHOS REMINDER 💗',
-    "don't forget to fill out your checklist on time today⏳",
-    'run 🏃 achos is waiting',
-    'you know what time it is…💐💐💐',
-    "don't lose your streak 🌊",
+    "Don't forget to fill out your checklist on time today⏳",
+    'Run 🏃 Achos is waiting',
+    'You know what time it is…💐💐💐',
+    "Don't lose your streak 🌊",
   ];
 
   final Random random = Random();
@@ -124,6 +124,7 @@ class NotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
+    
   }
 }
 

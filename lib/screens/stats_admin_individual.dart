@@ -48,9 +48,9 @@ class _TestState extends State<StatsAdminIndividual> {
         stream: DatabaseService(Uid: 'test').getSubCollectionStream(
             globals.current_namesofuser, globals.hebrew_focused_month),
         builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return Loading(); // Display a loading indicator while waiting for data
-          } else {
+          // if (snapshot.connectionState == ConnectionState.waiting) {
+          //   return Loading(); // Display a loading indicator while waiting for data
+          // } else {
             if (snapshot.hasError) {
               return Scaffold(
                 appBar: AppBar(
@@ -361,9 +361,7 @@ class _TestState extends State<StatsAdminIndividual> {
                           }
                         }));
 
-//
-//
-//
+
               } else {
                 Future<void> updateHachlataForUser(
                     List<AddHachlataHome?>? hachlataHome,
@@ -657,7 +655,7 @@ class _TestState extends State<StatsAdminIndividual> {
                 );
               }
             }
-          }
+        //  }
         });
   }
 }
