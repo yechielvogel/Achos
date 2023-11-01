@@ -23,7 +23,7 @@ jobs:
 
     steps:
 
-    - uses: google-github-actions/setup-gcloud@master
+    - uses: google-github-actions/setup-gcloud@main
 
       with:
 
