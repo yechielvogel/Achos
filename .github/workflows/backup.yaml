@@ -7,24 +7,32 @@ on:
   # Add any additional triggers such as pull_request if required
 
 env:
+
   PROJECT_ID: tzivoshashemmilwaukee
+
   BUCKET: gs://achosbackup
-  
+
+
+
+
 jobs:
+
   backup:
+
     runs-on: ubuntu-latest
+
     steps:
-      - name: Set up gcloud CLI
-        uses: google-github-actions/setup-gcloud@main
-        with:
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-          export_default_credentials: true
 
-      - name: Display gcloud version
-        run: gcloud --version
+    - uses: google-github-actions/setup-gcloud@master
 
-      - name: Set project for gcloud
-        run: gcloud config set project $PROJECT_ID
+      with:
 
-      - name: Run Firestore export
-        run: gcloud firestore export $BUCKET
+        service_account_key: ${{ secrets.GCP_SA_KEY }}
+
+        export_default_credentials: true
+
+    - run: gcloud info
+
+    - run: gcloud config set project $PROJECT_ID
+
+    - run: gcloud firestore export $BUCKET
