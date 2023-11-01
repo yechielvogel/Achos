@@ -10,7 +10,7 @@ env:
 
   PROJECT_ID: tzivoshashemmilwaukee
 
-  BUCKET: gs://achosbackup@tzivoshashemmilwaukee.iam.gserviceaccount.com
+  BUCKET: gs://AchosBackup
    
 
 
