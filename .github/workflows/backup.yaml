@@ -10,7 +10,7 @@ env:
 
   PROJECT_ID: tzivoshashemmilwaukee
 
-  BUCKET: gs://https://console.cloud.google.com/storage/browser/achosbackup;tab=objects?forceOnBucketsSortingFiltering=true&hl=en&project=tzivoshashemmilwaukee
+  BUCKET: https://console.cloud.google.com/storage/browser/achosbackup;tab=objects?forceOnBucketsSortingFiltering=true&hl=en&project=tzivoshashemmilwaukee
 
 
 
