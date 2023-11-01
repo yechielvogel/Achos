@@ -1,8 +1,10 @@
 name: Backup Firestore
 
 on:
-  schedule:
-    - cron:  '4 40 * * *'
+  push:
+    branches:
+      - main  # Replace 'main' with your branch name if needed
+  # Add any additional triggers such as pull_request if required
 
 env:
   PROJECT_ID: tzivoshashemmilwaukee
