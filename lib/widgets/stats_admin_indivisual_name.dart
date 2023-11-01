@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 
 import '../screens/stats_admin_individual.dart';
+import '../screens/stats_admin_individual_test.dart';
 
 class StatsAdminIndivisualName extends StatefulWidget {
   final tileName;

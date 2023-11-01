@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
@@ -6,10 +7,12 @@ import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home.dart';
+import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home_new.dart';
 import 'package:tzivos_hashem_milwaukee/screens/home/wrapper.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
+import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import 'package:tzivos_hashem_milwaukee/shared/waiting.dart';
 import 'api/firebase_api.dart';
 import 'services/notifications.dart';
@@ -22,39 +25,21 @@ import 'package:flutter/services.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import '../models/ueser.dart';
+
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  WidgetsFlutterBinding.ensureInitialized();   
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   tz.initializeTimeZones();
   await initializeDateFormatting();
   tz.setLocalLocation(tz.getLocation('America/New_York'));
   final notificationsService = NotificationService();
   await notificationsService.initialize();
-  await notificationsService.scheduleNotification(   
+  await notificationsService.scheduleNotification(
     title: 'Achos',
   );
-  // NotificationService().initNotification();
-  // tz.initializeTimeZones();
-  // await initializeDateFormatting();
-  // final notificationsService = NotificationService();
-  // await notificationsService.initialize();
-  // notificationsService.showNextRandomNotification().then((_) {
-  //   String randomNotification = notificationsService
-  //       .notifications[notificationsService.currentNotificationIndex - 1];
-  //   NotificationService().showNotification(body: randomNotification);
-  // });
-  // final notifications = Notifications();
-  // tz.initializeTimeZones();
-  // await notifications.initialize(); // Set the scheduled time to 16:45 or 4:45 PM
-  // await NotificationService().scheduleNotification(
-  //   title: 'Achos',
-  //   body: 'Test',
-  // );
-  // Schedule daily notifications using the correct method
-  // await notifications.scheduleDailyNotifications();
-
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
@@ -67,12 +52,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<Ueser?>(context);
-    if (user != null && user.uesname != null) {
-      globals.current_user = user.uesname!;
-    } else {
-      // Handle the case where user or uesname is null
-    }
+  
+    globals.hebrew_focused_month =
+        globals.hebrew_focused_day.replaceAll(RegExp(r'[0-9\s]+'), '');
+    // if (user != null && user.uesname != null) {
+    //   globals.current_user = user.uesname!;
+    // } else {
+    //   // Handle the case where user or uesname is null
+    // }
     Waiting();
     return MultiProvider(
       providers: [
@@ -110,6 +97,15 @@ class MyApp extends StatelessWidget {
           },
           initialData: null,
         ),
+        // StreamProvider<List<AddHachlataHomeNew>?>.value(
+        //   value: DatabaseService(Uid: 'test')
+        //       .getSubCollectionStream('Yechiel Vogel', 'Cheshvan'),
+        //   catchError: (context, error) {
+        //     print("Error in stream: $error");
+        //     return null;
+        //   },
+        //   initialData: null,
+        // ),
       ],
       child: const MaterialApp(
         home: Wrapper(),

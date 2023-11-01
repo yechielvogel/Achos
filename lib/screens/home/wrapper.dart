@@ -13,6 +13,8 @@ import '../choose_hachlatas_on_start.dart';
 import '../choose_hachlatas_on_start_admin.dart.dart';
 import 'home.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
+
+import 'hometest.dart';
 // import 'package:tzivos_hashem_milwaukee/screens/home/home.dart';
 
 class Wrapper extends StatelessWidget {
@@ -43,6 +45,7 @@ class Wrapper extends StatelessWidget {
     if (admins != null) {
       bool isAdmin = admins.any((admin) => admin?.uid == user.uid);
       if (isAdmin) {
+        displayusernameinaccount = user.uesname!;
         if (firstcategorylist != null) {
           if (istherehachlatas.length != 0 &&
               istherehachlatas.length > firstcategorylist.length) {
@@ -54,17 +57,17 @@ class Wrapper extends StatelessWidget {
             globals.current_category_choose = firstcategorylist.first!.name;
             print(istherehachlatas.length);
             print(globals.current_category_choose);
-            // return HomeAdmin();
             return ChooseHachlataOnStartAdmin();
 
             // print('Logged in as admin ${user.uid}');
           }
         } else
           print('return home admin line 63');
-        return HomeAdmin(); // return HomeAdmin();
+        return HomeAdmin();
       }
     }
     if (firstcategorylist != null) {
+      displayusernameinaccount = user.uesname!;
       if (istherehachlatas.length != 0 &&
           istherehachlatas.length > firstcategorylist.length) {
         print('is there hachlata length ${istherehachlatas.length}');
@@ -75,29 +78,27 @@ class Wrapper extends StatelessWidget {
         globals.current_category_choose = firstcategorylist.first!.name;
         print('none admin is there hachlatas ${istherehachlatas.length}');
         print(globals.current_category_choose);
-        // return HomeAdmin();
         return ChooseHachlataOnStart();
       } else
         print('else home line 79');
       return Home();
     } else
+     displayusernameinaccount = user.uesname!;
       print('else home line 82');
-
     return Home();
   }
 }
 
-  // print('Logged in as admin ${user.uid}');
-  // return HomeAdmin();
+// print('Logged in as admin ${user.uid}');
+// return HomeAdmin();
 
-      // } else {
-      //   // If user is not an admin, return regular home
-      //   return Home(); // Change this to whatever you intend for regular users
-      // }
-  
-    
+// } else {
+//   // If user is not an admin, return regular home
+//   return Home(); // Change this to whatever you intend for regular users
+// }
 
-  // // eventually change this to admin home else {
-  // print('this is ${user.uid}');
-  // print('name is ${user.uesname}'); // Check for the correct property name
-  // return Home(); // Return a default home widget if admins is null
+// // eventually change this to admin home else {
+// print('this is ${user.uid}');
+// print('name is ${user.uesname}'); // Check for the correct property name
+// return Home(); // Return a default home widget if admins is null
+

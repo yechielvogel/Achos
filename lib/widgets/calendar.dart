@@ -21,9 +21,8 @@ class MyCalendarState extends State<MyCalendar> {
   bool isPressed = false;
 
   // DateTime today = DateTime.now();
-  void _onDaySelected(DateTime day, DateTime focusedDay) {      
+  void _onDaySelected(DateTime day, DateTime focusedDay) {         
     setState(() {
-      globals.hebrew_focused_day = JewishDate.fromDateTime(day).toString();
       // today = day;
       globals.today = day;
       // print(globals.today);
@@ -47,15 +46,7 @@ class MyCalendarState extends State<MyCalendar> {
       return jewishDate;
     }
 
-    // Future<void> isItRoshChodesh() async {
-    //   if (hebrewday == '1') {
-    //     hebrewdaynew = hebrewmonth.toString();
-    //     print('new hebrew date $hebrewdaynew');
-    //   } else {
-    //     hebrewdaynew = hebrewday;
-    //   }
-    //   return;
-    // }
+  
 
     final focusedDate =
         DateTime(globals.today.year, globals.today.month, globals.today.day);

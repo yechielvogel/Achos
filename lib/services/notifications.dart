@@ -24,7 +24,7 @@ class NotificationService {
     "don't forget to fill out your checklist on time today⏳",
     'run 🏃 achos is waiting',
     'you know what time it is…💐💐💐',
-    'dont lose your streak 🌊',
+    "don't lose your streak 🌊",
   ];
 
   final Random random = Random();

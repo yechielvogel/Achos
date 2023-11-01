@@ -1,4 +1,4 @@
-class AddHachlataHome {
+class AddHachlataHomeNew {
   final String uid;
   final String name;
   final String date;
@@ -6,17 +6,18 @@ class AddHachlataHome {
 
   final String color;
 
-  AddHachlataHome(
-      {required this.uid,
-      required this.name,
-      required this.date,
-      required this.hebrewdate,
-      required this.color});
-  // this code helps the add hachlata admin check if the hachlata tiles are at home or not
+  AddHachlataHomeNew({
+    required this.uid,
+    required this.name,
+    required this.date,
+    required this.hebrewdate,
+    required this.color,
+  });
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is AddHachlataHome &&
+      other is AddHachlataHomeNew &&
           runtimeType == other.runtimeType &&
           name == other.name &&
           color == other.color &&
@@ -26,4 +27,7 @@ class AddHachlataHome {
   @override
   int get hashCode =>
       name.hashCode ^ color.hashCode ^ date.hashCode ^ uid.hashCode;
+  String toString() {
+    return 'AddHachlataHomeNew { uid: $uid, name: $name, date: $date, hebrew date: $hebrewdate, color: $color }';
+  }
 }

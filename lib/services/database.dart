@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
+import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home_new.dart';
 import 'package:tzivos_hashem_milwaukee/models/admins.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import '../models/change_settings_switch.dart';
@@ -28,7 +29,73 @@ class DatabaseService {
   final CollectionReference changeSettingsSwitch =
       FirebaseFirestore.instance.collection('changeSettingsSwitch');
 
-// changeSettingsSwitch
+  CollectionReference hebrewMonthCollectionRef(String username, String month) {
+    // Assuming 'docId' is the ID of the document where the subcollection exists
+    return FirebaseFirestore.instance
+        .collection('addHachlataHomeNew')
+        .doc(username)
+        .collection(month);
+  }
+
+  // hachlatanew stream
+
+  List<AddHachlataHomeNew> addHachlataHomeNewListFromSnapshot(
+      QuerySnapshot snapshot) {
+    return snapshot.docs.map((doc) {
+      return AddHachlataHomeNew(
+        uid: doc['uid'] as String,
+        name: doc['name'] as String,
+        date: doc['date'] as String,
+        hebrewdate: doc['hebrew date'] as String,
+        color: doc['color'] as String,
+      );
+    }).toList();
+  }
+
+  Stream<List<AddHachlataHomeNew>> getSubCollectionStream(
+      String username, String month) {
+    return hebrewMonthCollectionRef(username, month).snapshots().map(
+        (querySnapshot) => addHachlataHomeNewListFromSnapshot(querySnapshot));
+  }
+
+
+
+// addHachlataHomeNew
+  Future updateDoneHachlataNew(
+      String uid,
+      String name,
+      String date,
+      String hebrewdate,
+      String color,
+      String username,
+      String month,
+      String hachlatadocname) async {
+    DocumentReference docRef =
+        hebrewMonthCollectionRef(username, month).doc(hachlatadocname);
+
+    // Set data for the new document
+    return await docRef.set({
+      'uid': uid,
+      'name': name,
+      'date': date,
+      'hebrew date': hebrewdate,
+      'color': color,
+    });
+  }
+
+  // delete HachlataHomeNew
+  Future deleteDoneHachlataNew(
+    String username,
+    String month,
+    String hachlatadocname,
+  ) async {
+    DocumentReference docRef =
+        hebrewMonthCollectionRef(username, month).doc(hachlatadocname);
+
+    return await docRef.delete();
+  }
+
+// change setteings
   Future updateChangeSettingsSwitch(
     bool off,
   ) async {
@@ -37,7 +104,7 @@ class DatabaseService {
     });
   }
 
-  // stream
+  // change settings stream
   List<ChangeSettingsSwitch>? _changeSettingsSwitchFromSnapshot(
       QuerySnapshot snapshot) {
     return snapshot.docs.map((doc) {
@@ -97,25 +164,6 @@ class DatabaseService {
       await docSnapshot.reference.delete();
     }
   }
-  // snap shot for hachlatacategory
-// hachlatacategory list from snapshot
-  // List<DoneHachlata>? _donehachlataListFromSnapshot(QuerySnapshot snapshot) {
-  //   return snapshot.docs.map((doc) {
-  //     return DoneHachlata(
-  //       name: doc['name'] as String,
-  //       uid: doc['uid'] as String,
-  //       date: doc['date'] as String,
-  //     );
-  //   }).toList();
-  // }
-
-  // getDoneHachlataStream stream
-  // Stream<List<DoneHachlata>> get donehachlata {
-  //   return doneHachlata.snapshots().map<List<DoneHachlata>>((querySnapshot) {
-  //     final doneHachlata = _donehachlataListFromSnapshot(querySnapshot);
-  //     return doneHachlata ?? [];
-  //   });
-  // }
 
 // addHachlataHome
   Future updateHachlataHome(
@@ -136,6 +184,10 @@ class DatabaseService {
 
   Future delteHachlataHome() async {
     return await addHachlataHome.doc(globals.hachlata_home_doc_name).delete();
+  }
+
+  Future delteHachlataHomeForUpdate(String doc) async {
+    return await addHachlataHome.doc(doc).delete();
   }
 
   List<HachlataHomeAll>? _hachlataHomeAllListFromSnapshot(
@@ -269,30 +321,4 @@ class DatabaseService {
           []; // Provide an empty list as the default value if it's null
     });
   }
-
-  void createMonthlyCollection() {
-    // DateTime hebrew_focused_day = DateTime.now();
-    
-    CollectionReference testMonthlyCollection =
-        FirebaseFirestore.instance.collection(globals.hebrew_focused_day);
-  }
 }
-
-// final CollectionReference<Map<String, dynamic>> addHachlataHome =
-//     FirebaseFirestore.instance.collection('addHachlataHome');
-
-// Future<void> deleteAllHachlata() async {
-//   // Get all documents in the collection
-//   QuerySnapshot<Map<String, dynamic>> querySnapshot =
-//       await addHachlataHome.get();
-
-//   // Iterate through the documents
-//   for (QueryDocumentSnapshot<Map<String, dynamic>> docSnapshot
-//       in querySnapshot.docs) {
-//     // Check if the document contains the specified field
-//     if (docSnapshot.data().containsKey(globals.tempuesname)) {
-//       // Delete the document
-//       await docSnapshot.reference.delete();
-//     }
-//   }
-// }

@@ -26,6 +26,7 @@ String tempuesname = '';
 String displayusernameinaccount = '';
 String random_notification = '';
 String hebrew_focused_day = JewishDate().toString();
+String hebrew_focused_month = '';
 DateTime today = DateTime.now();
 
 List<Widget> HachlataWidgetList = [];

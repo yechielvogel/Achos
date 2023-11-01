@@ -9,6 +9,7 @@ import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 
 import '../models/ueser.dart';
 import '../services/auth.dart';
+import '../services/database.dart';
 
 class AccountPage extends StatefulWidget {
   @override

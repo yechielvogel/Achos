@@ -24,10 +24,12 @@ class _StatsAdminState extends State<StatsAdmin> {
       Set<String> namesofusers = Set<String>();
 
       List<AddHachlataHome?> Items = [];
-
+      List dontdisplay = ['Yechiel Vogel', 'Yechiel Vogel PGH', 'Mrs Friedman'];
+      // List dontdisplay = ['Mrs Friedman'];
       for (AddHachlataHome? item in hachlatahome) {
         if (item != null &&
-            item.date != 'N/A' &&
+            !item.uid.contains('test') &&
+            !dontdisplay.contains(item.uid) &&
             !namesofusers.contains(item.uid)) {
           namesofusers.add(item.uid);
           Items.add(item);

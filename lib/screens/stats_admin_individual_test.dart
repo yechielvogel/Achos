@@ -1,31 +1,39 @@
 import 'package:external_app_launcher/external_app_launcher.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:table_calendar/table_calendar.dart';
+import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home.dart';
+import 'package:tzivos_hashem_milwaukee/screens/account_page.dart';
+// import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/widgets/hachlata_tile_widget.dart';
-import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
-import '../../models/add_hachlata_home.dart';
-import '../../models/add_hachlata_home_new.dart';
-import '../../models/change_settings_switch.dart';
+import 'package:tzivos_hashem_milwaukee/screens/category_admin.dart';
+// import '../../services/auth.dart';
+import '../../shared/globals.dart' as globals;
 import '../../models/ueser.dart';
-import '../../services/database.dart';
-import '../../shared/loading.dart';
-import '../../widgets/calendar.dart';
-import '../../widgets/settings_off_widget.dart';
-import '../../widgets/this_is_not_avalible_yet.dart';
-import '../account_page.dart';
-import '../category.dart';
-import '../category_admin.dart';
-import '../stats_admin.dart';
+import '../models/add_hachlata_home_new.dart';
+import '../models/change_settings_switch.dart';
+import '../services/database.dart';
+import '../shared/loading.dart';
+import '../widgets/calendar.dart';
+import '../widgets/get_all_data_in_all_collections.dart';
+import '../widgets/new_admin_stats.dart';
+import '../widgets/new_user_stats.dart';
+import '../widgets/settings_off_widget.dart';
+import '../widgets/stats_hachlata_tile_widget.dart';
+import '../widgets/this_is_not_avalible_yet.dart';
+import 'category.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class Test extends StatefulWidget {
+  const Test({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<Test> createState() => _TestState();
 }
 
-class _HomeState extends State<Home> {
+class _TestState extends State<Test> {
   @override
   Widget build(BuildContext context) {
     void updateGlobalsToday(DateTime newToday) {
@@ -37,11 +45,8 @@ class _HomeState extends State<Home> {
     bool isSettingsOn = false;
 
     return StreamBuilder<List<AddHachlataHomeNew>>(
-        // stream: DatabaseService(Uid: 'test')
-        //     .getSubCollectionStream('Yechiel Vogel', 'Cheshvan'),
-
         stream: DatabaseService(Uid: 'test').getSubCollectionStream(
-            globals.displayusernameinaccount, globals.hebrew_focused_month),
+            globals.current_namesofuser, globals.hebrew_focused_month),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Loading(); // Display a loading indicator while waiting for data
@@ -88,7 +93,7 @@ class _HomeState extends State<Home> {
 
                 hachlataItemsForHomeNew = hachlataHomeNew?.where((item) {
                       if (item != null) {
-                        if (item.uid == user!.uesname) {
+                        if (item.uid == globals.current_namesofuser) {
                           if (item.date == 'N/A') {
                             return true; // Include items with 'N/A' dates
                           }
@@ -114,8 +119,7 @@ class _HomeState extends State<Home> {
                     }).toList() ??
                     [];
                 hachlataHome?.forEach((item) {
-                  if (item != null &&
-                      item.uid == globals.displayusernameinaccount) {
+                  if (item != null && item.uid == globals.current_namesofuser) {
                     print('yes');
                     AddHachlataHomeNew newItem = AddHachlataHomeNew(
                       uid: item.uid,
@@ -215,223 +219,147 @@ class _HomeState extends State<Home> {
                   isSettingsOn = false;
                 }
                 return Scaffold(
-                  backgroundColor: globals.bage,
-                  appBar: AppBar(
-                    leading: Container(),
-                    // Padding(
-                    //   padding: const EdgeInsets.all(10.0),
-                    //   child: Container(
-                    //       child: Center(
-                    //           child: Text(
-                    //         globals.global_hachlata_number.toString(),
-                    //         style: TextStyle(color: globals.bage),
-                    //       )),
-                    //       decoration: BoxDecoration(
-                    //         shape: BoxShape.circle,
-                    //         color: globals.newpink,
-                    //       )),
-                    // ),
-                    // leadingWidth: 40,
-                    title: Center(
-                      child: Image.asset(
-                        'lib/assets/NewLogo.png',
-                        width: 60,
-                        height: 60,
+                    backgroundColor: globals.bage,
+                    appBar: AppBar(
+                      // Padding(
+                      //   padding: const EdgeInsets.all(10.0),
+                      //   child: Container(
+                      //       child: Center(
+                      //           child: Text(
+                      //         globals.global_hachlata_number.toString(),
+                      //         style: TextStyle(color: globals.bage),
+                      //       )),
+                      //       decoration: BoxDecoration(
+                      //         shape: BoxShape.circle,
+                      //         color: globals.newpink,
+                      //       )),
+                      // ),
+                      // leadingWidth: 40,
+                      title: Text(
+                        globals.current_namesofuser,
+                        style: TextStyle(color: globals.newpink),
+                      ),
+                      centerTitle: true,
+                      backgroundColor: globals.bage,
+                      elevation: 0,
+                      iconTheme: IconThemeData(
+                        color: globals.newpink,
                       ),
                     ),
-                    centerTitle: true,
+                    body: Padding(
+                      padding: const EdgeInsets.only(top: 10),
+                      child: Column(children: [
+                        Expanded(
+                          child: GridView.builder(
+                            itemCount: hachlataItemsForHomeNew.length,
+                            shrinkWrap: true,
 
-                    backgroundColor: globals.bage,
-                    elevation: 0,
-                    actions: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.gear,
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              crossAxisSpacing: 1,
+                              childAspectRatio: 2.5,
                             ),
-                            color: globals.newpink,
-                            splashColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onPressed: () async {
-                              if (isSettingsOn) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MySettings(),
-                                  ),
-                                );
-                              } else {
-                                await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    // Define the content of your dialog here
-                                    return SettingsOffWidget();
-                                  },
-                                );
-                                // SettingsOffWidget();
+                            // physics: NeverScrollableScrollPhysics(), // Disable grid scroll
+
+                            itemBuilder: (context, index) {
+                              //   if (hachlataItemsForHome.isEmpty) {
+                              //   print('length${hachlataItemsForHome.length}');
+
+                              //   return const EmptyListWidget();
+                              // }
+                              if (hachlataItemsForHomeNew != null &&
+                                  hachlataItemsForHomeNew.length > index) {
+                                final hachlataName =
+                                    hachlataItemsForHomeNew[index]!.name ?? '';
+                                var tilecolor =
+                                    hachlataItemsForHomeNew[index]!.color ?? '';
+                                Color finaltilecolor;
+                                print(
+                                    'length${hachlataItemsForHomeNew.length}');
+                                if (tilecolor == 'Color(0xFFCBBD7F);') {
+                                  finaltilecolor = globals.lightGreen;
+                                } else {
+                                  finaltilecolor = globals.doneHachlata;
+                                }
+                                filterHachlataListNew(hachlataItemsForHomeNew);
+
+                                return StatsHachlataTileWidget(
+                                    hachlataName: hachlataName,
+                                    isclicked: finaltilecolor);
+                                // Pass the name
                               }
+                              // Create a tile widget for each category's name
+                              return Container();
+                              // return HachlataTileWidget();
                             },
                           ),
                         ),
-                      ),
-                    ],
-                  ),
-                  body: Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: Column(children: [
-                      Expanded(
-                        child: GridView.builder(
-                          itemCount: hachlataItemsForHomeNew.length,
-                          shrinkWrap: true,
-
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 1,
-                            childAspectRatio: 2.5,
+                      ]),
+                    ),
+                    bottomNavigationBar: BottomNavigationBar(
+                        elevation: 0,
+                        backgroundColor: globals.bage,
+                        items: const <BottomNavigationBarItem>[
+                          BottomNavigationBarItem(
+                            icon: Icon(CupertinoIcons.calendar,
+                                color: Color(0xFFC16C9E)),
+                            label: 'Calendar',
                           ),
-                          // physics: NeverScrollableScrollPhysics(), // Disable grid scroll
-
-                          itemBuilder: (context, index) {
-                            //   if (hachlataItemsForHome.isEmpty) {
-                            //   print('length${hachlataItemsForHome.length}');
-
-                            //   return const EmptyListWidget();
-                            // }
-                            if (hachlataItemsForHomeNew != null &&
-                                hachlataItemsForHomeNew.length > index) {
-                              final hachlataName =
-                                  hachlataItemsForHomeNew[index]!.name ?? '';
-                              var tilecolor =
-                                  hachlataItemsForHomeNew[index]!.color ?? '';
-                              Color finaltilecolor;
-                              print('length${hachlataItemsForHomeNew.length}');
-                              if (tilecolor == 'Color(0xFFCBBD7F);') {
-                                finaltilecolor = globals.lightGreen;
-                              } else {
-                                finaltilecolor = globals.doneHachlata;
-                              }
-                              filterHachlataListNew(hachlataItemsForHomeNew);
-
-                              return HachlataTileWidget(
-                                  hachlataName: hachlataName,
-                                  isclicked: finaltilecolor);
-                              // Pass the name
-                            }
-                            // Create a tile widget for each category's name
-                            return Container();
-                            // return HachlataTileWidget();
-                          },
-                        ),
-                      ),
-                    ]),
-                  ),
-                  bottomNavigationBar: BottomNavigationBar(
-                      elevation: 0,
-                      backgroundColor: globals.bage,
-                      items: const <BottomNavigationBarItem>[
-                        BottomNavigationBarItem(
-                          icon: Icon(CupertinoIcons.person,
-                              color: Color(0xFFC16C9E)),
-                          label: 'Account',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(CupertinoIcons.calendar,
-                              color: Color(0xFFC16C9E)),
-                          label: 'Calendar',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: Icon(
-                            CupertinoIcons.chart_bar,
-                            color: Color(0xFFC16C9E),
+                          BottomNavigationBarItem(
+                            icon: Icon(
+                              CupertinoIcons.chart_bar,
+                              color: Color(0xFFC16C9E),
+                            ),
+                            label: 'Stats',
                           ),
-                          label: 'Stats',
-                        ),
-                        BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                            color: Color(0xFFC16C9E),
-                          ),
-                          label: 'Daily Study',
-                        ),
-                      ],
-                      selectedItemColor: Color(0xFFC16C9E),
-                      unselectedItemColor: Color(0xFFC16C9E),
-                      selectedFontSize: 10,
-                      unselectedFontSize: 10,
-                      type: BottomNavigationBarType.fixed,
-                      onTap: (index) async {
-                        // Navigate to different pages based on the tapped icon
-                        switch (index) {
-                          case 0:
-                            showModalBottomSheet(
-                                // backgroundColor: lightPink,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
+                        ],
+                        selectedItemColor: Color(0xFFC16C9E),
+                        unselectedItemColor: Color(0xFFC16C9E),
+                        selectedFontSize: 10,
+                        unselectedFontSize: 10,
+                        type: BottomNavigationBarType.fixed,
+                        onTap: (index) async {
+                          // Navigate to different pages based on the tapped icon
+                          switch (index) {
+                            case 0:
+                              showModalBottomSheet(
+                                  // backgroundColor: lightPink,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
                                   ),
-                                ),
-                                context: context,
-                                builder: (context) => AccountPage());
-                            break;
-                          case 1:
-                            showModalBottomSheet(
-                                // backgroundColor: lightPink,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
+                                  context: context,
+                                  builder: (context) => MyCalendar(
+                                      onDaySelectedCallback:
+                                          updateGlobalsToday));
+                              break;
+                            case 1:
+                              // await showDialog(
+                              //     context: context,
+                              //     builder: (BuildContext context) {
+                              //       // Define the content of your dialog here
+                              //       return ThisIsNotAvailableYet();
+                              //     });
+                              await showModalBottomSheet(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.vertical(
+                                      top: Radius.circular(20),
+                                    ),
                                   ),
-                                ),
-                                context: context,
-                                builder: (context) => MyCalendar(
-                                    onDaySelectedCallback: updateGlobalsToday));
-                            break;
-                          case 2:
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  // Define the content of your dialog here
-                                  return ThisIsNotAvailableYet();
-                                });
-                            // await showModalBottomSheet(
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.vertical(
-                            //         top: Radius.circular(20),
-                            //       ),
-                            //     ),
-                            //     isScrollControlled: false,
-                            //     context: context,
-                            //     builder: (BuildContext context) {
-                            //       // Define the content of your dialog here
-                            //       // return SingleChildScrollView(child: UserStats());
-                            //       return UserStats();
-                            //       // return ThisIsNotAvailableYet();
-                            //     });
+                                  isScrollControlled: false,
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    // Define the content of your dialog here
+                                    // return SingleChildScrollView(child: UserStats());
+                                    return UserStatsAdmin();
+                                    // return ThisIsNotAvailableYet();
+                                  });
 
-                            break;
-                          //remove for android
-                          case 3:
-                            await LaunchApp.openApp(
-                              androidPackageName:
-                                  'org.chabad.android.DailyStudy',
-                              iosUrlScheme: 'org.chabad.DailyStudy://',
-                              appStoreLink:
-                                  'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                              // openStore: false
-                            );
-
-                            // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                            // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                            // For testing purpose you can enter com.instagram.android
-
-                            break;
-                        }
-                      }),
-                );
+                              break;
+                          }
+                        }));
 
 //
 //
@@ -495,7 +423,7 @@ class _HomeState extends State<Home> {
 
                 hachlataItemsForHome = hachlataHome?.where((item) {
                       if (item != null) {
-                        if (item.uid == user!.uesname) {
+                        if (item.uid == globals.current_namesofuser) {
                           if (item.date == 'N/A') {
                             return true; // Include items with 'N/A' dates
                           }
@@ -583,20 +511,10 @@ class _HomeState extends State<Home> {
                 printDataFromList(hachlataHomeNew);
                 print('hachlatahome${hachlataItemsForHome.length}');
                 print('hachlatahomenew list ${hachlataItemsForHomeNew.length}');
-                final changesettingsswitch =
-                    Provider.of<List<ChangeSettingsSwitch?>?>(context);
-                if (changesettingsswitch != null &&
-                    changesettingsswitch.isNotEmpty &&
-                    changesettingsswitch
-                        .any((element) => element?.off == true)) {
-                  isSettingsOn = true;
-                } else {
-                  isSettingsOn = false;
-                }
+
                 return Scaffold(
                   backgroundColor: globals.bage,
                   appBar: AppBar(
-                    leading: Container(),
                     // Padding(
                     //   padding: const EdgeInsets.all(10.0),
                     //   child: Container(
@@ -611,53 +529,16 @@ class _HomeState extends State<Home> {
                     //       )),
                     // ),
                     // leadingWidth: 40,
-                    title: Center(
-                      child: Image.asset(
-                        'lib/assets/NewLogo.png',
-                        width: 60,
-                        height: 60,
-                      ),
+                    title: Text(
+                      globals.current_namesofuser,
+                      style: TextStyle(color: globals.newpink),
                     ),
                     centerTitle: true,
-
                     backgroundColor: globals.bage,
                     elevation: 0,
-                    actions: <Widget>[
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(
-                          width: 40,
-                          height: 40,
-                          child: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.gear,
-                            ),
-                            color: globals.newpink,
-                            splashColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onPressed: () async {
-                              if (isSettingsOn) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MySettings(),
-                                  ),
-                                );
-                              } else {
-                                await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    // Define the content of your dialog here
-                                    return SettingsOffWidget();
-                                  },
-                                );
-                                // SettingsOffWidget();
-                              }
-                            },
-                          ),
-                        ),
-                      ),
-                    ],
+                    iconTheme: IconThemeData(
+                      color: globals.newpink,
+                    ),
                   ),
                   body: Padding(
                     padding: const EdgeInsets.only(top: 10),
@@ -696,7 +577,7 @@ class _HomeState extends State<Home> {
                               }
                               filterHachlataList(hachlataItemsForHome);
 
-                              return HachlataTileWidget(
+                              return StatsHachlataTileWidget(
                                   hachlataName: hachlataName,
                                   isclicked: finaltilecolor);
                               // Pass the name
@@ -714,11 +595,6 @@ class _HomeState extends State<Home> {
                       backgroundColor: globals.bage,
                       items: const <BottomNavigationBarItem>[
                         BottomNavigationBarItem(
-                          icon: Icon(CupertinoIcons.person,
-                              color: Color(0xFFC16C9E)),
-                          label: 'Account',
-                        ),
-                        BottomNavigationBarItem(
                           icon: Icon(CupertinoIcons.calendar,
                               color: Color(0xFFC16C9E)),
                           label: 'Calendar',
@@ -730,13 +606,6 @@ class _HomeState extends State<Home> {
                           ),
                           label: 'Stats',
                         ),
-                        BottomNavigationBarItem(
-                          icon: ImageIcon(
-                            AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                            color: Color(0xFFC16C9E),
-                          ),
-                          label: 'Daily Study',
-                        ),
                       ],
                       selectedItemColor: Color(0xFFC16C9E),
                       unselectedItemColor: Color(0xFFC16C9E),
@@ -745,19 +614,10 @@ class _HomeState extends State<Home> {
                       type: BottomNavigationBarType.fixed,
                       onTap: (index) async {
                         // Navigate to different pages based on the tapped icon
+                        // FirestoreDataFetcher alldata = FirestoreDataFetcher();
+                        // await alldata.fetchAllCollectionsData();
                         switch (index) {
                           case 0:
-                            showModalBottomSheet(
-                                // backgroundColor: lightPink,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.vertical(
-                                    top: Radius.circular(20),
-                                  ),
-                                ),
-                                context: context,
-                                builder: (context) => AccountPage());
-                            break;
-                          case 1:
                             showModalBottomSheet(
                                 // backgroundColor: lightPink,
                                 shape: RoundedRectangleBorder(
@@ -769,43 +629,27 @@ class _HomeState extends State<Home> {
                                 builder: (context) => MyCalendar(
                                     onDaySelectedCallback: updateGlobalsToday));
                             break;
-                          case 2:
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  // Define the content of your dialog here
-                                  return ThisIsNotAvailableYet();
-                                });
-                            // await showModalBottomSheet(
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.vertical(
-                            //         top: Radius.circular(20),
-                            //       ),
-                            //     ),
-                            //     isScrollControlled: false,
+                          case 1:
+                            // await showDialog(
                             //     context: context,
                             //     builder: (BuildContext context) {
                             //       // Define the content of your dialog here
-                            //       // return SingleChildScrollView(child: UserStats());
-                            //       return UserStats();
-                            //       // return ThisIsNotAvailableYet();
+                            //       return ThisIsNotAvailableYet();
                             //     });
-
-                            break;
-                          //remove for android
-                          case 3:
-                            await LaunchApp.openApp(
-                              androidPackageName:
-                                  'org.chabad.android.DailyStudy',
-                              iosUrlScheme: 'org.chabad.DailyStudy://',
-                              appStoreLink:
-                                  'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                              // openStore: false
-                            );
-
-                            // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                            // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                            // For testing purpose you can enter com.instagram.android
+                            await showModalBottomSheet(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.vertical(
+                                    top: Radius.circular(20),
+                                  ),
+                                ),
+                                isScrollControlled: false,
+                                context: context,
+                                builder: (BuildContext context) {
+                                  // Define the content of your dialog here
+                                  // return SingleChildScrollView(child: UserStats());
+                                  return UserStatsAdmin();
+                                  // return ThisIsNotAvailableYet();
+                                });
 
                             break;
                         }

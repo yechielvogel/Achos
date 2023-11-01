@@ -19,12 +19,21 @@ class AddHachloto extends StatefulWidget {
 }
 
 class AddHachlotoState extends State<AddHachloto> {
-  // Future<void> addHachlataTile() async {
-  //   AddHachlataWidgetList.add(HachlataTileWidget());
-  // }
+
 
   @override
   Widget build(BuildContext context) {
+
+DocumentReference uerIdRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
+
+// Reference to a subcollection within the document. change to hebrew focused day month and year 
+CollectionReference selectedhebrewmonthRef = uerIdRef.collection(globals.hebrew_focused_day);
+
+// Reference to a specific document in the subcolection 
+DocumentReference doneHachlataRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
+
+
+
     List<AddHachlata?> hachlataItemsForCurrentCategory = [];
 
     final user = Provider.of<Ueser?>(context);
@@ -160,93 +169,17 @@ class AddHachlotoState extends State<AddHachloto> {
 }
 
 
+// // Reference to a specific document in the 'testMonthlyCollection' collection
+// DocumentReference uerIdRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
+
+// // Reference to a subcollection within the document. change to hebrew focused day month and year 
+// CollectionReference selectedhebrewmonthRef = uerIdRef.collection(globals.hebrew_focused_day);
+
+// // Reference to a specific document in the subcolection 
+// DocumentReference doneHachlataRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
 
 
 
+// // C-addHachlataHomeNew - D-userid S-C - globals.selectedhebrewmonth - D-hachlata
 
 
-
-
-//
-// code below works just doesnt desplay in the right order 
-//
-// class AddHachlotoAdmin extends StatefulWidget {
-//   const AddHachlotoAdmin({super.key});
-
-//   @override
-//   State<AddHachlotoAdmin> createState() => AddHachlotoAdminState();
-// }
-
-// class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
-//   Future<void> addHachlataTile() async {
-//     AddHachlataWidgetList.add(HachlataTileWidget());
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     final hachlatacatagory = Provider.of<List<AddHachlata?>?>(context);
-
-//     return Scaffold(
-//       appBar: AppBar(
-//         iconTheme: IconThemeData(
-//           color: lightPink,
-//         ),
-//         elevation: 0.0,
-//         backgroundColor: bage,
-//         title: Text(
-//           "Hachlata's",
-//           style: TextStyle(
-//             color: lightPink,
-//           ),
-//         ),
-//       ),
-//       backgroundColor: bage,
-//       body: Column(
-//         children: [
-//           Expanded(
-//               child: GridView.builder(
-//                   itemCount: hachlatacatagory?.length ?? 0,
-//                   shrinkWrap: true,
-//                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-//                     crossAxisCount: 2,
-//                     crossAxisSpacing: 1,
-//                     childAspectRatio: 2.7,
-//                   ), // Use the number of categories
-//                   itemBuilder: (context, index) {
-//                     if (hachlatacatagory != null &&
-//                         hachlatacatagory.length > index &&
-//                         hachlatacatagory[index]!.category == current_category) {
-//                       final hachlataName = hachlatacatagory[index]!.name ??
-//                           ''; // Get the category name
-//                       return AddHachlataTileWidget(
-//                         hachlataName: hachlataName,
-//                       );
-//                       // Pass the name
-//                     }
-//                     // Create a tile widget for each category's name
-//                     return Container();
-//                     // return HachlataTileWidget();
-//                   })),
-//         ],
-//       ),
-//       floatingActionButton: FloatingActionButton(
-//         backgroundColor: lightPink,
-//         foregroundColor: bage,
-//         child: const Icon(CupertinoIcons.add),
-//         onPressed: () async {
-//           await showDialog(
-//             context: context,
-//             builder: (BuildContext context) {
-//               // Define the content of your dialog here
-//               return PopUpNameHachloto();
-//             },
-//           );
-//           // setState(() {
-//           //   // fix doesnt update straight away
-//           //   // addHachlataCategoryTile();
-//           // });
-//         },
-//       ),
-//     );
-//   }
-// }

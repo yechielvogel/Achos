@@ -18,14 +18,14 @@ import '../category.dart';
 import '../category_admin.dart';
 import '../stats_admin.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
-
+class HomeTest extends StatefulWidget {
+  const HomeTest({super.key});
+    
   @override
-  State<Home> createState() => _HomeState();
+  State<HomeTest> createState() => _HomeTestState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeTestState extends State<HomeTest> {
   @override
   Widget build(BuildContext context) {
     void updateGlobalsToday(DateTime newToday) {
@@ -37,9 +37,6 @@ class _HomeState extends State<Home> {
     bool isSettingsOn = false;
 
     return StreamBuilder<List<AddHachlataHomeNew>>(
-        // stream: DatabaseService(Uid: 'test')
-        //     .getSubCollectionStream('Yechiel Vogel', 'Cheshvan'),
-
         stream: DatabaseService(Uid: 'test').getSubCollectionStream(
             globals.displayusernameinaccount, globals.hebrew_focused_month),
         builder: (context, snapshot) {
@@ -583,16 +580,7 @@ class _HomeState extends State<Home> {
                 printDataFromList(hachlataHomeNew);
                 print('hachlatahome${hachlataItemsForHome.length}');
                 print('hachlatahomenew list ${hachlataItemsForHomeNew.length}');
-                final changesettingsswitch =
-                    Provider.of<List<ChangeSettingsSwitch?>?>(context);
-                if (changesettingsswitch != null &&
-                    changesettingsswitch.isNotEmpty &&
-                    changesettingsswitch
-                        .any((element) => element?.off == true)) {
-                  isSettingsOn = true;
-                } else {
-                  isSettingsOn = false;
-                }
+
                 return Scaffold(
                   backgroundColor: globals.bage,
                   appBar: AppBar(
@@ -629,32 +617,32 @@ class _HomeState extends State<Home> {
                           width: 40,
                           height: 40,
                           child: IconButton(
-                            icon: Icon(
-                              CupertinoIcons.gear,
-                            ),
-                            color: globals.newpink,
-                            splashColor: Colors.transparent,
-                            hoverColor: Colors.transparent,
-                            highlightColor: Colors.transparent,
-                            onPressed: () async {
-                              if (isSettingsOn) {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => MySettings(),
-                                  ),
-                                );
-                              } else {
-                                await showDialog(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    // Define the content of your dialog here
-                                    return SettingsOffWidget();
-                                  },
-                                );
-                                // SettingsOffWidget();
-                              }
-                            },
-                          ),
+                icon: Icon(
+                  CupertinoIcons.gear,
+                ),
+                color: globals.newpink,
+                splashColor: Colors.transparent,
+                hoverColor: Colors.transparent,
+                highlightColor: Colors.transparent,
+                onPressed: () async {
+                  if (isSettingsOn) {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (context) => MySettings(),
+                      ),
+                    );
+                  } else {
+                    await showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        // Define the content of your dialog here
+                        return SettingsOffWidget();
+                      },
+                    );
+                    // SettingsOffWidget();
+                  }
+                },
+              ),
                         ),
                       ),
                     ],
@@ -769,29 +757,29 @@ class _HomeState extends State<Home> {
                                 builder: (context) => MyCalendar(
                                     onDaySelectedCallback: updateGlobalsToday));
                             break;
-                          case 2:
-                            await showDialog(
-                                context: context,
-                                builder: (BuildContext context) {
-                                  // Define the content of your dialog here
-                                  return ThisIsNotAvailableYet();
-                                });
-                            // await showModalBottomSheet(
-                            //     shape: RoundedRectangleBorder(
-                            //       borderRadius: BorderRadius.vertical(
-                            //         top: Radius.circular(20),
-                            //       ),
-                            //     ),
-                            //     isScrollControlled: false,
-                            //     context: context,
-                            //     builder: (BuildContext context) {
-                            //       // Define the content of your dialog here
-                            //       // return SingleChildScrollView(child: UserStats());
-                            //       return UserStats();
-                            //       // return ThisIsNotAvailableYet();
-                            //     });
+                           case 2:
+                await showDialog(
+                    context: context,
+                    builder: (BuildContext context) {
+                      // Define the content of your dialog here
+                      return ThisIsNotAvailableYet();
+                    });
+                // await showModalBottomSheet(
+                //     shape: RoundedRectangleBorder(
+                //       borderRadius: BorderRadius.vertical(
+                //         top: Radius.circular(20),
+                //       ),
+                //     ),
+                //     isScrollControlled: false,
+                //     context: context,
+                //     builder: (BuildContext context) {
+                //       // Define the content of your dialog here
+                //       // return SingleChildScrollView(child: UserStats());
+                //       return UserStats();
+                //       // return ThisIsNotAvailableYet();
+                //     });
 
-                            break;
+                break;
                           //remove for android
                           case 3:
                             await LaunchApp.openApp(
