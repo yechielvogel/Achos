@@ -10,7 +10,7 @@ env:
 
   PROJECT_ID: tzivoshashemmilwaukee
 
-  BUCKET: gs://achosbackup
+  BUCKET: gs://storage/browser/achosbackup
 
 
 
