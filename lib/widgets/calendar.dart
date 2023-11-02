@@ -21,9 +21,11 @@ class MyCalendarState extends State<MyCalendar> {
   bool isPressed = false;
 
   // DateTime today = DateTime.now();
-  void _onDaySelected(DateTime day, DateTime focusedDay) {         
+  void _onDaySelected(DateTime day, DateTime focusedDay) {
     setState(() {
-      // today = day;
+      JewishDate jewishDate = JewishDate(); // Create an instance
+      jewishDate.setDate(day); // Set the date using a method like setDate
+      globals.hebrew_focused_day = jewishDate.toString(); // today = day;
       globals.today = day;
       // print(globals.today);
       print(focusedDay);
@@ -45,8 +47,6 @@ class MyCalendarState extends State<MyCalendar> {
       JewishDate jewishDate = JewishDate.fromDateTime(gregorianDate);
       return jewishDate;
     }
-
-  
 
     final focusedDate =
         DateTime(globals.today.year, globals.today.month, globals.today.day);

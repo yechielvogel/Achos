@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:kosher_dart/kosher_dart.dart';
 import 'package:provider/provider.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart';
@@ -52,9 +53,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  
+    String hebrew_focused_day = JewishDate().toString();
     globals.hebrew_focused_month =
-        globals.hebrew_focused_day.replaceAll(RegExp(r'[0-9\s]+'), '');
+        hebrew_focused_day.replaceAll(RegExp(r'[0-9\s]+'), '');
     // if (user != null && user.uesname != null) {
     //   globals.current_user = user.uesname!;
     // } else {

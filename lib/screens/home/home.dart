@@ -427,7 +427,7 @@ class _HomeState extends State<Home> {
                         //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
                         //   // For testing purpose you can enter com.instagram.android
 
-                        //   break;
+                           break;
                       }
                     }),
               );
