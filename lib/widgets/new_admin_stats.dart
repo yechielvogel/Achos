@@ -8,15 +8,18 @@ import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import 'package:tzivos_hashem_milwaukee/widgets/stats_counter_widget.dart';
 import 'package:tzivos_hashem_milwaukee/widgets/this_is_not_avalible_yet.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../models/add_hachlata_home.dart';
 import '../models/add_hachlata_home_new.dart';
+import '../models/add_hachlata_home_new_test.dart';
 import '../models/change_settings_switch.dart';
 import '../models/ueser.dart';
 import '../services/database.dart';
 import '../shared/loading.dart';
 import 'get_all_data_in_all_collections.dart';
 import 'hachlata_tile_widget.dart';
+import 'hachlata_tile_widget_for_stats.dart';
 
 class UserStatsAdmin extends StatefulWidget {
   const UserStatsAdmin({super.key});
@@ -50,9 +53,68 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
           } else {
             List<AddHachlataHomeNew>? hachlataHomeNew = snapshot.data;
             if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
+              // FirebaseFirestore firestore = FirebaseFirestore.instance;
+              // Map<String, Map<String, dynamic>> allData = {};
+
+              // Future<List<AddHachlataHomeNewTest>>
+              //     fetchAllCollectionsData() async {
+              //   DocumentSnapshot collectionsDoc = await firestore
+              //       .collection('addHachlataHomeNew')
+              //       .doc(globals.current_namesofuser)
+              //       .get();
+              //   print('all collection data ${collectionsDoc}');
+
+              //   Map<String, dynamic> collectionsData =
+              //       collectionsDoc.data() as Map<String, dynamic>;
+              //   List<String> collectionNames = collectionsData.keys.toList();
+
+              //   List<AddHachlataHomeNewTest> dataList = [];
+
+              //   for (String collectionName in collectionNames) {
+              //     QuerySnapshot documents =
+              //         await firestore.collection(collectionName).get();
+
+              //     List<AddHachlataHomeNewTest> collectionData = [];
+              //     for (var document in documents.docs) {
+              //       Map<String, dynamic> docData =
+              //           document.data() as Map<String, dynamic>;
+
+              //       AddHachlataHomeNewTest newData = AddHachlataHomeNewTest(
+              //         uid: docData['uid'],
+              //         name: docData['name'],
+              //         date: docData['date'],
+              //         hebrewdate: docData['hebrewdate'],
+              //         color: docData['color'],
+              //       );
+
+              //       collectionData.add(newData);
+              //       print(
+              //           'Document ID: ${document.id}, Data: ${document.data()}');
+              //     }
+
+              //     dataList.addAll(collectionData);
+              //     print('Fetched data for collection: $collectionName');
+              //   }
+
+              //   print('All docs in all collections length = ${allData.length}');
+              //   print('Document does not exist or is empty');
+              //   print(
+              //       'current name of user for doc ${globals.current_namesofuser}');
+
+              //   return dataList;
+              // }
+
+
               final hachlataHome =
                   Provider.of<List<AddHachlataHome?>?>(context);
-              final user = Provider.of<Ueser?>(context);
+
+              List<AddHachlataHome?> hachlataItemsForHome = [];
+              List<AddHachlataHomeNew?> hachlataItemsForHomeNew = [];
+              List<AddHachlataHomeNewTest?> hachlataItemsForHomeNewTest = [];
+
+              // final hachlataHomeNew =
+              //     Provider.of<List<AddHachlataHomeNew?>?>(context);
+              // final user = Provider.of<Ueser?>(context);
 
               JewishDate jewishDate = JewishDate();
               HebrewDateFormatter hebrewDateFormatter = HebrewDateFormatter();
@@ -61,7 +123,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
               String hebrewmonth = jewishDate.toString();
               hebrewmonth = hebrewmonth.replaceAll(RegExp(r'[0-9]'), '');
 
-              List<AddHachlataHomeNew?> hachlataItemsForStatsNew = [];
+              List<AddHachlataHome?> hachlataItemsForStatsNew = [];
               List<AddHachlataHomeNew?> hachlataItemsForStatsThisMonthNew = [];
               List<AddHachlataHomeNew?> hachlataItemsForStatsThisMonthAllNew =
                   [];
@@ -73,7 +135,8 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                   hachlataCountsThisMonthAllHachlataTotalNew = [];
               List<AddHachlataHomeNew?>
                   hachlataCountsThisWeekAllHachlataTotalNew = [];
-              List<AddHachlataHomeNew?> hachlataCountsAllHachlataTotalNew = [];
+              List<AddHachlataHomeNewTest?> hachlataCountsAllHachlataTotalNew =
+                  [];
 
               Map<String, int> hachlataCountsThisMonthNew = Map<String, int>();
               Map<String, int> hachlataCountsThisWeekNew = Map<String, int>();
@@ -87,14 +150,9 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
               displayusernameinaccount = globals.current_namesofuser;
               // gets all the hachlatas
-              hachlataItemsForStatsNew = hachlataHomeNew?.where((item) {
+              hachlataItemsForStatsNew = hachlataHome?.where((item) {
                     if (item != null) {
-                      print('got to line 39');
-                      print(displayusernameinaccount);
-                      print(item.uid);
-                      if (item.uid == displayusernameinaccount &&
-                          item.date == 'N/A') {
-                        print('got here');
+                      if (item.uid == displayusernameinaccount) {
                         // if (item.hebrewdate.contains(hebrewmonth)) {
                         //   print('yes');
                         //   return true; // Include items with 'N/A' dates
@@ -117,7 +175,8 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                         if (item != null) {
                           if (item.uid == displayusernameinaccount &&
                               item.date != 'N/A' &&
-                              item.hebrewdate.contains(hebrewmonth)) {
+                              item.hebrewdate
+                                  .contains(globals.hebrew_focused_month)) {
                             return true;
                           }
                         }
@@ -132,7 +191,8 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                       // Use a map to store counts for each hachlata name
 
                       if (item.uid == displayusernameinaccount &&
-                          item.hebrewdate.contains(hebrewmonth)) {
+                          item.hebrewdate
+                              .contains(globals.hebrew_focused_month)) {
                         // Increment count for the current hachlata name
                         hachlataCountsThisMonthNew[item.name] =
                             (hachlataCountsThisMonthNew[item.name] ?? 0) + 1;
@@ -219,39 +279,30 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                       [];
 
               // gets total of specific hachlata
-              hachlataItemsForStatsTotalSpecificHachlataNew = hachlataHomeNew
-                      ?.where((item) {
-                    if (item != null) {
-                      print('got to line 39');
-                      print(displayusernameinaccount);
-                      print(item.uid);
+              hachlataItemsForStatsTotalSpecificHachlataNew =
+                  hachlataHomeNew?.where((item) {
+                        if (item != null) {
+                          // Use a map to store counts for each hachlata name
 
-                      // Use a map to store counts for each hachlata name
+                          // Increment count for the current hachlata name
+                          hachlataCountsThisHachlataTotalNew[item.name] =
+                              (hachlataCountsThisHachlataTotalNew[item.name] ??
+                                      0) +
+                                  1;
 
-                      if (item.uid == displayusernameinaccount &&
-                          item.hebrewdate != 'N/A') {
-                        print('got here');
+                          // isfull = true;
 
-                        // Increment count for the current hachlata name
-                        hachlataCountsThisHachlataTotalNew[item.name] =
-                            (hachlataCountsThisHachlataTotalNew[item.name] ??
-                                    0) +
-                                1;
+                          // You can add additional conditions if needed
 
-                        // isfull = true;
+                          return true;
+                        }
 
-                        // You can add additional conditions if needed
-
-                        return true;
-                      }
-                    }
-
-                    return false;
-                  }).toList() ??
-                  [];
+                        return false;
+                      }).toList() ??
+                      [];
               // gets total of all hachlata
               hachlataCountsAllHachlataTotalNew =
-                  hachlataHomeNew?.where((item) {
+                  hachlataItemsForHomeNewTest?.where((item) {
                         if (item != null) {
                           print('got to line 39');
                           print(displayusernameinaccount);
@@ -279,8 +330,6 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
               void isFull() {}
 
-              // FirestoreDataFetcher alldata = FirestoreDataFetcher();
-              // alldata.fetchAllCollectionsData();
               return Container(
                 decoration: BoxDecoration(
                     color: bage,
@@ -446,7 +495,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                                       // Create a tile widget for each category's name
                                                       return Container();
-                                                      // return HachlataTileWidget();
+                                                      // return HachlataTileWidgetForStats();
                                                     },
                                                   ),
                                                 ),
@@ -538,7 +587,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                                       // Create a tile widget for each category's name
                                                       return Container();
-                                                      // return HachlataTileWidget();
+                                                      // return HachlataTileWidgetForStats();
                                                     },
                                                   ),
                                                 ),
@@ -630,7 +679,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                                       // Create a tile widget for each category's name
                                                       return Container();
-                                                      // return HachlataTileWidget();
+                                                      // return HachlataTileWidgetForStats();
                                                     },
                                                   ),
                                                 ),
@@ -658,7 +707,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                                                 //               0;
                                                 //       return StatsCounterWidget(
                                                 //         hachlatacountint:
-                                                //             hachlataCountsAllHachlataTotalNew
+                                                //             hachlataItemsForHomeNewTest
                                                 //                 .length
                                                 //                 .toString(),
                                                 //         isclicked: lightGreen,
@@ -711,7 +760,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                                                       '';
                                               print(
                                                   'length of stats${hachlataItemsForStatsNew.length}');
-                                              return HachlataTileWidget(
+                                              return HachlataTileWidgetForStats(
                                                   hachlataName: hachlataName,
                                                   isclicked: globals.newpink);
                                               // Pass the name
@@ -721,35 +770,31 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                             // Create a tile widget for each category's name
                                             return Container();
-                                            // return HachlataTileWidget();
+                                            // return HachlataTileWidgetForStats();
                                           },
                                         ),
                                       ),
                                       // ListView.builder(
                                       //   // padding: EdgeInsets.zero,
-                                      //   physics:
-                                      //       NeverScrollableScrollPhysics(),
+                                      //   physics: NeverScrollableScrollPhysics(),
                                       //   itemCount: 1,
                                       //   shrinkWrap: true,
                                       //   itemBuilder: (context, index) {
                                       //     if (hachlataItemsForStatsNew !=
                                       //             null &&
-                                      //         hachlataItemsForStatsNew
-                                      //                 .length >
+                                      //         hachlataItemsForStatsNew.length >
                                       //             index) {
                                       //       final hachlataName =
-                                      //           hachlataItemsForStatsNew[
-                                      //                       index]!
+                                      //           hachlataItemsForStatsNew[index]!
                                       //                   .name ??
                                       //               '';
                                       //       int count =
                                       //           hachlataCountsThisWeekNew[
                                       //                   hachlataName] ??
                                       //               0;
-                                      //       return HachlataTileWidget(
+                                      //       return HachlataTileWidgetForStats(
                                       //           hachlataName: 'Total',
-                                      //           isclicked:
-                                      //               globals.lightGreen);
+                                      //           isclicked: globals.lightGreen);
                                       //     }
                                       //     return Container();
                                       //   },
@@ -770,7 +815,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                     //   children: [
                     //     Expanded(
                     //       child: Container(
-                    //           child: HachlataTileWidget(
+                    //           child: HachlataTileWidgetForStats(
                     //               hachlataName: 'Total this month', isclicked: newpink)),
                     //     ),
                     //     Expanded(child: StatsCounterWidget(hachlatacountint: '1'))
@@ -779,6 +824,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                   ],
                 ),
               );
+
 //
 //
 //
@@ -849,7 +895,8 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                         if (item != null) {
                           if (item.uid == displayusernameinaccount &&
                               item.date != 'N/A' &&
-                              item.hebrewdate.contains(hebrewmonth)) {
+                              item.hebrewdate
+                                  .contains(globals.hebrew_focused_month)) {
                             return true;
                           }
                         }
@@ -863,7 +910,8 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                       // Use a map to store counts for each hachlata name
 
                       if (item.uid == displayusernameinaccount &&
-                          item.hebrewdate.contains(hebrewmonth)) {
+                          item.hebrewdate
+                              .contains(globals.hebrew_focused_month)) {
                         // Increment count for the current hachlata name
                         hachlataCountsThisMonth[item.name] =
                             (hachlataCountsThisMonth[item.name] ?? 0) + 1;
@@ -1174,7 +1222,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                                       // Create a tile widget for each category's name
                                                       return Container();
-                                                      // return HachlataTileWidget();
+                                                      // return HachlataTileWidgetForStats();
                                                     },
                                                   ),
                                                 ),
@@ -1266,7 +1314,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                                       // Create a tile widget for each category's name
                                                       return Container();
-                                                      // return HachlataTileWidget();
+                                                      // return HachlataTileWidgetForStats();
                                                     },
                                                   ),
                                                 ),
@@ -1358,7 +1406,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                                       // Create a tile widget for each category's name
                                                       return Container();
-                                                      // return HachlataTileWidget();
+                                                      // return HachlataTileWidgetForStats();
                                                     },
                                                   ),
                                                 ),
@@ -1436,7 +1484,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                                                       '';
                                               print(
                                                   'length of stats${hachlataItemsForStats.length}');
-                                              return HachlataTileWidget(
+                                              return HachlataTileWidgetForStats(
                                                   hachlataName: hachlataName,
                                                   isclicked: globals.newpink);
                                               // Pass the name
@@ -1446,7 +1494,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
                                             // Create a tile widget for each category's name
                                             return Container();
-                                            // return HachlataTileWidget();
+                                            // return HachlataTileWidgetForStats();
                                           },
                                         ),
                                       ),
@@ -1466,7 +1514,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                                             int count = hachlataCountsThisWeek[
                                                     hachlataName] ??
                                                 0;
-                                            return HachlataTileWidget(
+                                            return HachlataTileWidgetForStats(
                                                 hachlataName: 'Total',
                                                 isclicked: globals.lightGreen);
                                           }

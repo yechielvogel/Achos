@@ -26,6 +26,8 @@ class MyCalendarState extends State<MyCalendar> {
       JewishDate jewishDate = JewishDate(); // Create an instance
       jewishDate.setDate(day); // Set the date using a method like setDate
       globals.hebrew_focused_day = jewishDate.toString(); // today = day;
+      globals.hebrew_focused_month =
+          globals.hebrew_focused_day.replaceAll(RegExp(r'[0-9\s]+'), '');
       globals.today = day;
       // print(globals.today);
       print(focusedDay);

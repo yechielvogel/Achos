@@ -153,8 +153,55 @@ class HomeAdminState extends State<HomeAdmin> {
                   if (item != null) {
                     String itemKey = '${item.name}_${item.uid}';
 
-                    if (item.date == 'N/A') {
-                      // If an item with the same key already exists and has a matching date, add the other one
+                    if (item.date == 'N/A' && item.hebrewdate != 'N/A') {
+                      if (item.hebrewdate.contains('2023') &&
+                          !item.hebrewdate.contains('end')) {
+                        DateTime itemDate1 = DateTime.parse(item.hebrewdate);
+                        DateTime globalsfocusedDate =
+                            DateTime.parse(globals.focused_day);
+                        DateTime todayDate1 = DateTime(globals.today.year,
+                            globals.today.month, globals.today.day);
+                        DateTime todayhebrewdate = DateTime(
+                            itemDate1.year, itemDate1.month, itemDate1.day);
+                        DateTime itemDateAddOneDay =
+                            itemDate1.add(Duration(days: 1));
+
+                        if (globalsfocusedDate.isAfter(itemDateAddOneDay)) {
+                          // If an item with the same key already exists and has a matching date, add the other one
+                          if (itemsMap.containsKey(itemKey) &&
+                              itemsMap[itemKey]?.date ==
+                                  focusedDate.toString()) {
+                            itemsMap.remove(itemKey);
+                          }
+                          itemsMap[itemKey] = item;
+                        }
+                      }
+                      if (item.hebrewdate.contains('2023') &&
+                          item.hebrewdate.contains('end')) {
+                        String dateWithOutEnd =
+                            item.hebrewdate.replaceAll(RegExp(r'end\s'), '');
+                        DateTime itemDate1 = DateTime.parse(dateWithOutEnd);
+                        DateTime globalsfocusedDate =
+                            DateTime.parse(globals.focused_day);
+                        DateTime todayDate1 = DateTime(globals.today.year,
+                            globals.today.month, globals.today.day);
+                        DateTime todayhebrewdate = DateTime(
+                            itemDate1.year, itemDate1.month, itemDate1.day);
+                        DateTime itemDatePlusOneDay =
+                            itemDate1.add(Duration(days: 1));
+
+                        if (globalsfocusedDate.isBefore(itemDatePlusOneDay)) {
+                          // If an item with the same key already exists and has a matching date, add the other one
+                          if (itemsMap.containsKey(itemKey) &&
+                              itemsMap[itemKey]?.date ==
+                                  focusedDate.toString()) {
+                            itemsMap.remove(itemKey);
+                          }
+                          itemsMap[itemKey] = item;
+                        }
+                      }
+                    }
+                    if (item.date == 'N/A' && item.hebrewdate == 'N/A') {
                       if (itemsMap.containsKey(itemKey) &&
                           itemsMap[itemKey]?.date == focusedDate.toString()) {
                         itemsMap.remove(itemKey);
@@ -325,13 +372,13 @@ class HomeAdminState extends State<HomeAdmin> {
                         label: 'Stats',
                       ),
                       // remove for android
-                      BottomNavigationBarItem(
-                        icon: ImageIcon(
-                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                          color: Color(0xFFC16C9E),
-                        ),
-                        label: 'Daily Study',
-                      ),
+                      // BottomNavigationBarItem(
+                      //   icon: ImageIcon(
+                      //     AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                      //     color: Color(0xFFC16C9E),
+                      //   ),
+                      //   label: 'Daily Study',
+                      // ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),
@@ -370,20 +417,20 @@ class HomeAdminState extends State<HomeAdmin> {
 
                           break;
                         //remove for android
-                        case 3:
-                          await LaunchApp.openApp(
-                            androidPackageName: 'org.chabad.android.DailyStudy',
-                            iosUrlScheme: 'org.chabad.DailyStudy://',
-                            appStoreLink:
-                                'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                            // openStore: false
-                          );
+                        // case 3:
+                        //   await LaunchApp.openApp(
+                        //     androidPackageName: 'org.chabad.android.DailyStudy',
+                        //     iosUrlScheme: 'org.chabad.DailyStudy://',
+                        //     appStoreLink:
+                        //         'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                        //     // openStore: false
+                        //   );
 
-                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                          // For testing purpose you can enter com.instagram.android
+                        //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                        //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                        //   // For testing purpose you can enter com.instagram.android
 
-                          break;
+                        //   break;
                       }
                     }),
               );
@@ -658,13 +705,13 @@ class HomeAdminState extends State<HomeAdmin> {
                         label: 'Stats',
                       ),
                       // remove for android
-                      BottomNavigationBarItem(
-                        icon: ImageIcon(
-                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                          color: Color(0xFFC16C9E),
-                        ),
-                        label: 'Daily Study',
-                      ),
+                      // BottomNavigationBarItem(
+                      //   icon: ImageIcon(
+                      //     AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                      //     color: Color(0xFFC16C9E),
+                      //   ),
+                      //   label: 'Daily Study',
+                      // ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),
@@ -703,20 +750,20 @@ class HomeAdminState extends State<HomeAdmin> {
 
                           break;
                         //remove for android
-                        case 3:
-                          await LaunchApp.openApp(
-                            androidPackageName: 'org.chabad.android.DailyStudy',
-                            iosUrlScheme: 'org.chabad.DailyStudy://',
-                            appStoreLink:
-                                'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                            // openStore: false
-                          );
+                        // case 3:
+                        //   await LaunchApp.openApp(
+                        //     androidPackageName: 'org.chabad.android.DailyStudy',
+                        //     iosUrlScheme: 'org.chabad.DailyStudy://',
+                        //     appStoreLink:
+                        //         'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                        //     // openStore: false
+                        //   );
 
-                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                          // For testing purpose you can enter com.instagram.android
+                        //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                        //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                        //   // For testing purpose you can enter com.instagram.android
 
-                          break;
+                        //   break;
                       }
                     }),
               );

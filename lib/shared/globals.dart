@@ -11,7 +11,7 @@ String hachlata_description_for_widget = '';
 String hachlata_name_for_category_widget = 'test';
 String hachlata_home_doc_name = '';
 String done_hachlata_doc_name = '';
-String current_category = '';   
+String current_category = '';
 String current_category_choose = '';
 int current_category_choose_int = 0;
 int global_hachlata_number = 0;
@@ -27,6 +27,7 @@ String displayusernameinaccount = '';
 String random_notification = '';
 String hebrew_focused_day = JewishDate().toString();
 String hebrew_focused_month = '';
+String current_chosen_hachlata_home = '';
 DateTime today = DateTime.now();
 
 List<Widget> HachlataWidgetList = [];

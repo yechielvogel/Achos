@@ -19,20 +19,20 @@ class AddHachloto extends StatefulWidget {
 }
 
 class AddHachlotoState extends State<AddHachloto> {
-
-
   @override
   Widget build(BuildContext context) {
+    DocumentReference uerIdRef = FirebaseFirestore.instance
+        .collection('addHachlataHomeNew')
+        .doc(globals.displayusernameinaccount);
 
-DocumentReference uerIdRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
+// Reference to a subcollection within the document. change to hebrew focused day month and year
+    CollectionReference selectedhebrewmonthRef =
+        uerIdRef.collection(globals.hebrew_focused_day);
 
-// Reference to a subcollection within the document. change to hebrew focused day month and year 
-CollectionReference selectedhebrewmonthRef = uerIdRef.collection(globals.hebrew_focused_day);
-
-// Reference to a specific document in the subcolection 
-DocumentReference doneHachlataRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
-
-
+// Reference to a specific document in the subcolection
+    DocumentReference doneHachlataRef = FirebaseFirestore.instance
+        .collection('addHachlataHomeNew')
+        .doc(globals.displayusernameinaccount);
 
     List<AddHachlata?> hachlataItemsForCurrentCategory = [];
 
@@ -61,7 +61,13 @@ DocumentReference doneHachlataRef = FirebaseFirestore.instance.collection('addHa
                     categoryItem?.name && // Check for null categoryItem
                 user != null &&
                 user.uesname! + categoryItem.name == item.uid + item.name &&
-                item.date == 'N/A',
+                item.date == 'N/A' &&
+                !item.hebrewdate.contains('end')
+
+            // &&
+            // item.name == globals.current_chosen_hachlata_home
+            ,
+
             orElse: () => AddHachlataHome(
                 name: '',
                 color: '',
@@ -168,18 +174,13 @@ DocumentReference doneHachlataRef = FirebaseFirestore.instance.collection('addHa
   }
 }
 
-
 // // Reference to a specific document in the 'testMonthlyCollection' collection
 // DocumentReference uerIdRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
 
-// // Reference to a subcollection within the document. change to hebrew focused day month and year 
+// // Reference to a subcollection within the document. change to hebrew focused day month and year
 // CollectionReference selectedhebrewmonthRef = uerIdRef.collection(globals.hebrew_focused_day);
 
-// // Reference to a specific document in the subcolection 
+// // Reference to a specific document in the subcolection
 // DocumentReference doneHachlataRef = FirebaseFirestore.instance.collection('addHachlataHomeNew').doc(globals.displayusernameinaccount);
 
-
-
 // // C-addHachlataHomeNew - D-userid S-C - globals.selectedhebrewmonth - D-hachlata
-
-

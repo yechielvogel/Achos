@@ -66,14 +66,20 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
           }
         });
         if (widget.isclicked == Color(0xFFCBBD7F)) {
+                    current_chosen_hachlata_home = widget.hachlataName;
           await DatabaseService(Uid: 'test').updateHachlataHome(
               user!.uesname.toString(),
               widget.hachlataName,
               'N/A',
-              'N/A',
+              globals.today.toString(),
               'Color(0xFFCBBD7F);');
         } else
-          await DatabaseService(Uid: 'test').delteHachlataHome();
+        await DatabaseService(Uid: 'test').updateHachlataHome(
+            user!.uesname.toString(),
+            widget.hachlataName,
+            'N/A',
+            'end ${globals.today.toString()}',
+            'Color(0xFFCBBD7F);');
       },
       onLongPress: () async {
         await showDialog(
