@@ -104,8 +104,6 @@ class _HachlataTileWidgetState extends State<HachlataTileWidget> {
       displayusernameinaccount = tempuesname;
     } else
       displayusernameinaccount = user!.uesname!;
-    print('displayusername ${displayusernameinaccount}');
-    print(globals.hebrew_focused_month);
     return GestureDetector(
       onTap: () async {
         await updateHachlataForUser(

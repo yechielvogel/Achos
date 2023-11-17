@@ -11,6 +11,7 @@ import '../../models/ueser.dart';
 import '../../services/database.dart';
 import '../../shared/loading.dart';
 import '../../widgets/calendar.dart';
+import '../../widgets/new_user_stats.dart';
 import '../../widgets/settings_off_widget.dart';
 import '../../widgets/this_is_not_avalible_yet.dart';
 import '../account_page.dart';
@@ -48,14 +49,35 @@ class _HomeState extends State<Home> {
           // } else {
           if (snapshot.hasError) {
             return Scaffold(
-              appBar: AppBar(
-                title: Text('Your Widget'),
-              ),
-              body: Center(
-                child: Text(
-                    'Error: ${snapshot.error}'), // Display an error message if an error occurs
-              ),
-            );
+                backgroundColor: globals.bage,
+                appBar: AppBar(
+                  // Padding(
+                  //   padding: const EdgeInsets.all(10.0),
+                  //   child: Container(
+                  //       child: Center(
+                  //           child: Text(
+                  //         globals.global_hachlata_number.toString(),
+                  //         style: TextStyle(color: globals.bage),
+                  //       )),
+                  //       decoration: BoxDecoration(
+                  //         shape: BoxShape.circle,
+                  //         color: globals.newpink,
+                  //       )),
+                  // ),
+                  // leadingWidth: 40,
+                  title: Center(
+                    child: Image.asset(
+                      'lib/assets/NewLogo.png',
+                      width: 60,
+                      height: 60,
+                    ),
+                  ),
+                  centerTitle: true,
+
+                  backgroundColor: globals.bage,
+                  elevation: 0,
+                ),
+                body: Loading());
           } else {
             List<AddHachlataHomeNew>? hachlataHomeNew = snapshot.data;
             if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
@@ -103,8 +125,7 @@ class _HomeState extends State<Home> {
                                 itemDate.day == focusedDate.day;
 
                         // Print both dates
-                        print('itemDate: $itemDate, focusedDate: $focusedDate');
-
+                        
                         return dateComparison; // Include items where the date comparison is true
                       }
                     }
@@ -141,8 +162,7 @@ class _HomeState extends State<Home> {
                   print('no');
                 }
               });
-              print(
-                  'current list is before filter ${hachlataItemsForHomeNew} current list is before filter length ${hachlataItemsForHomeNew.length}');
+              
               List<AddHachlataHomeNew?> filterHachlataListNew(
                   List<AddHachlataHomeNew?> inputList) {
                 Map<String, AddHachlataHomeNew?> itemsMap = {};
@@ -437,26 +457,26 @@ class _HomeState extends State<Home> {
                                   onDaySelectedCallback: updateGlobalsToday));
                           break;
                         case 2:
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                // Define the content of your dialog here
-                                return ThisIsNotAvailableYet();
-                              });
-                          // await showModalBottomSheet(
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.vertical(
-                          //         top: Radius.circular(20),
-                          //       ),
-                          //     ),
-                          //     isScrollControlled: false,
+                          // await showDialog(
                           //     context: context,
                           //     builder: (BuildContext context) {
                           //       // Define the content of your dialog here
-                          //       // return SingleChildScrollView(child: UserStats());
-                          //       return UserStats();
-                          //       // return ThisIsNotAvailableYet();
+                          //       return ThisIsNotAvailableYet();
                           //     });
+                          await showModalBottomSheet(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              isScrollControlled: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                // Define the content of your dialog here
+                                // return SingleChildScrollView(child: UserStats());
+                                return UserStats();
+                                // return ThisIsNotAvailableYet();
+                              });
 
                           break;
                         //remove for android
@@ -550,8 +570,7 @@ class _HomeState extends State<Home> {
                                 itemDate.day == focusedDate.day;
 
                         // Print both dates
-                        print('itemDate: $itemDate, focusedDate: $focusedDate');
-
+                       
                         return dateComparison; // Include items where the date comparison is true
                       }
                     }
@@ -809,26 +828,26 @@ class _HomeState extends State<Home> {
                                   onDaySelectedCallback: updateGlobalsToday));
                           break;
                         case 2:
-                          await showDialog(
-                              context: context,
-                              builder: (BuildContext context) {
-                                // Define the content of your dialog here
-                                return ThisIsNotAvailableYet();
-                              });
-                          // await showModalBottomSheet(
-                          //     shape: RoundedRectangleBorder(
-                          //       borderRadius: BorderRadius.vertical(
-                          //         top: Radius.circular(20),
-                          //       ),
-                          //     ),
-                          //     isScrollControlled: false,
+                          // await showDialog(
                           //     context: context,
                           //     builder: (BuildContext context) {
                           //       // Define the content of your dialog here
-                          //       // return SingleChildScrollView(child: UserStats());
-                          //       return UserStats();
-                          //       // return ThisIsNotAvailableYet();
+                          //       return ThisIsNotAvailableYet();
                           //     });
+                          await showModalBottomSheet(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.vertical(
+                                  top: Radius.circular(20),
+                                ),
+                              ),
+                              isScrollControlled: false,
+                              context: context,
+                              builder: (BuildContext context) {
+                                // Define the content of your dialog here
+                                // return SingleChildScrollView(child: UserStats());
+                                return UserStats();
+                                // return ThisIsNotAvailableYet();
+                              });
 
                           break;
                         //remove for android

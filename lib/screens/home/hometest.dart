@@ -20,7 +20,7 @@ import '../stats_admin.dart';
 
 class HomeTest extends StatefulWidget {
   const HomeTest({super.key});
-    
+
   @override
   State<HomeTest> createState() => _HomeTestState();
 }
@@ -100,8 +100,6 @@ class _HomeTestState extends State<HomeTest> {
                                   itemDate.day == focusedDate.day;
 
                           // Print both dates
-                          print(
-                              'itemDate: $itemDate, focusedDate: $focusedDate');
 
                           return dateComparison; // Include items where the date comparison is true
                         }
@@ -139,8 +137,7 @@ class _HomeTestState extends State<HomeTest> {
                     print('no');
                   }
                 });
-                print(
-                    'current list is before filter ${hachlataItemsForHomeNew} current list is before filter length ${hachlataItemsForHomeNew.length}');
+
                 List<AddHachlataHomeNew?> filterHachlataListNew(
                     List<AddHachlataHomeNew?> inputList) {
                   Map<String, AddHachlataHomeNew?> itemsMap = {};
@@ -507,8 +504,6 @@ class _HomeTestState extends State<HomeTest> {
                                   itemDate.day == focusedDate.day;
 
                           // Print both dates
-                          print(
-                              'itemDate: $itemDate, focusedDate: $focusedDate');
 
                           return dateComparison; // Include items where the date comparison is true
                         }
@@ -617,32 +612,32 @@ class _HomeTestState extends State<HomeTest> {
                           width: 40,
                           height: 40,
                           child: IconButton(
-                icon: Icon(
-                  CupertinoIcons.gear,
-                ),
-                color: globals.newpink,
-                splashColor: Colors.transparent,
-                hoverColor: Colors.transparent,
-                highlightColor: Colors.transparent,
-                onPressed: () async {
-                  if (isSettingsOn) {
-                    Navigator.of(context).push(
-                      MaterialPageRoute(
-                        builder: (context) => MySettings(),
-                      ),
-                    );
-                  } else {
-                    await showDialog(
-                      context: context,
-                      builder: (BuildContext context) {
-                        // Define the content of your dialog here
-                        return SettingsOffWidget();
-                      },
-                    );
-                    // SettingsOffWidget();
-                  }
-                },
-              ),
+                            icon: Icon(
+                              CupertinoIcons.gear,
+                            ),
+                            color: globals.newpink,
+                            splashColor: Colors.transparent,
+                            hoverColor: Colors.transparent,
+                            highlightColor: Colors.transparent,
+                            onPressed: () async {
+                              if (isSettingsOn) {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => MySettings(),
+                                  ),
+                                );
+                              } else {
+                                await showDialog(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    // Define the content of your dialog here
+                                    return SettingsOffWidget();
+                                  },
+                                );
+                                // SettingsOffWidget();
+                              }
+                            },
+                          ),
                         ),
                       ),
                     ],
@@ -757,29 +752,29 @@ class _HomeTestState extends State<HomeTest> {
                                 builder: (context) => MyCalendar(
                                     onDaySelectedCallback: updateGlobalsToday));
                             break;
-                           case 2:
-                await showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      // Define the content of your dialog here
-                      return ThisIsNotAvailableYet();
-                    });
-                // await showModalBottomSheet(
-                //     shape: RoundedRectangleBorder(
-                //       borderRadius: BorderRadius.vertical(
-                //         top: Radius.circular(20),
-                //       ),
-                //     ),
-                //     isScrollControlled: false,
-                //     context: context,
-                //     builder: (BuildContext context) {
-                //       // Define the content of your dialog here
-                //       // return SingleChildScrollView(child: UserStats());
-                //       return UserStats();
-                //       // return ThisIsNotAvailableYet();
-                //     });
+                          case 2:
+                            await showDialog(
+                                context: context,
+                                builder: (BuildContext context) {
+                                  // Define the content of your dialog here
+                                  return ThisIsNotAvailableYet();
+                                });
+                            // await showModalBottomSheet(
+                            //     shape: RoundedRectangleBorder(
+                            //       borderRadius: BorderRadius.vertical(
+                            //         top: Radius.circular(20),
+                            //       ),
+                            //     ),
+                            //     isScrollControlled: false,
+                            //     context: context,
+                            //     builder: (BuildContext context) {
+                            //       // Define the content of your dialog here
+                            //       // return SingleChildScrollView(child: UserStats());
+                            //       return UserStats();
+                            //       // return ThisIsNotAvailableYet();
+                            //     });
 
-                break;
+                            break;
                           //remove for android
                           case 3:
                             await LaunchApp.openApp(

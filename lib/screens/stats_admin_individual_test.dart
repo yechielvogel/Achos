@@ -108,8 +108,6 @@ class _TestState extends State<Test> {
                                   itemDate.day == focusedDate.day;
 
                           // Print both dates
-                          print(
-                              'itemDate: $itemDate, focusedDate: $focusedDate');
 
                           return dateComparison; // Include items where the date comparison is true
                         }
@@ -120,7 +118,6 @@ class _TestState extends State<Test> {
                     [];
                 hachlataHome?.forEach((item) {
                   if (item != null && item.uid == globals.current_namesofuser) {
-                    print('yes');
                     AddHachlataHomeNew newItem = AddHachlataHomeNew(
                       uid: item.uid,
                       name: item.name,
@@ -142,12 +139,9 @@ class _TestState extends State<Test> {
                     }
 
                     hachlataItemsForHomeNew.insert(insertIndex, newItem);
-                  } else {
-                    print('no');
-                  }
+                  } else {}
                 });
-                print(
-                    'current list is before filter ${hachlataItemsForHomeNew} current list is before filter length ${hachlataItemsForHomeNew.length}');
+
                 List<AddHachlataHomeNew?> filterHachlataListNew(
                     List<AddHachlataHomeNew?> inputList) {
                   Map<String, AddHachlataHomeNew?> itemsMap = {};
@@ -438,8 +432,7 @@ class _TestState extends State<Test> {
                                   itemDate.day == focusedDate.day;
 
                           // Print both dates
-                          print(
-                              'itemDate: $itemDate, focusedDate: $focusedDate');
+                         
 
                           return dateComparison; // Include items where the date comparison is true
                         }

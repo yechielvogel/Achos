@@ -106,8 +106,6 @@ class _HachlataTileWidgetForStatsState
       displayusernameinaccount = tempuesname;
     } else
       displayusernameinaccount = user!.uesname!;
-    print('displayusername ${displayusernameinaccount}');
-    print(globals.hebrew_focused_month);
     return Padding(
       padding: const EdgeInsets.only(right: 8, left: 8, bottom: 8),
       child: Column(

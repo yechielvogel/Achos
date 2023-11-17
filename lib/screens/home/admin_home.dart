@@ -11,6 +11,7 @@ import 'package:tzivos_hashem_milwaukee/widgets/hachlata_tile_widget.dart';
 import 'package:tzivos_hashem_milwaukee/screens/category_admin.dart';
 // import '../../services/auth.dart';
 import '../../models/add_hachlata_home_new.dart';
+import '../../models/add_hachlata_home_new_test.dart';
 import '../../services/database.dart';
 import '../../shared/globals.dart' as globals;
 import '../../models/ueser.dart';
@@ -46,14 +47,35 @@ class HomeAdminState extends State<HomeAdmin> {
           // } else {
           if (snapshot.hasError) {
             return Scaffold(
-              appBar: AppBar(
-                title: Text('Your Widget'),
-              ),
-              body: Center(
-                child: Text(
-                    'Error: ${snapshot.error}'), // Display an error message if an error occurs
-              ),
-            );
+                backgroundColor: globals.bage,
+                appBar: AppBar(
+                  // Padding(
+                  //   padding: const EdgeInsets.all(10.0),
+                  //   child: Container(
+                  //       child: Center(
+                  //           child: Text(
+                  //         globals.global_hachlata_number.toString(),
+                  //         style: TextStyle(color: globals.bage),
+                  //       )),
+                  //       decoration: BoxDecoration(
+                  //         shape: BoxShape.circle,
+                  //         color: globals.newpink,
+                  //       )),
+                  // ),
+                  // leadingWidth: 40,
+                  title: Center(
+                    child: Image.asset(
+                      'lib/assets/NewLogo.png',
+                      width: 60,
+                      height: 60,
+                    ),
+                  ),
+                  centerTitle: true,
+
+                  backgroundColor: globals.bage,
+                  elevation: 0,
+                ),
+                body: Loading());
           } else {
             List<AddHachlataHomeNew>? hachlataHomeNew = snapshot.data;
             if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
@@ -101,7 +123,6 @@ class HomeAdminState extends State<HomeAdmin> {
                                 itemDate.day == focusedDate.day;
 
                         // Print both dates
-                        print('itemDate: $itemDate, focusedDate: $focusedDate');
 
                         return dateComparison; // Include items where the date comparison is true
                       }
@@ -113,7 +134,6 @@ class HomeAdminState extends State<HomeAdmin> {
               hachlataHome?.forEach((item) {
                 if (item != null &&
                     item.uid == globals.displayusernameinaccount) {
-                  print('yes');
                   AddHachlataHomeNew newItem = AddHachlataHomeNew(
                     uid: item.uid,
                     name: item.name,
@@ -135,12 +155,9 @@ class HomeAdminState extends State<HomeAdmin> {
                   }
 
                   hachlataItemsForHomeNew.insert(insertIndex, newItem);
-                } else {
-                  print('no');
-                }
+                } else {}
               });
-              print(
-                  'current list is before filter ${hachlataItemsForHomeNew} current list is before filter length ${hachlataItemsForHomeNew.length}');
+
               List<AddHachlataHomeNew?> filterHachlataListNew(
                   List<AddHachlataHomeNew?> inputList) {
                 Map<String, AddHachlataHomeNew?> itemsMap = {};
@@ -329,7 +346,6 @@ class HomeAdminState extends State<HomeAdmin> {
                             var tilecolor =
                                 hachlataItemsForHomeNew[index]!.color ?? '';
                             Color finaltilecolor;
-                            print('length${hachlataItemsForHomeNew.length}');
                             if (tilecolor == 'Color(0xFFCBBD7F);') {
                               finaltilecolor = globals.lightGreen;
                             } else {
@@ -470,11 +486,8 @@ class HomeAdminState extends State<HomeAdmin> {
               final hachlataHomeNew =
                   Provider.of<List<AddHachlataHomeNew?>?>(context);
 
-              print('stream hachlatanew${hachlataItemsForHomeNew.length}');
               void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
-                if (dataList == null) {
-                  print('the list is empty');
-                }
+                if (dataList == null) {}
                 if (dataList != null) {
                   for (var item in dataList) {
                     if (item != null) {
@@ -507,7 +520,6 @@ class HomeAdminState extends State<HomeAdmin> {
                                 itemDate.day == focusedDate.day;
 
                         // Print both dates
-                        print('itemDate: $itemDate, focusedDate: $focusedDate');
 
                         return dateComparison; // Include items where the date comparison is true
                       }
@@ -577,8 +589,6 @@ class HomeAdminState extends State<HomeAdmin> {
               hachlataItemsForHome = filterHachlataList(hachlataItemsForHome);
 
               printDataFromList(hachlataHomeNew);
-              print('hachlatahome${hachlataItemsForHome.length}');
-              print('hachlatahomenew list ${hachlataItemsForHomeNew.length}');
 
               return Scaffold(
                 backgroundColor: globals.bage,
@@ -662,7 +672,6 @@ class HomeAdminState extends State<HomeAdmin> {
                             var tilecolor =
                                 hachlataItemsForHome[index]!.color ?? '';
                             Color finaltilecolor;
-                            print('length${hachlataItemsForHome.length}');
                             if (tilecolor == 'Color(0xFFCBBD7F);') {
                               finaltilecolor = globals.lightGreen;
                             } else {

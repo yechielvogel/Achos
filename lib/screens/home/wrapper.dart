@@ -26,7 +26,6 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<Ueser?>(context);
     final hachlatahome = Provider.of<List<AddHachlataHome?>?>(context);
     final firstcategorylist = Provider.of<List<Category?>?>(context);
-    print("firstcategorylist: $firstcategorylist");
 
     List<AddHachlataHome?> istherehachlatas = [];
 
@@ -83,8 +82,8 @@ class Wrapper extends StatelessWidget {
         print('else home line 79');
       return Home();
     } else
-     displayusernameinaccount = user.uesname!;
-      print('else home line 82');
+      displayusernameinaccount = user.uesname!;
+    print('else home line 82');
     return Home();
   }
 }

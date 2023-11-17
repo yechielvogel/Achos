@@ -4,6 +4,7 @@ import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home_new.dart';
 import 'package:tzivos_hashem_milwaukee/models/admins.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
+import '../models/add_hachlata_home_new_test.dart';
 import '../models/change_settings_switch.dart';
 import '../models/hachlata_home_all.dart';
 import '../models/add_hachlata_home.dart';
@@ -37,6 +38,57 @@ class DatabaseService {
         .collection(month);
   }
 
+// stats stream
+
+  Stream<List<AddHachlataHomeNewTest>?> fetchAllCollectionsData(
+      String currentuser, List<String> subcollections) async* {
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    try {
+      List<AddHachlataHomeNewTest> allData = [];
+
+      for (String subcollectionName in subcollections) {
+        CollectionReference mainCollectionRef =
+            firestore.collection('addHachlataHomeNew');
+
+        CollectionReference<Map<String, dynamic>> subcollectionDocRef =
+            mainCollectionRef.doc(currentuser).collection(subcollectionName);
+
+        QuerySnapshot<Map<String, dynamic>> subcollectionSnapshot =
+            await subcollectionDocRef.get();
+
+        List<AddHachlataHomeNewTest> subcollectionData =
+            subcollectionSnapshot.docs.map((document) {
+          Map<String, dynamic> docData =
+              document.data() as Map<String, dynamic>;
+          return AddHachlataHomeNewTest(
+            uid: docData['uid'],
+            name: docData['name'],
+            date: docData['date'],
+            hebrewdate: docData['hebrew date'],
+            color: docData['color'],
+          );
+        }).toList();
+
+        allData.addAll(subcollectionData);
+
+        print('Fetched data for subcollection: $subcollectionName');
+      }
+
+      if (allData.isNotEmpty) {
+        yield allData;
+      } else {
+        print('Document exists but has no data or is empty');
+        print('current name of user for doc $currentuser');
+        yield null;
+      }
+    } catch (e, stackTrace) {
+      print('Error fetching collections data: $e');
+      print('Stack trace: $stackTrace');
+      yield null;
+    }
+  }
+
   // hachlatanew stream
 
   List<AddHachlataHomeNew> addHachlataHomeNewListFromSnapshot(
@@ -57,8 +109,6 @@ class DatabaseService {
     return hebrewMonthCollectionRef(username, month).snapshots().map(
         (querySnapshot) => addHachlataHomeNewListFromSnapshot(querySnapshot));
   }
-
-
 
 // addHachlataHomeNew
   Future updateDoneHachlataNew(

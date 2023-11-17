@@ -30,6 +30,7 @@ String hebrew_focused_month = '';
 String current_chosen_hachlata_home = '';
 DateTime today = DateTime.now();
 
+List<String> allmonths = ['Cheshvan', 'Kislev', 'Teves', 'Shevat', 'Adar I', 'Adar II', 'Nissan', 'Iyar','Sivan', 'Tammuz', 'Av', 'Elul', 'Tishrei',];
 List<Widget> HachlataWidgetList = [];
 List<Widget> AddHachlataWidgetList = [];
 List<int> selectedIndices = [];
