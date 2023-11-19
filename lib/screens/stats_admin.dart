@@ -13,7 +13,7 @@ class StatsAdmin extends StatefulWidget {
   State<StatsAdmin> createState() => _StatsAdminState();
 }
 
-class _StatsAdminState extends State<StatsAdmin> {
+class _StatsAdminState extends State<StatsAdmin> {    
   @override
   Widget build(BuildContext context) {
     List<AddHachlataHome?> hachlataItemsEveryone = [];

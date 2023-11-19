@@ -26,6 +26,7 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<Ueser?>(context);
     final hachlatahome = Provider.of<List<AddHachlataHome?>?>(context);
     final firstcategorylist = Provider.of<List<Category?>?>(context);
+    print("firstcategorylist: $firstcategorylist");
 
     List<AddHachlataHome?> istherehachlatas = [];
 
@@ -48,20 +49,20 @@ class Wrapper extends StatelessWidget {
         if (firstcategorylist != null) {
           if (istherehachlatas.length != 0 &&
               istherehachlatas.length > firstcategorylist.length) {
-            // print('admin is there hachlatas${istherehachlatas.length}');
+            print('admin is there hachlatas${istherehachlatas.length}');
             return HomeAdmin();
           }
           if (istherehachlatas.length == 0 ||
               istherehachlatas.length < firstcategorylist.length) {
             globals.current_category_choose = firstcategorylist.first!.name;
-            // print(istherehachlatas.length);
-            // print(globals.current_category_choose);
+            print(istherehachlatas.length);
+            print(globals.current_category_choose);
             return ChooseHachlataOnStartAdmin();
 
             // print('Logged in as admin ${user.uid}');
           }
         } else
-          // print('return home admin line 63');
+          print('return home admin line 63');
         return HomeAdmin();
       }
     }
@@ -69,21 +70,21 @@ class Wrapper extends StatelessWidget {
       displayusernameinaccount = user.uesname!;
       if (istherehachlatas.length != 0 &&
           istherehachlatas.length > firstcategorylist.length) {
-        // print('is there hachlata length ${istherehachlatas.length}');
+        print('is there hachlata length ${istherehachlatas.length}');
         return Home();
       }
       if (istherehachlatas.length == 0 ||
           istherehachlatas.length < firstcategorylist.length) {
         globals.current_category_choose = firstcategorylist.first!.name;
-        // print('none admin is there hachlatas ${istherehachlatas.length}');
-        // print(globals.current_category_choose);
+        print('none admin is there hachlatas ${istherehachlatas.length}');
+        print(globals.current_category_choose);
         return ChooseHachlataOnStart();
       } else
-        // print('else home line 79');
+        print('else home line 79');
       return Home();
     } else
       displayusernameinaccount = user.uesname!;
-    // print('else home line 82');
+    print('else home line 82');
     return Home();
   }
 }
@@ -100,4 +101,3 @@ class Wrapper extends StatelessWidget {
 // print('this is ${user.uid}');
 // print('name is ${user.uesname}'); // Check for the correct property name
 // return Home(); // Return a default home widget if admins is null
-
