@@ -83,7 +83,7 @@ class _HomeState extends State<Home> {
             if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
               List<AddHachlataHome?> hachlataItemsForHome = [];
               List<AddHachlataHomeNew?> hachlataItemsForHomeNew = [];
-
+   
               final hachlataHome =
                   Provider.of<List<AddHachlataHome?>?>(context);
               // final hachlataHomeNew =
@@ -91,7 +91,7 @@ class _HomeState extends State<Home> {
 
               void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
                 if (dataList == null) {
-                  print('the list is empty');
+                  // print('the list is empty');
                 }
                 if (dataList != null) {
                   for (var item in dataList) {
@@ -136,7 +136,6 @@ class _HomeState extends State<Home> {
               hachlataHome?.forEach((item) {
                 if (item != null &&
                     item.uid == globals.displayusernameinaccount) {
-                  print('yes');
                   AddHachlataHomeNew newItem = AddHachlataHomeNew(
                     uid: item.uid,
                     name: item.name,
@@ -159,7 +158,6 @@ class _HomeState extends State<Home> {
 
                   hachlataItemsForHomeNew.insert(insertIndex, newItem);
                 } else {
-                  print('no');
                 }
               });
               
@@ -374,7 +372,6 @@ class _HomeState extends State<Home> {
                             var tilecolor =
                                 hachlataItemsForHomeNew[index]!.color ?? '';
                             Color finaltilecolor;
-                            print('length${hachlataItemsForHomeNew.length}');
                             if (tilecolor == 'Color(0xFFCBBD7F);') {
                               finaltilecolor = globals.lightGreen;
                             } else {
@@ -417,13 +414,13 @@ class _HomeState extends State<Home> {
                         label: 'Stats',
                       ),
                       //remove for android
-                      // BottomNavigationBarItem(
-                      //   icon: ImageIcon(
-                      //     AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                      //     color: Color(0xFFC16C9E),
-                      //   ),
-                      //   label: 'Daily Study',
-                      // ),
+                      BottomNavigationBarItem(
+                        icon: ImageIcon(
+                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                          color: Color(0xFFC16C9E),
+                        ),
+                        label: 'Daily Study',
+                      ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),
@@ -480,20 +477,20 @@ class _HomeState extends State<Home> {
 
                           break;
                         //remove for android
-                        // case 3:
-                        //   await LaunchApp.openApp(
-                        //     androidPackageName: 'org.chabad.android.DailyStudy',
-                        //     iosUrlScheme: 'org.chabad.DailyStudy://',
-                        //     appStoreLink:
-                        //         'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                        //     // openStore: false
-                        //   );
+                        case 3:
+                          await LaunchApp.openApp(
+                            androidPackageName: 'org.chabad.android.DailyStudy',
+                            iosUrlScheme: 'org.chabad.DailyStudy://',
+                            appStoreLink:
+                                'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                            // openStore: false
+                          );
 
-                        //   //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                        //   //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                        //   //   // For testing purpose you can enter com.instagram.android
+                          //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                          //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                          //   // For testing purpose you can enter com.instagram.android
 
-                        //   break;
+                          break;
                       }
                     }),
               );
@@ -533,10 +530,9 @@ class _HomeState extends State<Home> {
               final hachlataHomeNew =
                   Provider.of<List<AddHachlataHomeNew?>?>(context);
 
-              print('stream hachlatanew${hachlataItemsForHomeNew.length}');
               void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
                 if (dataList == null) {
-                  print('the list is empty');
+                  // print('the list is empty');
                 }
                 if (dataList != null) {
                   for (var item in dataList) {
@@ -639,8 +635,6 @@ class _HomeState extends State<Home> {
               hachlataItemsForHome = filterHachlataList(hachlataItemsForHome);
 
               printDataFromList(hachlataHomeNew);
-              print('hachlatahome${hachlataItemsForHome.length}');
-              print('hachlatahomenew list ${hachlataItemsForHomeNew.length}');
               final changesettingsswitch =
                   Provider.of<List<ChangeSettingsSwitch?>?>(context);
               if (changesettingsswitch != null &&
@@ -745,7 +739,6 @@ class _HomeState extends State<Home> {
                             var tilecolor =
                                 hachlataItemsForHome[index]!.color ?? '';
                             Color finaltilecolor;
-                            print('length${hachlataItemsForHome.length}');
                             if (tilecolor == 'Color(0xFFCBBD7F);') {
                               finaltilecolor = globals.lightGreen;
                             } else {
@@ -788,13 +781,13 @@ class _HomeState extends State<Home> {
                         label: 'Stats',
                       ),
                       // remove for android
-                      // BottomNavigationBarItem(
-                      //   icon: ImageIcon(
-                      //     AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                      //     color: Color(0xFFC16C9E),
-                      //   ),
-                      //   label: 'Daily Study',
-                      // ),
+                      BottomNavigationBarItem(
+                        icon: ImageIcon(
+                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                          color: Color(0xFFC16C9E),
+                        ),
+                        label: 'Daily Study',
+                      ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),
@@ -851,20 +844,20 @@ class _HomeState extends State<Home> {
 
                           break;
                         //remove for android
-                        // case 3:
-                        //   await LaunchApp.openApp(
-                        //     androidPackageName: 'org.chabad.android.DailyStudy',
-                        //     iosUrlScheme: 'org.chabad.DailyStudy://',
-                        //     appStoreLink:
-                        //         'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                        //     // openStore: false
-                        //   );
+                        case 3:
+                          await LaunchApp.openApp(
+                            androidPackageName: 'org.chabad.android.DailyStudy',
+                            iosUrlScheme: 'org.chabad.DailyStudy://',
+                            appStoreLink:
+                                'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                            // openStore: false
+                          );
 
-                        //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                        //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                        //   // For testing purpose you can enter com.instagram.android
+                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                          // For testing purpose you can enter com.instagram.android
 
-                        //   break;
+                          break;
                       }
                     }),
               );

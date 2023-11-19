@@ -111,7 +111,7 @@ class NotificationService {
       21, // Hour (24-hour format)
       00, // Minute
     );
-    print('Scheduled Time: $scheduledTime');
+    // print('Scheduled Time: $scheduledTime');
 
     return notificationsPlugin.zonedSchedule(
       id,
@@ -124,13 +124,8 @@ class NotificationService {
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
     );
-    
   }
 }
-
-
-
-
 
 // ..
 // ..

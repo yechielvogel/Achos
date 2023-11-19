@@ -33,7 +33,7 @@ class _UserStatsState extends State<UserStats> {
 
   @override
   Widget build(BuildContext context) {
-    print('name to look for${globals.displayusernameinaccount}');
+    // print('name to look for${globals.displayusernameinaccount}');
     return StreamBuilder<List<AddHachlataHomeNew>>(
         stream: DatabaseService(Uid: 'test').getSubCollectionStream(
             globals.displayusernameinaccount, globals.hebrew_focused_month),
@@ -42,11 +42,11 @@ class _UserStatsState extends State<UserStats> {
               stream: DatabaseService(Uid: 'test').fetchAllCollectionsData(
                   globals.displayusernameinaccount, globals.allmonths),
               builder: (context, snapshot2) {
-                if (!snapshot2.hasData) {
-                  // No data available in the stream.
-                  print('no data');
-                } else
-                  print('snapshot two data = ${snapshot2.data}');
+                // if (!snapshot2.hasData) {
+                //   // No data available in the stream.
+                //   print('no data');
+                // } else
+                //   print('snapshot two data = ${snapshot2.data}');
                 // if (snapshot.connectionState == ConnectionState.waiting) {
                 //   return Loading(); // Display a loading indicator while waiting for data
                 // } else {

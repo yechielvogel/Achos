@@ -71,8 +71,6 @@ class DatabaseService {
         }).toList();
 
         allData.addAll(subcollectionData);
-
-        print('Fetched data for subcollection: $subcollectionName');
       }
 
       if (allData.isNotEmpty) {

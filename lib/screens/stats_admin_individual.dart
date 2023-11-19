@@ -74,7 +74,7 @@ class _TestState extends State<StatsAdminIndividual> {
 
               void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
                 if (dataList == null) {
-                  print('the list is empty');
+                  // print('the list is empty');
                 }
                 if (dataList != null) {
                   for (var item in dataList) {
@@ -391,7 +391,7 @@ class _TestState extends State<StatsAdminIndividual> {
               print('stream hachlatanew${hachlataItemsForHomeNew.length}');
               void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
                 if (dataList == null) {
-                  print('the list is empty');
+                  // print('the list is empty');
                 }
                 if (dataList != null) {
                   for (var item in dataList) {

@@ -33,7 +33,7 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
 
   @override
   Widget build(BuildContext context) {
-    print('name to look for${globals.current_namesofuser}');
+    // print('name to look for${globals.current_namesofuser}');
     return StreamBuilder<List<AddHachlataHomeNew>>(
         stream: DatabaseService(Uid: 'test').getSubCollectionStream(
             globals.current_namesofuser, globals.hebrew_focused_month),
@@ -42,11 +42,11 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
               stream: DatabaseService(Uid: 'test').fetchAllCollectionsData(
                   globals.current_namesofuser, globals.allmonths),
               builder: (context, snapshot2) {
-                if (!snapshot2.hasData) {
-                  // No data available in the stream.
-                  print('no data');
-                } else
-                  print('snapshot two data = ${snapshot2.data}');
+                // if (!snapshot2.hasData) {
+                //   // No data available in the stream.
+                //   print('no data');
+                // } else
+                //   print('snapshot two data = ${snapshot2.data}');
                 // if (snapshot.connectionState == ConnectionState.waiting) {
                 //   return Loading(); // Display a loading indicator while waiting for data
                 // } else {
@@ -907,7 +907,6 @@ class _UserStatsAdminState extends State<UserStatsAdmin> {
                           return false;
                         }).toList() ??
                         [];
-                    print('length of stats${hachlataItemsForStats.length}');
 // gets all hachlatas for the month
 
                     hachlataCountsThisMonthAllHachlataTotal =

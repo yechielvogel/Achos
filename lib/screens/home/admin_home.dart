@@ -89,7 +89,7 @@ class HomeAdminState extends State<HomeAdmin> {
 
               void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
                 if (dataList == null) {
-                  print('the list is empty');
+                  // print('the list is empty');
                 }
                 if (dataList != null) {
                   for (var item in dataList) {
@@ -388,13 +388,13 @@ class HomeAdminState extends State<HomeAdmin> {
                         label: 'Stats',
                       ),
                       // remove for android
-                      // BottomNavigationBarItem(
-                      //   icon: ImageIcon(
-                      //     AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                      //     color: Color(0xFFC16C9E),
-                      //   ),
-                      //   label: 'Daily Study',
-                      // ),
+                      BottomNavigationBarItem(
+                        icon: ImageIcon(
+                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                          color: Color(0xFFC16C9E),
+                        ),
+                        label: 'Daily Study',
+                      ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),
@@ -433,20 +433,20 @@ class HomeAdminState extends State<HomeAdmin> {
 
                           break;
                         //remove for android
-                        // case 3:
-                        //   await LaunchApp.openApp(
-                        //     androidPackageName: 'org.chabad.android.DailyStudy',
-                        //     iosUrlScheme: 'org.chabad.DailyStudy://',
-                        //     appStoreLink:
-                        //         'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                        //     // openStore: false
-                        //   );
+                        case 3:
+                          await LaunchApp.openApp(
+                            androidPackageName: 'org.chabad.android.DailyStudy',
+                            iosUrlScheme: 'org.chabad.DailyStudy://',
+                            appStoreLink:
+                                'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                            // openStore: false
+                          );
 
-                        //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                        //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                        //   // For testing purpose you can enter com.instagram.android
+                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                          // For testing purpose you can enter com.instagram.android
 
-                        //   break;
+                          break;
                       }
                     }),
               );
@@ -714,13 +714,13 @@ class HomeAdminState extends State<HomeAdmin> {
                         label: 'Stats',
                       ),
                       // remove for android
-                      // BottomNavigationBarItem(
-                      //   icon: ImageIcon(
-                      //     AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                      //     color: Color(0xFFC16C9E),
-                      //   ),
-                      //   label: 'Daily Study',
-                      // ),
+                      BottomNavigationBarItem(
+                        icon: ImageIcon(
+                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                          color: Color(0xFFC16C9E),
+                        ),
+                        label: 'Daily Study',
+                      ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),
@@ -759,20 +759,20 @@ class HomeAdminState extends State<HomeAdmin> {
 
                           break;
                         //remove for android
-                        // case 3:
-                        //   await LaunchApp.openApp(
-                        //     androidPackageName: 'org.chabad.android.DailyStudy',
-                        //     iosUrlScheme: 'org.chabad.DailyStudy://',
-                        //     appStoreLink:
-                        //         'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                        //     // openStore: false
-                        //   );
+                        case 3:
+                          await LaunchApp.openApp(
+                            androidPackageName: 'org.chabad.android.DailyStudy',
+                            iosUrlScheme: 'org.chabad.DailyStudy://',
+                            appStoreLink:
+                                'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                            // openStore: false
+                          );
 
-                        //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                        //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                        //   // For testing purpose you can enter com.instagram.android
+                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                          // For testing purpose you can enter com.instagram.android
 
-                        //   break;
+                          break;
                       }
                     }),
               );
