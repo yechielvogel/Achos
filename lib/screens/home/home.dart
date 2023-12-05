@@ -1,4 +1,6 @@
 import 'package:external_app_launcher/external_app_launcher.dart';
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -83,7 +85,7 @@ class _HomeState extends State<Home> {
             if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
               List<AddHachlataHome?> hachlataItemsForHome = [];
               List<AddHachlataHomeNew?> hachlataItemsForHomeNew = [];
-   
+
               final hachlataHome =
                   Provider.of<List<AddHachlataHome?>?>(context);
               // final hachlataHomeNew =
@@ -125,7 +127,7 @@ class _HomeState extends State<Home> {
                                 itemDate.day == focusedDate.day;
 
                         // Print both dates
-                        
+
                         return dateComparison; // Include items where the date comparison is true
                       }
                     }
@@ -157,10 +159,9 @@ class _HomeState extends State<Home> {
                   }
 
                   hachlataItemsForHomeNew.insert(insertIndex, newItem);
-                } else {
-                }
+                } else {}
               });
-              
+
               List<AddHachlataHomeNew?> filterHachlataListNew(
                   List<AddHachlataHomeNew?> inputList) {
                 Map<String, AddHachlataHomeNew?> itemsMap = {};
@@ -395,7 +396,7 @@ class _HomeState extends State<Home> {
                 bottomNavigationBar: BottomNavigationBar(
                     elevation: 0,
                     backgroundColor: globals.bage,
-                    items: const <BottomNavigationBarItem>[
+                    items: <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
                         icon: Icon(CupertinoIcons.person,
                             color: Color(0xFFC16C9E)),
@@ -414,6 +415,7 @@ class _HomeState extends State<Home> {
                         label: 'Stats',
                       ),
                       //remove for android
+                      if (Platform.isIOS)
                       BottomNavigationBarItem(
                         icon: ImageIcon(
                           AssetImage('lib/assets/chabadorgachos1@3x.png'),
@@ -566,7 +568,7 @@ class _HomeState extends State<Home> {
                                 itemDate.day == focusedDate.day;
 
                         // Print both dates
-                       
+
                         return dateComparison; // Include items where the date comparison is true
                       }
                     }
@@ -760,27 +762,28 @@ class _HomeState extends State<Home> {
                   ]),
                 ),
                 bottomNavigationBar: BottomNavigationBar(
-                    elevation: 0,
-                    backgroundColor: globals.bage,
-                    items: const <BottomNavigationBarItem>[
-                      BottomNavigationBarItem(
-                        icon: Icon(CupertinoIcons.person,
-                            color: Color(0xFFC16C9E)),
-                        label: 'Account',
+                  elevation: 0,
+                  backgroundColor: globals.bage,
+                  items: <BottomNavigationBarItem>[
+                    BottomNavigationBarItem(
+                      icon:
+                          Icon(CupertinoIcons.person, color: Color(0xFFC16C9E)),
+                      label: 'Account',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(CupertinoIcons.calendar,
+                          color: Color(0xFFC16C9E)),
+                      label: 'Calendar',
+                    ),
+                    BottomNavigationBarItem(
+                      icon: Icon(
+                        CupertinoIcons.chart_bar,
+                        color: Color(0xFFC16C9E),
                       ),
-                      BottomNavigationBarItem(
-                        icon: Icon(CupertinoIcons.calendar,
-                            color: Color(0xFFC16C9E)),
-                        label: 'Calendar',
-                      ),
-                      BottomNavigationBarItem(
-                        icon: Icon(
-                          CupertinoIcons.chart_bar,
-                          color: Color(0xFFC16C9E),
-                        ),
-                        label: 'Stats',
-                      ),
-                      // remove for android
+                      label: 'Stats',
+                    ),
+                    // remove for android
+                    if (Platform.isIOS)
                       BottomNavigationBarItem(
                         icon: ImageIcon(
                           AssetImage('lib/assets/chabadorgachos1@3x.png'),
@@ -788,78 +791,80 @@ class _HomeState extends State<Home> {
                         ),
                         label: 'Daily Study',
                       ),
-                    ],
-                    selectedItemColor: Color(0xFFC16C9E),
-                    unselectedItemColor: Color(0xFFC16C9E),
-                    selectedFontSize: 10,
-                    unselectedFontSize: 10,
-                    type: BottomNavigationBarType.fixed,
-                    onTap: (index) async {
-                      // Navigate to different pages based on the tapped icon
-                      switch (index) {
-                        case 0:
-                          showModalBottomSheet(
-                              // backgroundColor: lightPink,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              context: context,
-                              builder: (context) => AccountPage());
-                          break;
-                        case 1:
-                          showModalBottomSheet(
-                              // backgroundColor: lightPink,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              context: context,
-                              builder: (context) => MyCalendar(
-                                  onDaySelectedCallback: updateGlobalsToday));
-                          break;
-                        case 2:
-                          // await showDialog(
-                          //     context: context,
-                          //     builder: (BuildContext context) {
-                          //       // Define the content of your dialog here
-                          //       return ThisIsNotAvailableYet();
-                          //     });
-                          await showModalBottomSheet(
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.vertical(
-                                  top: Radius.circular(20),
-                                ),
-                              ),
-                              isScrollControlled: false,
-                              context: context,
-                              builder: (BuildContext context) {
-                                // Define the content of your dialog here
-                                // return SingleChildScrollView(child: UserStats());
-                                return UserStats();
-                                // return ThisIsNotAvailableYet();
-                              });
+                  ],
+                  selectedItemColor: Color(0xFFC16C9E),
+                  unselectedItemColor: Color(0xFFC16C9E),
+                  selectedFontSize: 10,
+                  unselectedFontSize: 10,
+                  type: BottomNavigationBarType.fixed,
+                  onTap: (index) async {
+                    // Navigate to different pages based on the tapped icon
 
-                          break;
-                        //remove for android
-                        case 3:
-                          await LaunchApp.openApp(
-                            androidPackageName: 'org.chabad.android.DailyStudy',
-                            iosUrlScheme: 'org.chabad.DailyStudy://',
-                            appStoreLink:
-                                'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                            // openStore: false
-                          );
+                    switch (index) {
+                      case 0:
+                        showModalBottomSheet(
+                            // backgroundColor: lightPink,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            context: context,
+                            builder: (context) => AccountPage());
+                        break;
+                      case 1:
+                        showModalBottomSheet(
+                            // backgroundColor: lightPink,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            context: context,
+                            builder: (context) => MyCalendar(
+                                onDaySelectedCallback: updateGlobalsToday));
+                        break;
+                      case 2:
+                        // await showDialog(
+                        //     context: context,
+                        //     builder: (BuildContext context) {
+                        //       // Define the content of your dialog here
+                        //       return ThisIsNotAvailableYet();
+                        //     });
+                        await showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
+                            ),
+                            isScrollControlled: false,
+                            context: context,
+                            builder: (BuildContext context) {
+                              // Define the content of your dialog here
+                              // return SingleChildScrollView(child: UserStats());
+                              return UserStats();
+                              // return ThisIsNotAvailableYet();
+                            });
 
-                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                          // For testing purpose you can enter com.instagram.android
+                        break;
+                      //remove for android
+                      // case 3:
+                      //   await LaunchApp.openApp(
+                      //     androidPackageName: 'org.chabad.android.DailyStudy',
+                      //     iosUrlScheme: 'org.chabad.DailyStudy://',
+                      //     appStoreLink:
+                      //         'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
+                      //     // openStore: false
+                      //   );
 
-                          break;
-                      }
-                    }),
+                      //   // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
+                      //   // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
+                      //   // For testing purpose you can enter com.instagram.android
+
+                      //   break;
+                    }
+                  },
+                ),
               );
             }
           }

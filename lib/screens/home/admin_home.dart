@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -369,7 +371,7 @@ class HomeAdminState extends State<HomeAdmin> {
                 bottomNavigationBar: BottomNavigationBar(
                     elevation: 0,
                     backgroundColor: globals.bage,
-                    items: const <BottomNavigationBarItem>[
+                    items: <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
                         icon: Icon(CupertinoIcons.person,
                             color: Color(0xFFC16C9E)),
@@ -388,13 +390,14 @@ class HomeAdminState extends State<HomeAdmin> {
                         label: 'Stats',
                       ),
                       // remove for android
-                      BottomNavigationBarItem(
-                        icon: ImageIcon(
-                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                          color: Color(0xFFC16C9E),
+                      if (Platform.isIOS)
+                        BottomNavigationBarItem(
+                          icon: ImageIcon(
+                            AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                            color: Color(0xFFC16C9E),
+                          ),
+                          label: 'Daily Study',
                         ),
-                        label: 'Daily Study',
-                      ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),
@@ -695,7 +698,7 @@ class HomeAdminState extends State<HomeAdmin> {
                 bottomNavigationBar: BottomNavigationBar(
                     elevation: 0,
                     backgroundColor: globals.bage,
-                    items: const <BottomNavigationBarItem>[
+                    items: <BottomNavigationBarItem>[
                       BottomNavigationBarItem(
                         icon: Icon(CupertinoIcons.person,
                             color: Color(0xFFC16C9E)),
@@ -714,13 +717,14 @@ class HomeAdminState extends State<HomeAdmin> {
                         label: 'Stats',
                       ),
                       // remove for android
-                      BottomNavigationBarItem(
-                        icon: ImageIcon(
-                          AssetImage('lib/assets/chabadorgachos1@3x.png'),
-                          color: Color(0xFFC16C9E),
+                      if (Platform.isIOS)
+                        BottomNavigationBarItem(
+                          icon: ImageIcon(
+                            AssetImage('lib/assets/chabadorgachos1@3x.png'),
+                            color: Color(0xFFC16C9E),
+                          ),
+                          label: 'Daily Study',
                         ),
-                        label: 'Daily Study',
-                      ),
                     ],
                     selectedItemColor: Color(0xFFC16C9E),
                     unselectedItemColor: Color(0xFFC16C9E),

@@ -12,8 +12,7 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-const String customAppIconFilePath =
-    '/Users/Yechiel/Code/tzivos_hashem_milwaukee/android/app/src/main/res/mipmap-hdpi/ic_launcher_monochrome.png';
+const String customAppIconFilePath = 'lib/assets/NewLogo.png';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -58,7 +57,9 @@ class NotificationService {
 
   Future<void> initNotification() async {
     AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('file://${customAppIconFilePath}');
+        const AndroidInitializationSettings('@mipmap/launcher_icon');
+
+    // const AndroidInitializationSettings('${customAppIconFilePath}');
 
     var initializationSettingsIOS = DarwinInitializationSettings(
         requestAlertPermission: true,
@@ -108,8 +109,8 @@ class NotificationService {
       DateTime.now().year, // Use the current year
       DateTime.now().month, // Use the current month
       DateTime.now().day, // Use the current day
-      21, // Hour (24-hour format)
-      00, // Minute
+      15, // Hour (24-hour format)
+      46, // Minute
     );
     // print('Scheduled Time: $scheduledTime');
 
