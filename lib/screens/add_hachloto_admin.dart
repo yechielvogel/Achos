@@ -83,7 +83,7 @@ class AddHachlotoAdminState extends State<AddHachlotoAdmin> {
         ),
         centerTitle: true,
       ),
-      backgroundColor: globals.bage,
+      backgroundColor: globals.bage,          
       body: Column(
         children: [
           Expanded(

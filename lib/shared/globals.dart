@@ -6,14 +6,14 @@ List<String> AdminUIDs = [
   'l7HrIm5pdTNH6cYmpYrFKlB9v4S2'
 ];
 
-String hachlata_name_for_widget = '';
+String hachlata_name_for_widget = '';     
 String hachlata_description_for_widget = '';
 String hachlata_name_for_category_widget = 'test';
 String hachlata_home_doc_name = '';
 String done_hachlata_doc_name = '';
 String current_category = '';
 String current_category_choose = '';
-int current_category_choose_int = 0;
+int current_category_choose_int = 0;     
 int global_hachlata_number = 0;
 
 String currentHachlataChooseName = '';

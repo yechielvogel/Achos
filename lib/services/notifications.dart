@@ -109,8 +109,8 @@ class NotificationService {
       DateTime.now().year, // Use the current year
       DateTime.now().month, // Use the current month
       DateTime.now().day, // Use the current day
-      15, // Hour (24-hour format)
-      46, // Minute
+      21, // Hour (24-hour format)
+      00, // Minute
     );
     // print('Scheduled Time: $scheduledTime');
 

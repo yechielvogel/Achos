@@ -1,11 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:provider/provider.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
-import 'package:tzivos_hashem_milwaukee/screens/add_hachloto_admin.dart';
 import 'package:tzivos_hashem_milwaukee/widgets/pop_up_discription.dart';
 import '../models/category.dart';
 import '../models/ueser.dart';
@@ -13,7 +10,6 @@ import '../screens/home/admin_home.dart';
 import '../services/auth.dart';
 import '../services/database.dart';
 import '../shared/globals.dart';
-import 'hachlata_category_widget_admin.dart.dart';
 
 class AddHachlataTileWidget extends StatefulWidget {
   final String hachlataName;
@@ -81,6 +77,8 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
             'end ${globals.today.toString()}',
             'Color(0xFFCBBD7F);');
       },
+      
+      
       onLongPress: () async {
         await showDialog(
             context: context,

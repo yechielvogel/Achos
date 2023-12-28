@@ -10,7 +10,7 @@ class FirestoreDataFetcher {
   Future<List<AddHachlataHomeNewTest>> fetchAllCollectionsData() async {
     DocumentSnapshot collectionsDoc = await firestore
         .collection('addHachlataHomeNew')
-        .doc('Yechiel Vogel')
+        .doc(globals.current_namesofuser)
         .get();
     print('all collection data ${collectionsDoc}');
 
@@ -51,4 +51,3 @@ class FirestoreDataFetcher {
     return dataList;
   }
 }
-

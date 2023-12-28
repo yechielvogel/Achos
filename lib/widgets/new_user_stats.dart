@@ -330,8 +330,43 @@ class _UserStatsState extends State<UserStats> {
                   //           return false;
                   //         }).toList() ??
                   //         [];
+                  bool isWeekUpToDateBool = false;
+                  bool isMonthUpToDateBool = false;
+                  bool isTotalUpToDateBool = false;
 
-                  void isFull() {}
+                  void isWeekUpToDate(int hachlatas, String dateString) {
+                    DateTime date = DateTime.parse(dateString);
+                    int dayOfWeekInNumbers = date.weekday;
+                    ;
+                    if (hachlatas == dayOfWeekInNumbers) {
+                      isWeekUpToDateBool = true;
+                    } else
+                      isWeekUpToDateBool = false;
+                  }
+
+                  void isMonthUpToDate(
+                    int hachlatas,
+                  ) {
+                    int dayOfMonthInNumbers = int.parse(hebrew_focused_day
+                        .substring(0, 2)
+                        .replaceAll(RegExp(r'[^0-9]'), ''));
+                    if (hachlatas == dayOfMonthInNumbers) {
+                      isMonthUpToDateBool = true;
+                    } else
+                      isMonthUpToDateBool = false;
+                  }
+
+                  void isTotalUpToDate(
+                    int hachlatas,
+                  ) {
+                    int dayOfMonthInNumbers = int.parse(hebrew_focused_day
+                        .substring(0, 2)
+                        .replaceAll(RegExp(r'[^0-9]'), ''));
+                    if (hachlatas == dayOfMonthInNumbers) {
+                      isMonthUpToDateBool = true;
+                    } else
+                      isMonthUpToDateBool = false;
+                  }
 
                   return Container(
                     decoration: BoxDecoration(
@@ -487,13 +522,22 @@ class _UserStatsState extends State<UserStats> {
                                                                 hachlataCountsThisMonthNew[
                                                                         hachlataName] ??
                                                                     0;
-
+                                                            // code below will make the tile pink only if up to date
+                                                            // Color color =
+                                                            //     lightGreen;
+                                                            // isMonthUpToDate(
+                                                            //   count,
+                                                            // );
+                                                            // if (isMonthUpToDateBool) {
+                                                            //   color = newpink;
+                                                            // }
                                                             return StatsCounterWidget(
                                                               hachlatacountint:
                                                                   count
                                                                       .toString(),
                                                               isclicked:
                                                                   newpink,
+                                                              // isclicked: color,
                                                             );
                                                           }
 
@@ -583,13 +627,23 @@ class _UserStatsState extends State<UserStats> {
                                                                 hachlataCountsThisWeekNew[
                                                                         hachlataName] ??
                                                                     0;
-
+                                                            // code below will make the tile pink only if up to date
+                                                            // Color color =
+                                                            //     lightGreen;
+                                                            // isWeekUpToDate(
+                                                            //     count,
+                                                            //     globals
+                                                            //         .focused_day);
+                                                            // if (isWeekUpToDateBool) {
+                                                            //   color = newpink;
+                                                            // }
                                                             return StatsCounterWidget(
                                                               hachlatacountint:
                                                                   count
                                                                       .toString(),
                                                               isclicked:
                                                                   newpink,
+                                                              // isclicked: color,
                                                             );
                                                           }
 
@@ -678,12 +732,14 @@ class _UserStatsState extends State<UserStats> {
                                                                         hachlataName] ??
                                                                     0;
 
-                                                            return StatsCounterWidget(
+                                                            return StatsCounterWidget(         
                                                               hachlatacountint:
                                                                   count
                                                                       .toString(),
                                                               isclicked:
                                                                   newpink,
+                                                              // isclicked:
+                                                              //     lightGreen,
                                                             );
                                                           }
 
@@ -848,4 +904,3 @@ class _UserStatsState extends State<UserStats> {
 //
 //
 //
-            
