@@ -1,19 +1,13 @@
 import 'dart:io';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home.dart';
 import 'package:tzivos_hashem_milwaukee/screens/account_page.dart';
-// import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/widgets/hachlata_tile_widget.dart';
 import 'package:tzivos_hashem_milwaukee/screens/category_admin.dart';
-// import '../../services/auth.dart';
 import '../../models/add_hachlata_home_new.dart';
-import '../../models/add_hachlata_home_new_test.dart';
 import '../../services/database.dart';
 import '../../shared/globals.dart' as globals;
 import '../../models/ueser.dart';
@@ -39,14 +33,9 @@ class HomeAdminState extends State<HomeAdmin> {
     }
 
     return StreamBuilder<List<AddHachlataHomeNew>>(
-        // stream: DatabaseService(Uid: 'test')
-        //     .getSubCollectionStream('Yechiel Vogel', 'Cheshvan'),
         stream: DatabaseService(Uid: 'test').getSubCollectionStream(
             globals.displayusernameinaccount, globals.hebrew_focused_month),
         builder: (context, snapshot) {
-          // if (snapshot.connectionState == ConnectionState.waiting) {
-          //   return Loading(); // Display a loading indicator while waiting for data
-          // } else {
           if (snapshot.hasError) {
             return Scaffold(
                 backgroundColor: globals.bage,
@@ -81,23 +70,18 @@ class HomeAdminState extends State<HomeAdmin> {
           } else {
             List<AddHachlataHomeNew>? hachlataHomeNew = snapshot.data;
             if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
-              List<AddHachlataHome?> hachlataItemsForHome = [];
               List<AddHachlataHomeNew?> hachlataItemsForHomeNew = [];
 
               final hachlataHome =
                   Provider.of<List<AddHachlataHome?>?>(context);
-              // final hachlataHomeNew =
-              //     Provider.of<List<AddHachlataHomeNew?>?>(context);
-
               void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
                 if (dataList == null) {
-                  // print('the list is empty');
                 }
                 if (dataList != null) {
                   for (var item in dataList) {
                     if (item != null) {
                       print(
-                          item); // Will automatically call the overridden toString() method
+                          item); 
                     }
                   }
                 }
@@ -108,26 +92,21 @@ class HomeAdminState extends State<HomeAdmin> {
               globals.focused_day = focusedDate.toString();
               final user = Provider.of<Ueser?>(context);
 
-              hachlataItemsForHomeNew = hachlataHomeNew?.where((item) {
-                    if (item != null) {
-                      if (item.uid == user!.uesname) {
-                        if (item.date == 'N/A') {
-                          return true; // Include items with 'N/A' dates
-                        }
-
-                        // Parse the date from item.date
-                        final itemDate = DateTime.parse(item.date);
-
-                        // Compare the year, month, and day of itemDate with focusedDate
-                        bool dateComparison =
-                            itemDate.year == focusedDate.year &&
-                                itemDate.month == focusedDate.month &&
-                                itemDate.day == focusedDate.day;
-
-                        // Print both dates
-
-                        return dateComparison; // Include items where the date comparison is true
+              hachlataItemsForHomeNew = hachlataHomeNew.where((item) {
+                    if (item.uid == user!.uesname) {
+                      if (item.date == 'N/A') {
+                        return true; 
                       }
+
+                      final itemDate = DateTime.parse(item.date);
+
+                      bool dateComparison =
+                          itemDate.year == focusedDate.year &&
+                              itemDate.month == focusedDate.month &&
+                              itemDate.day == focusedDate.day;
+
+
+                      return dateComparison; 
                     }
 
                     return false;
@@ -333,14 +312,7 @@ class HomeAdminState extends State<HomeAdmin> {
                           crossAxisSpacing: 1,
                           childAspectRatio: 2.5,
                         ),
-                        // physics: NeverScrollableScrollPhysics(), // Disable grid scroll
-
                         itemBuilder: (context, index) {
-                          //   if (hachlataItemsForHome.isEmpty) {
-                          //   print('length${hachlataItemsForHome.length}');
-
-                          //   return const EmptyListWidget();
-                          // }
                           if (hachlataItemsForHomeNew != null &&
                               hachlataItemsForHomeNew.length > index) {
                             final hachlataName =
@@ -358,11 +330,8 @@ class HomeAdminState extends State<HomeAdmin> {
                             return HachlataTileWidget(
                                 hachlataName: hachlataName,
                                 isclicked: finaltilecolor);
-                            // Pass the name
                           }
-                          // Create a tile widget for each category's name
                           return Container();
-                          // return HachlataTileWidget();
                         },
                       ),
                     ),
@@ -405,11 +374,9 @@ class HomeAdminState extends State<HomeAdmin> {
                     unselectedFontSize: 10,
                     type: BottomNavigationBarType.fixed,
                     onTap: (index) async {
-                      // Navigate to different pages based on the tapped icon
                       switch (index) {
                         case 0:
                           showModalBottomSheet(
-                              // backgroundColor: lightPink,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(20),
@@ -420,7 +387,6 @@ class HomeAdminState extends State<HomeAdmin> {
                           break;
                         case 1:
                           showModalBottomSheet(
-                              // backgroundColor: lightPink,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(20),
@@ -444,11 +410,6 @@ class HomeAdminState extends State<HomeAdmin> {
                                 'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
                             // openStore: false
                           );
-
-                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                          // For testing purpose you can enter com.instagram.android
-
                           break;
                       }
                     }),
@@ -660,14 +621,7 @@ class HomeAdminState extends State<HomeAdmin> {
                           crossAxisSpacing: 1,
                           childAspectRatio: 2.5,
                         ),
-                        // physics: NeverScrollableScrollPhysics(), // Disable grid scroll
-
-                        itemBuilder: (context, index) {
-                          //   if (hachlataItemsForHome.isEmpty) {
-                          //   print('length${hachlataItemsForHome.length}');
-
-                          //   return const EmptyListWidget();
-                          // }
+                        itemBuilder: (context, index) {         
                           if (hachlataItemsForHome != null &&
                               hachlataItemsForHome.length > index) {
                             final hachlataName =
@@ -685,11 +639,8 @@ class HomeAdminState extends State<HomeAdmin> {
                             return HachlataTileWidget(
                                 hachlataName: hachlataName,
                                 isclicked: finaltilecolor);
-                            // Pass the name
                           }
-                          // Create a tile widget for each category's name
                           return Container();
-                          // return HachlataTileWidget();
                         },
                       ),
                     ),
@@ -716,7 +667,6 @@ class HomeAdminState extends State<HomeAdmin> {
                         ),
                         label: 'Stats',
                       ),
-                      // remove for android
                       if (Platform.isIOS)
                         BottomNavigationBarItem(
                           icon: ImageIcon(
@@ -732,11 +682,9 @@ class HomeAdminState extends State<HomeAdmin> {
                     unselectedFontSize: 10,
                     type: BottomNavigationBarType.fixed,
                     onTap: (index) async {
-                      // Navigate to different pages based on the tapped icon
                       switch (index) {
                         case 0:
                           showModalBottomSheet(
-                              // backgroundColor: lightPink,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(20),
@@ -747,7 +695,6 @@ class HomeAdminState extends State<HomeAdmin> {
                           break;
                         case 1:
                           showModalBottomSheet(
-                              // backgroundColor: lightPink,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.vertical(
                                   top: Radius.circular(20),
@@ -762,20 +709,13 @@ class HomeAdminState extends State<HomeAdmin> {
                               builder: (context) => StatsAdmin()));
 
                           break;
-                        //remove for android
                         case 3:
                           await LaunchApp.openApp(
                             androidPackageName: 'org.chabad.android.DailyStudy',
                             iosUrlScheme: 'org.chabad.DailyStudy://',
                             appStoreLink:
                                 'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                            // openStore: false
                           );
-
-                          // Enter the package name of the App you want to open and for iOS add the URLscheme to the Info.plist file.
-                          // The `openStore` argument decides whether the app redirects to PlayStore or AppStore.
-                          // For testing purpose you can enter com.instagram.android
-
                           break;
                       }
                     }),

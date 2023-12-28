@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tzivos_hashem_milwaukee/services/auth.dart';
 import 'package:tzivos_hashem_milwaukee/shared/loading.dart';
@@ -64,7 +63,6 @@ class _signInState extends State<signIn> {
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
                               color: newpink,
-                              // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -102,7 +100,6 @@ class _signInState extends State<signIn> {
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
                               color: newpink,
-                              // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -130,7 +127,7 @@ class _signInState extends State<signIn> {
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
-                                        20), // Adjust the value for desired roundness
+                                        20), 
                                   ),
                                   backgroundColor: newpink),
                               onPressed: () async {
@@ -149,8 +146,6 @@ class _signInState extends State<signIn> {
                                   }
                                 } else
                                   print('couldnt sign in');
-                                // widget.toggleView();
-
                                 print(email);
                                 print(password);
                               },
@@ -164,21 +159,12 @@ class _signInState extends State<signIn> {
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
-                                        20), // Adjust the value for desired roundness
+                                        20), 
                                   ),
                                   backgroundColor: newpink),
                               onPressed: () async {
                                 widget.toggleView();
-                                print('register');
-                                // dynamic result = await _auth.signInAnon();
-                                // if (result == null) {
-                                //   print('could not log in');
-                                // } else {
-                                //   // print('signed in');
-                                //   print(result.uid);
-                                //   print(email);
-                                //   print(password);
-                                // }
+                                print('register');                     
                                 print(email);
                                 print(password);
                               },
@@ -201,15 +187,3 @@ class _signInState extends State<signIn> {
           );
   }
 }
-// ElevatedButton(
-//             onPressed: () async {
-//               dynamic result = await _auth.signInAnon();
-//               if (result == null) {
-//                 print('could not log in');
-//               } else {
-//                 print('signed in');
-//                 print(result.uid);
-//               }
-//             },
-//             child: Text('sign in anon'),
-//           )

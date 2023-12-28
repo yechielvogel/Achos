@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:kosher_dart/kosher_dart.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home.dart';
@@ -20,9 +21,10 @@ import 'package:flutter/services.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import 'package:timezone/timezone.dart' as tz;
 
+bool scheduleNotification = false;
 Future<void> main() async {
-
-
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  scheduleNotification = prefs.getBool('scheduleNotification') ?? false;
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,9 +34,13 @@ Future<void> main() async {
   tz.setLocalLocation(tz.getLocation('America/New_York'));
   final notificationsService = NotificationService();
   await notificationsService.initialize();
-  await notificationsService.scheduleNotification(
-    title: 'Achos',
-  );
+  if (!scheduleNotification) {
+    await notificationsService.scheduleNotification(
+      title: 'Achos',
+    );
+    prefs.setBool('scheduleNotification', true);
+  }
+
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

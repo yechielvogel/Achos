@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals ;
@@ -71,7 +70,6 @@ class _RegisterState extends State<Register> {
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
                               color: newpink,
-                              // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -114,7 +112,6 @@ class _RegisterState extends State<Register> {
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
                               color: newpink,
-                              // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -152,7 +149,6 @@ class _RegisterState extends State<Register> {
                                     BorderSide(color: lightGreen, width: 3.0)),
                             errorStyle: TextStyle(
                               color: newpink,
-                              // Change this color to your desired validation error text color
                             ),
                             errorBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(20),
@@ -199,7 +195,7 @@ class _RegisterState extends State<Register> {
                                     });
                                   }
                                 } else
-                                  print('couldnt register');
+                                  print("couldn't register");
                                 // widget.toggleView();
                               },
                               child: Text(
@@ -212,21 +208,11 @@ class _RegisterState extends State<Register> {
                               style: ElevatedButton.styleFrom(
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(
-                                        20), // Adjust the value for desired roundness
+                                        20), 
                                   ),
                                   backgroundColor: newpink),
                               onPressed: () async {
                                 widget.toggleView();
-
-                                // dynamic result = await _auth.signInAnon();
-                                // if (result == null) {
-                                //   print('could not log in');
-                                // } else {
-                                //   // print('signed in');
-                                //   print(result.uid);
-                                //   print(email);
-                                //   print(password);
-                                // }
                                 print(email);
                                 print(password);
                               },

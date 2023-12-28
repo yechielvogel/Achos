@@ -15,11 +15,8 @@ import '../../shared/loading.dart';
 import '../../widgets/calendar.dart';
 import '../../widgets/new_user_stats.dart';
 import '../../widgets/settings_off_widget.dart';
-import '../../widgets/this_is_not_avalible_yet.dart';
 import '../account_page.dart';
 import '../category.dart';
-import '../category_admin.dart';
-import '../stats_admin.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
