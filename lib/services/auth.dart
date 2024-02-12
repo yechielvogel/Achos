@@ -18,6 +18,12 @@ class AuthService {
         : null;
   }
 
+// this is for testing signing into a users account. make sure to change back.
+  //     return user != null
+  //       ? Ueser(uid: 'JdjVvSN9ukUYCuW6FFNZQZ6rCvE2', uesname: 'Mushka Hecht ')
+  //       : null;
+  // }
+
   Stream<Ueser?> get user {
     return _auth
         .authStateChanges()

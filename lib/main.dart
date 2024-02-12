@@ -21,19 +21,30 @@ import 'package:flutter/services.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import 'package:timezone/timezone.dart' as tz;
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+Future<void> main() async {   
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   tz.initializeTimeZones();
   await initializeDateFormatting();
   tz.setLocalLocation(tz.getLocation('America/New_York'));
+  bool scheduleNotification = false;
+  SharedPreferences prefs = await SharedPreferences.getInstance();
+  scheduleNotification = prefs.getBool('scheduleNotificationNew') ?? false;
   final notificationsService = NotificationService();
   await notificationsService.initialize();
-  await notificationsService.scheduleNotification(
-    title: 'Achos',
-  );
+  if (!scheduleNotification) {
+    print('firsttime openening app');
+    await notificationsService.scheduleNotification(
+      title: 'Achos',
+    );
+    prefs.setBool('scheduleNotificationNew', true);
+  }
+
+  // final notificationsService = NotificationService();
+  // await notificationsService.initialize();
+  // await notificationsService.scheduleNotification(
+  //   title: 'Achos',
+  // );
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,

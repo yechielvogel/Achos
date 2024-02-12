@@ -12,7 +12,10 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
-const String customAppIconFilePath = 'lib/assets/NewLogo.png';
+import 'dart:math';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 
 class NotificationService {
   final FlutterLocalNotificationsPlugin notificationsPlugin =
@@ -32,20 +35,35 @@ class NotificationService {
   Future<void> showNextRandomNotification() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    if (currentNotificationIndex >= notifications.length) {
+    // Retrieve the last shown notification date from shared preferences
+    final String lastShownDate = prefs.getString('lastShownDate') ?? '';
+
+    // Get today's date
+    final String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    // Check if the last shown notification was not today
+    if (lastShownDate != today) {
       // Shuffle the list if all notifications have been shown
-      notifications.shuffle();
-      currentNotificationIndex = 0;
+      if (currentNotificationIndex >= notifications.length) {
+        notifications.shuffle();
+        currentNotificationIndex = 0;
+      }
+
+      final String randomMessage = notifications[currentNotificationIndex];
+
+      // Save the current index to shared preferences before updating it
+      await prefs.setInt('currentNotificationIndex', currentNotificationIndex);
+
+      currentNotificationIndex++; // Move this line here
+
+      // Save today's date as the last shown date
+      await prefs.setString('lastShownDate', today);
+
+      print('Updated currentNotificationIndex: $currentNotificationIndex');
+
+      // Show the notification
+      await showNotification(title: 'Achos', body: randomMessage);
     }
-
-    final String randomMessage = notifications[currentNotificationIndex];
-
-    // Save the current index to shared preferences before updating it
-    await prefs.setInt('currentNotificationIndex', currentNotificationIndex);
-
-    currentNotificationIndex++; // Move this line here
-    await prefs.setInt('currentNotificationIndex', currentNotificationIndex);
-    print('Updated currentNotificationIndex: $currentNotificationIndex');
   }
 
   Future<void> initialize() async {
@@ -59,14 +77,11 @@ class NotificationService {
     AndroidInitializationSettings initializationSettingsAndroid =
         const AndroidInitializationSettings('@mipmap/launcher_icon');
 
-    // const AndroidInitializationSettings('${customAppIconFilePath}');
-
     var initializationSettingsIOS = DarwinInitializationSettings(
-        requestAlertPermission: true,
-        requestBadgePermission: true,
-        requestSoundPermission: true,
-        onDidReceiveLocalNotification:
-            (int id, String? title, String? body, String? payload) async {});
+      requestAlertPermission: true,
+      requestBadgePermission: true,
+      requestSoundPermission: true,
+    );
 
     var initializationSettings = InitializationSettings(
         android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
@@ -75,20 +90,32 @@ class NotificationService {
             (NotificationResponse notificationResponse) async {});
   }
 
-  notificationDetails() {
+  NotificationDetails notificationDetails() {
     return const NotificationDetails(
-        android: AndroidNotificationDetails('channelId', 'channelName',
-            importance: Importance.max),
-        iOS: DarwinNotificationDetails());
+      android: AndroidNotificationDetails(
+        'channelId',
+        'channelName',
+        importance: Importance.max,
+      ),
+      iOS: DarwinNotificationDetails(),
+    );
   }
 
-  Future showNotification(
-      {int id = 0, String? title, String? body, String? payLoad}) async {
+  Future<void> showNotification({
+    int id = 0,
+    String? title,
+    String? body,
+    String? payLoad,
+  }) async {
     return notificationsPlugin.show(
-        id, title, body, await notificationDetails());
+      id,
+      title,
+      body,
+      notificationDetails(),
+    );
   }
 
-  Future scheduleNotification({
+  Future<void> scheduleNotification({
     int id = 0,
     String? title = 'Achos',
   }) async {
@@ -112,7 +139,6 @@ class NotificationService {
       21, // Hour (24-hour format)
       00, // Minute
     );
-    // print('Scheduled Time: $scheduledTime');
 
     return notificationsPlugin.zonedSchedule(
       id,
@@ -127,71 +153,3 @@ class NotificationService {
     );
   }
 }
-
-// ..
-// ..
-// ..
-// class Notifications {
-//   Notifications();
-//   final _notifications = FlutterLocalNotificationsPlugin();
-
-//   Future<void> initialize() async {
-//     tz.initializeTimeZones();
-//     const AndroidInitializationSettings androidInitializationSettings =
-//         AndroidInitializationSettings('@drawable/launch_background');
-//     DarwinInitializationSettings iosInitializationSettings =
-//         DarwinInitializationSettings(
-//             requestAlertPermission: true,
-//             requestBadgePermission: true,
-//             requestSoundPermission: true,
-//             onDidReceiveLocalNotification: _onDidReceiveLocalNotification);
-//     final InitializationSettings settings = InitializationSettings(
-//         android: androidInitializationSettings, iOS: iosInitializationSettings);
-//     await _notifications.initialize(settings);
-//   }
-
-//   Future<NotificationDetails> _notificationsDetails() async {
-//     const AndroidNotificationDetails androidNotificationDetails =
-//         AndroidNotificationDetails('chanel id', 'chanel name',
-//             channelDescription: 'description',
-//             importance: Importance.max,
-//             priority: Priority.max);
-//     const DarwinNotificationDetails darwinNotificationDetails =
-//         DarwinNotificationDetails();
-//     return const NotificationDetails(
-//         android: androidNotificationDetails, iOS: darwinNotificationDetails);
-//   }
-
-//   Future<void> scheduleDailyNotifications() async {
-//     final detais = await _notificationsDetails();
-
-//     // Calculate the time for 7:00 PM
-//     tz.TZDateTime scheduledTime = nextInstanceOfSevenPM();
-
-//     await _notifications.zonedSchedule(
-//       0, // Notification ID
-//       'Daily Notification',
-//       'Your notification content here',
-//       scheduledTime,
-//       detais,
-//       androidAllowWhileIdle: true,
-//       uiLocalNotificationDateInterpretation:
-//           UILocalNotificationDateInterpretation.absoluteTime,
-//     );
-//   }
-
-//   tz.TZDateTime nextInstanceOfSevenPM() {
-//     final tz.TZDateTime now = tz.TZDateTime.now(tz.local);
-//     tz.TZDateTime scheduledDate =
-//         tz.TZDateTime(tz.local, now.year, now.month, now.day, 16, 14, 0);
-//     if (scheduledDate.isBefore(now)) {
-//       scheduledDate = scheduledDate.add(const Duration(days: 1));
-//     }
-//     return scheduledDate;
-//   }
-
-//   void _onDidReceiveLocalNotification(
-//       int id, String? title, String? body, String? payload) {
-//     print('id $id');
-//   }
-// }

@@ -80,13 +80,13 @@ class _AddHachlataTileWidgetAdminState
               'N/A',
               'N/A',
               'Color(0xFFCBBD7F);');
-        }
-        await DatabaseService(Uid: 'test').updateHachlataHome(
-            user!.uesname.toString(),
-            widget.hachlataName,
-            'N/A',
-            'end ${globals.today.toString()}',
-            'Color(0xFFCBBD7F);');
+        } else
+          await DatabaseService(Uid: 'test').updateHachlataHome(
+              user!.uesname.toString(),
+              widget.hachlataName,
+              'N/A',
+              'end ${globals.today.toString()}',
+              'Color(0xFFCBBD7F);');
       },
       onLongPress: () async {
         await showDialog(

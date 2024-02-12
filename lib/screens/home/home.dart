@@ -82,7 +82,6 @@ class _HomeState extends State<Home> {
         } else {
           List<AddHachlataHomeNew>? hachlataHomeNew = snapshot.data;
           // if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
-          print('got to the first home ');
           List<AddHachlataHome?> hachlataItemsForHome = [];
           List<AddHachlataHomeNew?> hachlataItemsForHomeNew = [];
 
@@ -172,19 +171,17 @@ class _HomeState extends State<Home> {
                 String itemKey = '${item.name}_${item.uid}';
 
                 if (item.date == 'N/A' && item.hebrewdate != 'N/A') {
-                  print('item hebrew date is not na');
-
-                  if (item.hebrewdate.contains('2023') &&
+                  if (item.hebrewdate.contains('202') &&
                       !item.hebrewdate.contains('end')) {
                     DateTime itemDate1 = DateTime.parse(item.hebrewdate);
-                    DateTime globalsfocusedDate =
+                    DateTime globalsfocusedDate =     
                         DateTime.parse(globals.focused_day);
                     DateTime todayDate1 = DateTime(globals.today.year,
                         globals.today.month, globals.today.day);
                     DateTime todayhebrewdate = DateTime(
                         itemDate1.year, itemDate1.month, itemDate1.day);
                     DateTime itemDateAddOneDay =
-                        itemDate1.add(Duration(days: 1));
+                        itemDate1.add(Duration(days: 0));
 
                     if (globalsfocusedDate.isAfter(itemDateAddOneDay)) {
                       // If an item with the same key already exists and has a matching date, add the other one
@@ -196,7 +193,6 @@ class _HomeState extends State<Home> {
                     }
                   } else if (item.hebrewdate.contains('202') &&
                       item.hebrewdate.contains('end')) {
-                    print('there is a end tile');
                     String dateWithOutEnd =
                         item.hebrewdate.replaceAll(RegExp(r'end\s'), '');
                     DateTime itemDate1 = DateTime.parse(dateWithOutEnd);

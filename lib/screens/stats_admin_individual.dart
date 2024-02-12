@@ -152,7 +152,7 @@ class _TestState extends State<StatsAdminIndividual> {
                   String itemKey = '${item.name}_${item.uid}';
 
                   if (item.date == 'N/A' && item.hebrewdate != 'N/A') {
-                    if (item.hebrewdate.contains('2023') &&
+                    if (item.hebrewdate.contains('202') &&
                         !item.hebrewdate.contains('end')) {
                       DateTime itemDate1 = DateTime.parse(item.hebrewdate);
                       DateTime globalsfocusedDate =
@@ -173,7 +173,7 @@ class _TestState extends State<StatsAdminIndividual> {
                         itemsMap[itemKey] = item;
                       }
                     }
-                    if (item.hebrewdate.contains('2023') &&
+                    if (item.hebrewdate.contains('202') &&
                         item.hebrewdate.contains('end')) {
                       String dateWithOutEnd =
                           item.hebrewdate.replaceAll(RegExp(r'end\s'), '');

@@ -14,7 +14,6 @@ import '../choose_hachlatas_on_start_admin.dart.dart';
 import 'home.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 
-import 'hometest.dart';
 // import 'package:tzivos_hashem_milwaukee/screens/home/home.dart';
 
 class Wrapper extends StatelessWidget {
@@ -26,7 +25,6 @@ class Wrapper extends StatelessWidget {
     final user = Provider.of<Ueser?>(context);
     final hachlatahome = Provider.of<List<AddHachlataHome?>?>(context);
     final firstcategorylist = Provider.of<List<Category?>?>(context);
-    print("firstcategorylist: $firstcategorylist");
 
     List<AddHachlataHome?> istherehachlatas = [];
 
@@ -70,7 +68,6 @@ class Wrapper extends StatelessWidget {
       displayusernameinaccount = user.uesname!;
       if (istherehachlatas.length != 0 &&
           istherehachlatas.length > firstcategorylist.length) {
-        print('is there hachlata length ${istherehachlatas.length}');
         return Home();
       }
       if (istherehachlatas.length == 0 ||
@@ -80,11 +77,10 @@ class Wrapper extends StatelessWidget {
         print(globals.current_category_choose);
         return ChooseHachlataOnStart();
       } else
-        print('else home line 79');
-      return Home();
+        return Home();
     } else
       displayusernameinaccount = user.uesname!;
-    print('else home line 82');
+    print('else');
     return Home();
   }
 }

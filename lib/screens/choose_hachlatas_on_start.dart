@@ -91,29 +91,14 @@ class _ChooseHachlataOnStartState extends State<ChooseHachlataOnStart> {
                         hachlataItemsForCurrentCategory.length > index) {
                       final hachlataName =
                           hachlataItemsForCurrentCategory[index]!.name ?? '';
-                      return Container(
-                        margin: EdgeInsets.symmetric(vertical: 12),
-                        // child: Slidable(
-                        //   endActionPane:
-                        //       ActionPane(motion: StretchMotion(), children: [
-                        //     SlidableAction(
-                        //       borderRadius:
-                        //           BorderRadius.all(Radius.circular(20.0)),
-                        //       backgroundColor: globals.lightPink,
-                        //       foregroundColor: globals.bage,
-                        //       icon: CupertinoIcons.delete,
-                        //       onPressed: (context) => Container(),
-                        //       spacing: 0,
-                        //     )
-                        //   ]),
-                        child: Container(
-                          child: AddHachlataTileWidgetAdmin(
+                      return Column(
+                        children: [
+                          AddHachlataTileWidgetAdmin(
                             hachlataName: hachlataName,
                             isclicked: globals.lightGreen,
                             rebuildCallback: rebuildOtherFile,
                           ),
-                        ),
-                        // ),
+                        ],
                       );
                       // Pass the name
                     }

@@ -157,7 +157,7 @@ class HomeAdminState extends State<HomeAdmin> {
                       DateTime todayhebrewdate = DateTime(
                           itemDate1.year, itemDate1.month, itemDate1.day);
                       DateTime itemDateAddOneDay =
-                          itemDate1.add(Duration(days: 1));
+                          itemDate1.add(Duration(days: 0));
 
                       if (globalsfocusedDate.isAfter(itemDateAddOneDay)) {
                         // If an item with the same key already exists and has a matching date, add the other one
@@ -313,13 +313,13 @@ class HomeAdminState extends State<HomeAdmin> {
                               hachlataItemsForHomeNew[index]!.color ?? '';
                           Color finaltilecolor;
                           if (tilecolor == 'Color(0xFFCBBD7F);') {
-                            finaltilecolor = globals.lightGreen;    
+                            finaltilecolor = globals.lightGreen;
                           } else {
                             finaltilecolor = globals.doneHachlata;
                           }
                           filterHachlataListNew(hachlataItemsForHomeNew);
 
-                          return HachlataTileWidget(     
+                          return HachlataTileWidget(
                               hachlataName: hachlataName,
                               isclicked: finaltilecolor);
                         }

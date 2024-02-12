@@ -62,7 +62,7 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
           }
         });
         if (widget.isclicked == Color(0xFFCBBD7F)) {
-                    current_chosen_hachlata_home = widget.hachlataName;
+          current_chosen_hachlata_home = widget.hachlataName;
           await DatabaseService(Uid: 'test').updateHachlataHome(
               user!.uesname.toString(),
               widget.hachlataName,
@@ -70,15 +70,13 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
               globals.today.toString(),
               'Color(0xFFCBBD7F);');
         } else
-        await DatabaseService(Uid: 'test').updateHachlataHome(
-            user!.uesname.toString(),
-            widget.hachlataName,
-            'N/A',
-            'end ${globals.today.toString()}',
-            'Color(0xFFCBBD7F);');
+          await DatabaseService(Uid: 'test').updateHachlataHome(
+              user!.uesname.toString(),
+              widget.hachlataName,
+              'N/A',
+              'end ${globals.today.toString()}',
+              'Color(0xFFCBBD7F);');
       },
-      
-      
       onLongPress: () async {
         await showDialog(
             context: context,
@@ -91,23 +89,19 @@ class _AddHachlataTileWidgetState extends State<AddHachlataTileWidget> {
       },
       child: Padding(
         padding: const EdgeInsets.only(right: 8, left: 8),
-        child: Column(
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: widget.isclicked,
-              ),
-              height: 58,
-              child: Center(
-                child: Text(
-                  widget.hachlataName,
-                  style: TextStyle(
-                      color: bage, fontSize: 12, fontWeight: FontWeight.bold),
-                ),
-              ),
+        child: Container(
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: widget.isclicked,
+          ),
+          height: 58,
+          child: Center(
+            child: Text(
+              widget.hachlataName,
+              style: TextStyle(
+                  color: bage, fontSize: 12, fontWeight: FontWeight.bold),
             ),
-          ],
+          ),
         ),
       ),
     );
