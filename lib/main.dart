@@ -20,9 +20,10 @@ import 'package:intl/date_symbol_data_local.dart';
 import 'package:flutter/services.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart' as globals;
 import 'package:timezone/timezone.dart' as tz;
-
+      
 Future<void> main() async {   
   WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   await Firebase.initializeApp();
   tz.initializeTimeZones();
   await initializeDateFormatting();

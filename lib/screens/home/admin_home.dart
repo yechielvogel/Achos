@@ -22,8 +22,6 @@ class HomeAdmin extends StatefulWidget {
 }
 
 class HomeAdminState extends State<HomeAdmin> {
-  bool isPressed = false;
-
   @override
   Widget build(BuildContext context) {
     void updateGlobalsToday(DateTime newToday) {
@@ -40,20 +38,6 @@ class HomeAdminState extends State<HomeAdmin> {
             return Scaffold(
                 backgroundColor: globals.bage,
                 appBar: AppBar(
-                  // Padding(
-                  //   padding: const EdgeInsets.all(10.0),
-                  //   child: Container(
-                  //       child: Center(
-                  //           child: Text(
-                  //         globals.global_hachlata_number.toString(),
-                  //         style: TextStyle(color: globals.bage),
-                  //       )),
-                  //       decoration: BoxDecoration(
-                  //         shape: BoxShape.circle,
-                  //         color: globals.newpink,
-                  //       )),
-                  // ),
-                  // leadingWidth: 40,
                   title: Center(
                     child: Image.asset(
                       'lib/assets/NewLogo.png',
@@ -62,14 +46,12 @@ class HomeAdminState extends State<HomeAdmin> {
                     ),
                   ),
                   centerTitle: true,
-
                   backgroundColor: globals.bage,
                   elevation: 0,
                 ),
                 body: Loading());
           } else {
             List<AddHachlataHomeNew>? hachlataHomeNew = snapshot.data;
-            // if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
             List<AddHachlataHomeNew?> hachlataItemsForHomeNew = [];
 
             final hachlataHome = Provider.of<List<AddHachlataHome?>?>(context);
@@ -90,18 +72,17 @@ class HomeAdminState extends State<HomeAdmin> {
             final user = Provider.of<Ueser?>(context);
 
             hachlataItemsForHomeNew = hachlataHomeNew?.where((item) {
-                  if (item.uid == user!.uesname) {
-                    if (item.date == 'N/A') {
-                      return true;
+                  if (item != null) {
+                    if (item.uid == user!.uesname) {
+                      if (item.date == 'N/A') {
+                        return true;
+                      }
+                      final itemDate = DateTime.parse(item.date);
+                      bool dateComparison = itemDate.year == focusedDate.year &&
+                          itemDate.month == focusedDate.month &&
+                          itemDate.day == focusedDate.day;
+                      return dateComparison;
                     }
-
-                    final itemDate = DateTime.parse(item.date);
-
-                    bool dateComparison = itemDate.year == focusedDate.year &&
-                        itemDate.month == focusedDate.month &&
-                        itemDate.day == focusedDate.day;
-
-                    return dateComparison;
                   }
 
                   return false;
@@ -118,7 +99,6 @@ class HomeAdminState extends State<HomeAdmin> {
                   color: item.color,
                 );
 
-                // Find the index to insert the new item in alphabetical order
                 int insertIndex = 0;
                 while (insertIndex < hachlataItemsForHomeNew.length) {
                   if (item.name.compareTo(
@@ -138,7 +118,6 @@ class HomeAdminState extends State<HomeAdmin> {
                 List<AddHachlataHomeNew?> inputList) {
               Map<String, AddHachlataHomeNew?> itemsMap = {};
 
-              // Get today's date year, month, and day
               DateTime focusedDate = DateTime(
                   globals.today.year, globals.today.month, globals.today.day);
 
@@ -147,51 +126,46 @@ class HomeAdminState extends State<HomeAdmin> {
                   String itemKey = '${item.name}_${item.uid}';
 
                   if (item.date == 'N/A' && item.hebrewdate != 'N/A') {
-                    if (item.hebrewdate.contains('202') &&
-                        !item.hebrewdate.contains('end')) {
-                      DateTime itemDate1 = DateTime.parse(item.hebrewdate);
-                      DateTime globalsfocusedDate =
+                    if (!item.hebrewdate.contains('end')) {
+                      String itemDate =    
+                          item.hebrewdate.toString().replaceAll("Z", "");
+                      DateTime globalsFocusedDate =
                           DateTime.parse(globals.focused_day);
-                      DateTime todayDate1 = DateTime(globals.today.year,
-                          globals.today.month, globals.today.day);
-                      DateTime todayhebrewdate = DateTime(
-                          itemDate1.year, itemDate1.month, itemDate1.day);
-                      DateTime itemDateAddOneDay =
-                          itemDate1.add(Duration(days: 0));
-
-                      if (globalsfocusedDate.isAfter(itemDateAddOneDay)) {
-                        // If an item with the same key already exists and has a matching date, add the other one
+                      if (globalsFocusedDate
+                              .isAfter(DateTime.parse(itemDate)) ||
+                          globalsFocusedDate.toString() ==
+                              itemDate.toString()) {
                         if (itemsMap.containsKey(itemKey) &&
                             itemsMap[itemKey]?.date == focusedDate.toString()) {
                           itemsMap.remove(itemKey);
                         }
                         itemsMap[itemKey] = item;
                       }
-                    }
-                    if (item.hebrewdate.contains('202') &&
-                        item.hebrewdate.contains('end')) {
+                    } else if (item.hebrewdate.contains('end')) {
                       String dateWithOutEnd =
                           item.hebrewdate.replaceAll(RegExp(r'end\s'), '');
-                      DateTime itemDate1 = DateTime.parse(dateWithOutEnd);
-                      DateTime globalsfocusedDate =
+                      DateTime itemDateWitchOutZ =
+                          DateTime.parse(dateWithOutEnd);
+                      String itemDate =
+                          itemDateWitchOutZ.toString().replaceAll("Z", "");
+                      DateTime globalsFocusedDate =
                           DateTime.parse(globals.focused_day);
-                      DateTime todayDate1 = DateTime(globals.today.year,
-                          globals.today.month, globals.today.day);
-                      DateTime todayhebrewdate = DateTime(
-                          itemDate1.year, itemDate1.month, itemDate1.day);
-                      DateTime itemDatePlusOneDay =
-                          itemDate1.add(Duration(days: 1));
-
-                      if (globalsfocusedDate.isBefore(itemDatePlusOneDay)) {
-                        // If an item with the same key already exists and has a matching date, add the other one
+                      print('focused date $globalsFocusedDate');
+                      print('item date $itemDate');
+                      if (globalsFocusedDate
+                              .isBefore(DateTime.parse(itemDate)) ||
+                          globalsFocusedDate.toString() ==
+                              itemDate.toString()) {
                         if (itemsMap.containsKey(itemKey) &&
                             itemsMap[itemKey]?.date == focusedDate.toString()) {
                           itemsMap.remove(itemKey);
                         }
+
                         itemsMap[itemKey] = item;
                       }
                     }
                   }
+
                   if (item.date == 'N/A' && item.hebrewdate == 'N/A') {
                     if (itemsMap.containsKey(itemKey) &&
                         itemsMap[itemKey]?.date == focusedDate.toString()) {
@@ -199,29 +173,24 @@ class HomeAdminState extends State<HomeAdmin> {
                     }
                     itemsMap[itemKey] = item;
                   } else {
-                    // Parse the date from item.date
                     DateTime itemDate;
                     try {
                       itemDate = DateTime.parse(item.date);
                     } catch (e) {
-                      // Handle parsing error, set a default date
                       itemDate = DateTime(0);
                     }
 
-                    // If an item with the same key already exists and has a matching date, add the other one
                     if (itemsMap.containsKey(itemKey) &&
                         itemsMap[itemKey]?.date == focusedDate.toString()) {
                       itemsMap.remove(itemKey);
                     }
 
-                    // If an item with the same key already exists but has an 'N/A' date, replace it with this item
                     if (itemsMap.containsKey(itemKey) &&
                         itemsMap[itemKey]?.date == 'N/A') {
                       itemsMap.remove(itemKey);
                       itemsMap[itemKey] = item;
                     }
 
-                    // Otherwise, include items where the date comparison is true
                     bool dateComparisonResult =
                         itemDate.year == focusedDate.year &&
                             itemDate.month == focusedDate.month &&
@@ -244,20 +213,6 @@ class HomeAdminState extends State<HomeAdmin> {
               backgroundColor: globals.bage,
               appBar: AppBar(
                 leading: Container(),
-                // Padding(
-                //   padding: const EdgeInsets.all(10.0),
-                //   child: Container(
-                //       child: Center(
-                //           child: Text(
-                //         globals.global_hachlata_number.toString(),
-                //         style: TextStyle(color: globals.bage),
-                //       )),
-                //       decoration: BoxDecoration(
-                //         shape: BoxShape.circle,
-                //         color: globals.newpink,
-                //       )),
-                // ),
-                // leadingWidth: 40,
                 title: Center(
                   child: Image.asset(
                     'lib/assets/NewLogo.png',
@@ -266,7 +221,6 @@ class HomeAdminState extends State<HomeAdmin> {
                   ),
                 ),
                 centerTitle: true,
-
                 backgroundColor: globals.bage,
                 elevation: 0,
                 actions: <Widget>[

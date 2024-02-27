@@ -1,30 +1,16 @@
-import 'package:external_app_launcher/external_app_launcher.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:table_calendar/table_calendar.dart';
 import 'package:tzivos_hashem_milwaukee/models/add_hachlata_home.dart';
-import 'package:tzivos_hashem_milwaukee/screens/account_page.dart';
-// import 'package:tzivos_hashem_milwaukee/services/auth.dart';
-import 'package:tzivos_hashem_milwaukee/widgets/hachlata_tile_widget.dart';
-import 'package:tzivos_hashem_milwaukee/screens/category_admin.dart';
-// import '../../services/auth.dart';
+
 import '../../shared/globals.dart' as globals;
 import '../../models/ueser.dart';
 import '../models/add_hachlata_home_new.dart';
 import '../models/change_settings_switch.dart';
 import '../services/database.dart';
-import '../shared/loading.dart';
 import '../widgets/calendar.dart';
-import '../widgets/get_all_data_in_all_collections.dart';
 import '../widgets/new_admin_stats.dart';
-import '../widgets/new_user_stats.dart';
-import '../widgets/settings_off_widget.dart';
 import '../widgets/stats_hachlata_tile_widget.dart';
-import '../widgets/this_is_not_avalible_yet.dart';
-import 'category.dart';
 
 class StatsAdminIndividual extends StatefulWidget {
   const StatsAdminIndividual({super.key});
@@ -63,23 +49,15 @@ class _TestState extends State<StatsAdminIndividual> {
             );
           } else {
             List<AddHachlataHomeNew>? hachlataHomeNew = snapshot.data;
-            // if (hachlataHomeNew != null && hachlataHomeNew.isNotEmpty) {
-            // List<AddHachlataHome?> hachlataItemsForHome = [];
             List<AddHachlataHomeNew?> hachlataItemsForHomeNew = [];
 
             final hachlataHome = Provider.of<List<AddHachlataHome?>?>(context);
-            // final hachlataHomeNew =
-            //     Provider.of<List<AddHachlataHomeNew?>?>(context);
-
             void printDataFromList(List<AddHachlataHomeNew?>? dataList) {
-              if (dataList == null) {
-                // print('the list is empty');
-              }
+              if (dataList == null) {}
               if (dataList != null) {
                 for (var item in dataList) {
                   if (item != null) {
-                    print(
-                        item); // Will automatically call the overridden toString() method
+                    print(item);
                   }
                 }
               }
@@ -139,11 +117,11 @@ class _TestState extends State<StatsAdminIndividual> {
                 hachlataItemsForHomeNew.insert(insertIndex, newItem);
               } else {}
             });
+
             List<AddHachlataHomeNew?> filterHachlataListNew(
                 List<AddHachlataHomeNew?> inputList) {
               Map<String, AddHachlataHomeNew?> itemsMap = {};
 
-              // Get today's date year, month, and day
               DateTime focusedDate = DateTime(
                   globals.today.year, globals.today.month, globals.today.day);
 
@@ -152,51 +130,46 @@ class _TestState extends State<StatsAdminIndividual> {
                   String itemKey = '${item.name}_${item.uid}';
 
                   if (item.date == 'N/A' && item.hebrewdate != 'N/A') {
-                    if (item.hebrewdate.contains('202') &&
-                        !item.hebrewdate.contains('end')) {
-                      DateTime itemDate1 = DateTime.parse(item.hebrewdate);
-                      DateTime globalsfocusedDate =
+                    if (!item.hebrewdate.contains('end')) {
+                      String itemDate =
+                          item.hebrewdate.toString().replaceAll("Z", "");
+                      DateTime globalsFocusedDate =
                           DateTime.parse(globals.focused_day);
-                      DateTime todayDate1 = DateTime(globals.today.year,
-                          globals.today.month, globals.today.day);
-                      DateTime todayhebrewdate = DateTime(
-                          itemDate1.year, itemDate1.month, itemDate1.day);
-                      DateTime itemDateAddOneDay =
-                          itemDate1.add(Duration(days: 1));
-
-                      if (globalsfocusedDate.isAfter(itemDateAddOneDay)) {
-                        // If an item with the same key already exists and has a matching date, add the other one
+                      if (globalsFocusedDate
+                              .isAfter(DateTime.parse(itemDate)) ||
+                          globalsFocusedDate.toString() ==
+                              itemDate.toString()) {
                         if (itemsMap.containsKey(itemKey) &&
                             itemsMap[itemKey]?.date == focusedDate.toString()) {
                           itemsMap.remove(itemKey);
                         }
                         itemsMap[itemKey] = item;
                       }
-                    }
-                    if (item.hebrewdate.contains('202') &&
-                        item.hebrewdate.contains('end')) {
+                    } else if (item.hebrewdate.contains('end')) {
                       String dateWithOutEnd =
                           item.hebrewdate.replaceAll(RegExp(r'end\s'), '');
-                      DateTime itemDate1 = DateTime.parse(dateWithOutEnd);
-                      DateTime globalsfocusedDate =
+                      DateTime itemDateWitchOutZ =
+                          DateTime.parse(dateWithOutEnd);
+                      String itemDate =
+                          itemDateWitchOutZ.toString().replaceAll("Z", "");
+                      DateTime globalsFocusedDate =
                           DateTime.parse(globals.focused_day);
-                      DateTime todayDate1 = DateTime(globals.today.year,
-                          globals.today.month, globals.today.day);
-                      DateTime todayhebrewdate = DateTime(
-                          itemDate1.year, itemDate1.month, itemDate1.day);
-                      DateTime itemDatePlusOneDay =
-                          itemDate1.add(Duration(days: 1));
-
-                      if (globalsfocusedDate.isBefore(itemDatePlusOneDay)) {
-                        // If an item with the same key already exists and has a matching date, add the other one
+                      print('focused date $globalsFocusedDate');
+                      print('item date $itemDate');
+                      if (globalsFocusedDate
+                              .isBefore(DateTime.parse(itemDate)) ||
+                          globalsFocusedDate.toString() ==
+                              itemDate.toString()) {
                         if (itemsMap.containsKey(itemKey) &&
                             itemsMap[itemKey]?.date == focusedDate.toString()) {
                           itemsMap.remove(itemKey);
                         }
+
                         itemsMap[itemKey] = item;
                       }
                     }
                   }
+
                   if (item.date == 'N/A' && item.hebrewdate == 'N/A') {
                     if (itemsMap.containsKey(itemKey) &&
                         itemsMap[itemKey]?.date == focusedDate.toString()) {
@@ -204,29 +177,24 @@ class _TestState extends State<StatsAdminIndividual> {
                     }
                     itemsMap[itemKey] = item;
                   } else {
-                    // Parse the date from item.date
                     DateTime itemDate;
                     try {
                       itemDate = DateTime.parse(item.date);
                     } catch (e) {
-                      // Handle parsing error, set a default date
                       itemDate = DateTime(0);
                     }
 
-                    // If an item with the same key already exists and has a matching date, add the other one
                     if (itemsMap.containsKey(itemKey) &&
                         itemsMap[itemKey]?.date == focusedDate.toString()) {
                       itemsMap.remove(itemKey);
                     }
 
-                    // If an item with the same key already exists but has an 'N/A' date, replace it with this item
                     if (itemsMap.containsKey(itemKey) &&
                         itemsMap[itemKey]?.date == 'N/A') {
                       itemsMap.remove(itemKey);
                       itemsMap[itemKey] = item;
                     }
 
-                    // Otherwise, include items where the date comparison is true
                     bool dateComparisonResult =
                         itemDate.year == focusedDate.year &&
                             itemDate.month == focusedDate.month &&
@@ -241,63 +209,6 @@ class _TestState extends State<StatsAdminIndividual> {
 
               return itemsMap.values.toList();
             }
-            // List<AddHachlataHomeNew?> filterHachlataListNew(
-            //     List<AddHachlataHomeNew?> inputList) {
-            //   Map<String, AddHachlataHomeNew?> itemsMap = {};
-
-            //   // Get today's date year, month, and day
-            //   DateTime focusedDate = DateTime(
-            //       globals.today.year, globals.today.month, globals.today.day);
-
-            //   for (AddHachlataHomeNew? item in inputList) {
-            //     if (item != null) {
-            //       String itemKey = '${item.name}_${item.uid}';
-
-            //       if (item.date == 'N/A') {
-            //         // If an item with the same key already exists and has a matching date, add the other one
-            //         if (itemsMap.containsKey(itemKey) &&
-            //             itemsMap[itemKey]?.date == focusedDate.toString()) {
-            //           itemsMap.remove(itemKey);
-            //         }
-            //         itemsMap[itemKey] = item;
-            //       } else {
-            //         // Parse the date from item.date
-            //         DateTime itemDate;
-            //         try {
-            //           itemDate = DateTime.parse(item.date);
-            //         } catch (e) {
-            //           // Handle parsing error, set a default date
-            //           itemDate = DateTime(0);
-            //         }
-
-            //         // If an item with the same key already exists and has a matching date, add the other one
-            //         if (itemsMap.containsKey(itemKey) &&
-            //             itemsMap[itemKey]?.date == focusedDate.toString()) {
-            //           itemsMap.remove(itemKey);
-            //         }
-
-            //         // If an item with the same key already exists but has an 'N/A' date, replace it with this item
-            //         if (itemsMap.containsKey(itemKey) &&
-            //             itemsMap[itemKey]?.date == 'N/A') {
-            //           itemsMap.remove(itemKey);
-            //           itemsMap[itemKey] = item;
-            //         }
-
-            //         // Otherwise, include items where the date comparison is true
-            //         bool dateComparisonResult =
-            //             itemDate.year == focusedDate.year &&
-            //                 itemDate.month == focusedDate.month &&
-            //                 itemDate.day == focusedDate.day;
-
-            //         if (dateComparisonResult) {
-            //           itemsMap[itemKey] = item;
-            //         }
-            //       }
-            //     }
-            //   }
-
-            //   return itemsMap.values.toList();
-            // }
 
             hachlataItemsForHomeNew =
                 filterHachlataListNew(hachlataItemsForHomeNew);
@@ -443,7 +354,7 @@ class _TestState extends State<StatsAdminIndividual> {
                               builder: (BuildContext context) {
                                 // Define the content of your dialog here
                                 // return SingleChildScrollView(child: UserStats());
-                                return UserStatsAdmin();    
+                                return UserStatsAdmin();
                                 // return ThisIsNotAvailableYet();
                               });
 
