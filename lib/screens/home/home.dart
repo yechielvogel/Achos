@@ -54,7 +54,6 @@ class _HomeState extends State<Home> {
                   ),
                 ),
                 centerTitle: true,
-
                 backgroundColor: globals.bage,
                 elevation: 0,
               ),
@@ -69,8 +68,7 @@ class _HomeState extends State<Home> {
             if (dataList != null) {
               for (var item in dataList) {
                 if (item != null) {
-                  print(
-                      item); 
+                  print(item);
                 }
               }
             }
@@ -85,13 +83,13 @@ class _HomeState extends State<Home> {
                 if (item != null) {
                   if (item.uid == user!.uesname) {
                     if (item.date == 'N/A') {
-                      return true; 
+                      return true;
                     }
                     final itemDate = DateTime.parse(item.date);
                     bool dateComparison = itemDate.year == focusedDate.year &&
                         itemDate.month == focusedDate.month &&
                         itemDate.day == focusedDate.day;
-                    return dateComparison; 
+                    return dateComparison;
                   }
                 }
 
@@ -108,7 +106,6 @@ class _HomeState extends State<Home> {
                 color: item.color,
               );
 
-              
               int insertIndex = 0;
               while (insertIndex < hachlataItemsForHomeNew.length) {
                 if (item.name
@@ -123,12 +120,10 @@ class _HomeState extends State<Home> {
               hachlataItemsForHomeNew.insert(insertIndex, newItem);
             } else {}
           });
-
           List<AddHachlataHomeNew?> filterHachlataListNew(
               List<AddHachlataHomeNew?> inputList) {
             Map<String, AddHachlataHomeNew?> itemsMap = {};
 
-           
             DateTime focusedDate = DateTime(
                 globals.today.year, globals.today.month, globals.today.day);
 
@@ -138,7 +133,6 @@ class _HomeState extends State<Home> {
 
                 if (item.date == 'N/A' && item.hebrewdate != 'N/A') {
                   if (!item.hebrewdate.contains('end')) {
-                    
                     String itemDate =
                         item.hebrewdate.toString().replaceAll("Z", "");
                     DateTime globalsFocusedDate =
@@ -161,8 +155,7 @@ class _HomeState extends State<Home> {
                         DateTime.parse(globals.focused_day);
                     print('focused date $globalsFocusedDate');
                     print('item date $itemDate');
-                    if (globalsFocusedDate.isBefore(DateTime.parse(itemDate)) ||
-                        globalsFocusedDate.toString() == itemDate.toString()) {
+                    if (globalsFocusedDate.isBefore(DateTime.parse(itemDate))) {
                       if (itemsMap.containsKey(itemKey) &&
                           itemsMap[itemKey]?.date == focusedDate.toString()) {
                         itemsMap.remove(itemKey);
@@ -180,29 +173,24 @@ class _HomeState extends State<Home> {
                   }
                   itemsMap[itemKey] = item;
                 } else {
-                  
                   DateTime itemDate;
                   try {
                     itemDate = DateTime.parse(item.date);
                   } catch (e) {
-                   
                     itemDate = DateTime(0);
                   }
 
-                 
                   if (itemsMap.containsKey(itemKey) &&
                       itemsMap[itemKey]?.date == focusedDate.toString()) {
                     itemsMap.remove(itemKey);
                   }
 
-                  
                   if (itemsMap.containsKey(itemKey) &&
                       itemsMap[itemKey]?.date == 'N/A') {
                     itemsMap.remove(itemKey);
                     itemsMap[itemKey] = item;
                   }
 
-                
                   bool dateComparisonResult =
                       itemDate.year == focusedDate.year &&
                           itemDate.month == focusedDate.month &&
@@ -230,10 +218,9 @@ class _HomeState extends State<Home> {
             isSettingsOn = false;
           }
           return Scaffold(
-            backgroundColor: globals.bage,    
+            backgroundColor: globals.bage,
             appBar: AppBar(
               leading: Container(),
-
               title: Center(
                 child: Image.asset(
                   'lib/assets/NewLogo.png',
@@ -242,7 +229,6 @@ class _HomeState extends State<Home> {
                 ),
               ),
               centerTitle: true,
-
               backgroundColor: globals.bage,
               elevation: 0,
               actions: <Widget>[
@@ -417,30 +403,21 @@ class _HomeState extends State<Home> {
                           });
 
                       break;
-                    
+
                     case 3:
                       await LaunchApp.openApp(
                         androidPackageName: 'org.chabad.android.DailyStudy',
                         iosUrlScheme: 'org.chabad.DailyStudy://',
                         appStoreLink:
                             'itms-apps://itunes.apple.com/us/app/chabad-org-daily-torah-study/id1408133263',
-                 
                       );
-
-
 
                       break;
                   }
                 }),
           );
-
         }
-
-  
       },
     );
   }
-
-
 }
-

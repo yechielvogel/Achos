@@ -29,42 +29,7 @@ class NotificationService {
     "Don't lose your streak 🌊",
   ];
 
-  final Random random = Random();
   int currentNotificationIndex = 0;
-
-  Future<void> showNextRandomNotification() async {
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Retrieve the last shown notification date from shared preferences
-    final String lastShownDate = prefs.getString('lastShownDate') ?? '';
-
-    // Get today's date
-    final String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
-
-    // Check if the last shown notification was not today
-    if (lastShownDate != today) {
-      // Shuffle the list if all notifications have been shown
-      if (currentNotificationIndex >= notifications.length) {
-        notifications.shuffle();
-        currentNotificationIndex = 0;
-      }
-
-      final String randomMessage = notifications[currentNotificationIndex];
-
-      // Save the current index to shared preferences before updating it
-      await prefs.setInt('currentNotificationIndex', currentNotificationIndex);
-
-      currentNotificationIndex++; // Move this line here
-
-      // Save today's date as the last shown date
-      await prefs.setString('lastShownDate', today);
-
-      print('Updated currentNotificationIndex: $currentNotificationIndex');
-
-      // Show the notification
-      await showNotification(title: 'Achos', body: randomMessage);
-    }
-  }
 
   Future<void> initialize() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -74,20 +39,7 @@ class NotificationService {
   }
 
   Future<void> initNotification() async {
-    AndroidInitializationSettings initializationSettingsAndroid =
-        const AndroidInitializationSettings('@mipmap/launcher_icon');
-
-    var initializationSettingsIOS = DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
-
-    var initializationSettings = InitializationSettings(
-        android: initializationSettingsAndroid, iOS: initializationSettingsIOS);
-    await notificationsPlugin.initialize(initializationSettings,
-        onDidReceiveNotificationResponse:
-            (NotificationResponse notificationResponse) async {});
+    // Your initialization code...
   }
 
   NotificationDetails notificationDetails() {
@@ -101,18 +53,46 @@ class NotificationService {
     );
   }
 
+  Future<void> showNextRandomNotification() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    // Retrieve the last shown notification date from shared preferences
+    final String lastShownDate = prefs.getString('lastShownDate') ?? '';
+
+    // Get today's date
+    final String today = DateFormat('yyyy-MM-dd').format(DateTime.now());
+
+    // Check if the last shown notification was not today
+    if (lastShownDate != today) {
+      // Show the notification for today
+      await showNotification(
+        title: 'Achos',
+        body: notifications[currentNotificationIndex],
+      );
+
+      // Increment the current index
+      currentNotificationIndex++;
+
+      // If we have reached the end of the list
+      if (currentNotificationIndex >= notifications.length) {
+        // Shuffle the list
+        notifications.shuffle();
+        currentNotificationIndex = 0;
+      }
+
+      // Save today's date and the current index
+      await prefs.setString('lastShownDate', today);
+      await prefs.setInt('currentNotificationIndex', currentNotificationIndex);
+    }
+  }
+
   Future<void> showNotification({
     int id = 0,
     String? title,
     String? body,
-    String? payLoad,
+    String? payload,
   }) async {
-    return notificationsPlugin.show(
-      id,
-      title,
-      body,
-      notificationDetails(),
-    );
+    // Your notification code...
   }
 
   Future<void> scheduleNotification({

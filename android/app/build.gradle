@@ -18,8 +18,8 @@ if (flutterRoot == null) {
     // flutterVersionCode = '1'
 
 // was 1.5 instead of making  it 1.6 i changed it to 1.5.1
-def flutterVersionName = '1.7.1'
-// localProperties.getProperty('flutter.versionName')
+def flutterVersionName = '1.7.1 '    
+// localProperties.getProperty('flutter.versionName'
 // if (flutterVersionName == null) {
 //     flutterVersionName = '1.0'
 // }
