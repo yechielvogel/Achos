@@ -37,7 +37,7 @@ dependencies:
   flutter_spinkit: ^5.2.0
   table_calendar: ^3.0.9
   flutter_slidable: ^3.0.0
-  flutter_local_notifications: ^15.1.1
+  flutter_local_notifications: ^17.2.1+2
   timezone: ^0.9.2
   flutter_background: ^1.2.0
   kosher_dart: ^2.0.16
@@ -91,7 +91,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     # - images/a_dot_burr.jpeg
-  - /Users/Yechiel/Code/achos/lib/assets/Asset1.png
+    # - /Users/Yechiel/Code/achos/lib/assets/Asset1.png
   - lib/assets/Asset1.png
   - lib/assets/Asset2.png
   - lib/assets/Asset3@3x.png
