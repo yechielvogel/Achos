@@ -184,6 +184,7 @@ class _RegisterState extends State<Register> {
                                   setState(() => loading = true);
                                   print(email);
                                   print(password);
+                                  displayusernameinaccount = name;
                                   dynamic result =
                                       await _auth.registerWithEmailAndPassword(
                                           email, password, name);

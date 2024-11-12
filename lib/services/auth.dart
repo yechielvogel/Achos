@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tzivos_hashem_milwaukee/screens/authenticate/sign_in.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
 import 'package:tzivos_hashem_milwaukee/services/database.dart';
+import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 
 import '/models/ueser.dart';
 
@@ -12,9 +13,15 @@ class AuthService {
 
   Ueser? _userFromFirebaseUser(
     User? user,
+
   ) {
     return user != null
-        ? Ueser(uid: user.uid, uesname: user.displayName)
+        ? Ueser(
+  uid: user.uid,
+  uesname: (user.displayName != null && user.displayName!.isNotEmpty) 
+      ? user.displayName 
+      : displayusernameinaccount,
+)
         : null;
   }
 
@@ -25,6 +32,7 @@ class AuthService {
   // }
 
   Stream<Ueser?> get user {
+    print('state changed');
     return _auth
         .authStateChanges()
         .map((User? user) => _userFromFirebaseUser(user));
@@ -61,13 +69,20 @@ class AuthService {
   Future registerWithEmailAndPassword(
       String email, String password, name) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-          email: email, password: password);
-      User? user = result.user;
-      await user!.updateDisplayName(name);
 
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+          email: email, password: password,);
+      
+      User? user = result.user;
+      
+      await user!.updateDisplayName(name);
+      await user.reload();
+      print("here");
+      print(user.displayName);
+      user = _auth.currentUser;
+      user = _auth.currentUser;
+  Ueser newUser = Ueser(uid: user!.uid, uesname: user.displayName);
       // Reload the user to get the updated information.
-      await user!.reload();
       name = _auth.currentUser!.displayName;
       user = _auth.currentUser;
       // await DatabaseService(uid: user!.uid).updateUserData('yes');

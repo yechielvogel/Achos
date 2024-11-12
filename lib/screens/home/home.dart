@@ -271,50 +271,48 @@ class _HomeState extends State<Home> {
             body: Padding(
               padding: const EdgeInsets.only(top: 10),
               child: Column(children: [
-                Expanded(
-                  child: GridView.builder(
-                    itemCount: hachlataItemsForHomeNew.length,
-                    shrinkWrap: true,
+               Expanded(
+  child: hachlataItemsForHomeNew.isEmpty
+      // If hachlataItemsForHomeNew is empty, show a message
+      ? Center(
+          child: Text(
+            'You have not added any hachlatas. Press the settings button to get started. ',
+            textAlign: TextAlign.center,
+            style: TextStyle(fontSize: 16, color: Colors.black),
+          ),
+        )
+      // If hachlataItemsForHomeNew is not empty, show the GridView
+      : GridView.builder(
+          itemCount: hachlataItemsForHomeNew.length,
+          shrinkWrap: true,
+          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2,
+            crossAxisSpacing: 1,
+            childAspectRatio: 2.5,
+          ),
+          itemBuilder: (context, index) {
+            if (hachlataItemsForHomeNew != null &&
+                hachlataItemsForHomeNew.length > index) {
+              final hachlataName = hachlataItemsForHomeNew[index]!.name ?? '';
+              var tilecolor = hachlataItemsForHomeNew[index]!.color ?? '';
+              Color finaltilecolor;
+              if (tilecolor == 'Color(0xFFCBBD7F);') {
+                finaltilecolor = globals.lightGreen;
+              } else {
+                finaltilecolor = globals.doneHachlata;
+              }
+              filterHachlataListNew(hachlataItemsForHomeNew);
 
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      crossAxisSpacing: 1,
-                      childAspectRatio: 2.5,
-                    ),
-                    // physics: NeverScrollableScrollPhysics(), // Disable grid scroll
+              return HachlataTileWidget(
+                hachlataName: hachlataName,
+                isclicked: finaltilecolor,
+              );
+            }
+            return Container();
+          },
+        ),
+)
 
-                    itemBuilder: (context, index) {
-                      //   if (hachlataItemsForHome.isEmpty) {
-                      //   print('length${hachlataItemsForHome.length}');
-
-                      //   return const EmptyListWidget();
-                      // }
-                      if (hachlataItemsForHomeNew != null &&
-                          hachlataItemsForHomeNew.length > index) {
-                        final hachlataName =
-                            hachlataItemsForHomeNew[index]!.name ?? '';
-                        var tilecolor =
-                            hachlataItemsForHomeNew[index]!.color ?? '';
-                        Color finaltilecolor;
-                        if (tilecolor == 'Color(0xFFCBBD7F);') {
-                          finaltilecolor = globals.lightGreen;
-                        } else {
-                          finaltilecolor = globals.doneHachlata;
-                        }
-                        filterHachlataListNew(hachlataItemsForHomeNew);
-
-                        return HachlataTileWidget(
-                            hachlataName: hachlataName,
-                            isclicked: finaltilecolor);
-                        // Pass the name
-                      }
-                      // Create a tile widget for each category's name
-                      return Container();
-                      // return HachlataTileWidget();
-                    },
-                  ),
-                ),
               ]),
             ),
             bottomNavigationBar: BottomNavigationBar(
