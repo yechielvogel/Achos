@@ -56,22 +56,22 @@ android {
     }
     signingConfigs {
     release {
-        if (project.hasProperty('We342qyv')) {
-            storeFile file(KEYSTORE_FILE)
-            storePassword KEYSTORE_PASSWORD
-            keyAlias KEY_ALIAS
-            keyPassword KEY_PASSWORD
-        }
+         
+            storeFile file('keystorefile.jks')
+            storePassword 'We342qyv'
+            keyAlias 'key0'
+            keyPassword "We342qyv"
     }
 }
 
-    buildTypes {
-        release {
-            signingConfig signingConfigs.debug
-        }
+buildTypes {
+    release {
+        signingConfig signingConfigs.release
+        minifyEnabled false
+        shrinkResources false
     }
 }
-
+}
 flutter {
     source '../..'
 }

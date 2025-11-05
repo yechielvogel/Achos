@@ -31,7 +31,7 @@ class Notifications extends StatefulWidget {
         'Your notification content here',
         scheduledTime,
         notifications[i],
-        androidAllowWhileIdle: true,
+        androidScheduleMode: AndroidScheduleMode.exact,
         uiLocalNotificationDateInterpretation:
             UILocalNotificationDateInterpretation.absoluteTime,
       );

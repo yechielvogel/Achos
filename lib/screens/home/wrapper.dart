@@ -60,7 +60,7 @@ class Wrapper extends StatelessWidget {
           return HomeAdmin();
         }
       }
-      
+
       // If user is not an admin or admins list is null, proceed to Home
       print(user.uesname); // Debug print
       print(user.uid); // Debug print
@@ -69,8 +69,6 @@ class Wrapper extends StatelessWidget {
     }
   }
 }
-
-
 
 // print('Logged in as admin ${user.uid}');
 // return HomeAdmin();

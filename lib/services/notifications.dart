@@ -123,10 +123,10 @@ class NotificationService {
     return notificationsPlugin.zonedSchedule(
       id,
       title,
-      randomMessage, // Use the randomly selected message
+      randomMessage,
       scheduledTime,
       notificationDetails(),
-      androidAllowWhileIdle: true,
+      androidScheduleMode: AndroidScheduleMode.exact,
       uiLocalNotificationDateInterpretation:
           UILocalNotificationDateInterpretation.absoluteTime,
       matchDateTimeComponents: DateTimeComponents.time,
