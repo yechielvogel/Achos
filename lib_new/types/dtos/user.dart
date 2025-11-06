@@ -2,7 +2,7 @@ import 'contact.dart';
 import 'school.dart';
 
 class User {
-  final String? id;
+  final int? id;
   final String? username;
   final String firebaseUid;
   final String? firebaseFcmToken;
@@ -13,9 +13,9 @@ class User {
   User({
     this.id,
     this.username,
-    required this.firebaseUid,
+    this.firebaseUid = '',
     this.firebaseFcmToken,
-    required this.isActive,
+    this.isActive = false,
     this.school,
     this.contact,
   });
@@ -34,14 +34,16 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
-      id: json['id'] as String?,
+      id: json['id'] as int?,
       username: json['username'] as String?,
       firebaseUid: json['firebase_uid'] as String,
       firebaseFcmToken: json['firebase_fcm_token'] as String?,
       isActive: json['is_active'] as bool,
       school: json['school'] != null ? School.fromJson(json['school']) : null,
-      contact:
-          json['contact'] != null ? Contact.fromJson(json['contact']) : null,
+      contact: (json['contact'] != null && (json['contact'] as List).isNotEmpty)
+          ? Contact.fromJson(
+              (json['contact'] as List).first as Map<String, dynamic>)
+          : null,
     );
   }
 }

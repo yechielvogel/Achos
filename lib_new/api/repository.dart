@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../shared/helpers/error_handler.dart';
 import '../types/dtos/app_style.dart';
 import '../types/dtos/hachlata.dart';
 import '../types/dtos/user.dart' as achosUser;
@@ -25,6 +26,27 @@ class Repository {
       }
     } catch (e) {
       print('Error creating user: $e');
+      rethrow;
+    }
+  }
+
+  // get user profile from supabase
+  Future<achosUser.User> getUserInfo(String firebaseUserId) async {
+    try {
+      final response = await _supabaseClient
+          .from('user')
+          .select('*, school(*), contact!contact_user_fkey(*)')
+          .eq('firebase_uid', firebaseUserId)
+          .maybeSingle();
+
+      if (response == null) {
+        throw Exception('User not found for firebaseUserId: $firebaseUserId');
+      }
+
+      return achosUser.User.fromJson(response);
+    } catch (e, stackTrace) {
+      ErrorHandler.setError(e);
+      print(stackTrace);
       rethrow;
     }
   }
