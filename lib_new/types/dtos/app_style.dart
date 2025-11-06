@@ -1,62 +1,86 @@
 import 'package:flutter/material.dart';
 
+import 'package:flutter/material.dart';
+
 class AppStyle {
+  // Colors
   final Color primaryColor;
   final Color accentColor;
   final Color backgroundColor;
   final Color secondaryColor;
   final Color tertiaryColor;
   final Color errorColor;
+
+  // Borders
   final double borderThickness;
+  final double borderRadiusSmall;
+  final double borderRadiusMedium;
+  final double borderRadiusLarge;
+
+  // Font sizes
   final double titleFontSize;
-  final double bodyFontSize;
   final double subtitleFontSize;
+  final double bodyFontSize;
+  final double captionFontSize;
   final double buttonFontSize;
 
+  // Padding
+  final double paddingSmall;
+  final double paddingMedium;
+  final double paddingLarge;
+
   AppStyle({
-    this.primaryColor = const Color(0xFF6200EA),
-    this.accentColor = const Color(0xFFFF5722),
-    this.backgroundColor = const Color(0xFFFFFFFF),
-    this.secondaryColor = const Color(0xFF03DAC6),
-    this.tertiaryColor = const Color(0xFFBB86FC),
-    this.errorColor = const Color(0xFFB00020),
+    this.primaryColor = const Color(0xFF3B6064),
+    this.secondaryColor = const Color(0xFF87BBA2),
+    this.tertiaryColor = const Color(0xFF55828B),
+    this.accentColor = const Color(0xFFC9E4CA),
+    this.backgroundColor = Colors.white,
+    this.errorColor = const Color(0xFFD9534F),
+
+    // Borders
     this.borderThickness = 2.0,
-    this.titleFontSize = 20.0,
-    this.bodyFontSize = 16.0,
+    this.borderRadiusSmall = 4.0,
+    this.borderRadiusMedium = 8.0,
+    this.borderRadiusLarge = 16.0,
+
+    // Fonts
+    this.titleFontSize = 22.0,
     this.subtitleFontSize = 18.0,
+    this.bodyFontSize = 16.0,
+    this.captionFontSize = 12.0,
     this.buttonFontSize = 14.0,
+
+    // Padding
+    this.paddingSmall = 8.0,
+    this.paddingMedium = 16.0,
+    this.paddingLarge = 24.0,
   });
 
-  factory AppStyle.defaultStyle() {
-    return AppStyle(
-      primaryColor: const Color(0xFF6200EA),
-      accentColor: const Color(0xFFFF5722),
-      backgroundColor: const Color(0xFFFFFFFF),
-      secondaryColor: const Color(0xFF03DAC6),
-      tertiaryColor: const Color(0xFFBB86FC),
-      errorColor: const Color(0xFFB00020),
-      borderThickness: 2.0,
-      titleFontSize: 20.0,
-      bodyFontSize: 16.0,
-      subtitleFontSize: 18.0,
-      buttonFontSize: 14.0,
-    );
-  }
+  // Default theme
+  factory AppStyle.defaultStyle() => AppStyle();
 
+  // Map serialization
   factory AppStyle.fromMap(Map<String, dynamic> map) {
     return AppStyle(
-      primaryColor: Color(int.parse(map['primary_color'] ?? '0xFF6200EA')),
-      accentColor: Color(int.parse(map['accent_color'] ?? '0xFFFF5722')),
+      primaryColor: Color(int.parse(map['primary_color'] ?? '0xFF4A90E2')),
+      accentColor: Color(int.parse(map['accent_color'] ?? '0xFFFFC107')),
       backgroundColor:
-          Color(int.parse(map['background_color'] ?? '0xFFFFFFFF')),
-      secondaryColor: Color(int.parse(map['secondary_color'] ?? '0xFF03DAC6')),
-      tertiaryColor: Color(int.parse(map['tertiary_color'] ?? '0xFFBB86FC')),
-      errorColor: Color(int.parse(map['error_color'] ?? '0xFFB00020')),
+          Color(int.parse(map['background_color'] ?? '0xFFF5F5F5')),
+      secondaryColor: Color(int.parse(map['secondary_color'] ?? '0xFF50E3C2')),
+      tertiaryColor: Color(int.parse(map['tertiary_color'] ?? '0xFF9013FE')),
+      errorColor: Color(int.parse(map['error_color'] ?? '0xFFD0021B')),
       borderThickness: (map['border_thickness'] ?? 2.0).toDouble(),
-      titleFontSize: (map['title_font_size'] ?? 20.0).toDouble(),
-      bodyFontSize: (map['body_font_size'] ?? 16.0).toDouble(),
+      borderRadiusSmall: (map['border_radius_small'] ?? 4.0).toDouble(),
+      borderRadiusMedium: (map['border_radius_medium'] ?? 8.0).toDouble(),
+      borderRadiusLarge: (map['border_radius_large'] ?? 16.0).toDouble(),
+      titleFontSize: (map['title_font_size'] ?? 22.0).toDouble(),
       subtitleFontSize: (map['subtitle_font_size'] ?? 18.0).toDouble(),
+      bodyFontSize: (map['body_font_size'] ?? 16.0).toDouble(),
+      captionFontSize: (map['caption_font_size'] ?? 12.0).toDouble(),
       buttonFontSize: (map['button_font_size'] ?? 14.0).toDouble(),
+      paddingSmall: (map['padding_small'] ?? 8.0).toDouble(),
+      paddingMedium: (map['padding_medium'] ?? 16.0).toDouble(),
+      paddingLarge: (map['padding_large'] ?? 24.0).toDouble(),
     );
   }
 
@@ -69,13 +93,21 @@ class AppStyle {
       'tertiary_color': tertiaryColor.value.toString(),
       'error_color': errorColor.value.toString(),
       'border_thickness': borderThickness,
+      'border_radius_small': borderRadiusSmall,
+      'border_radius_medium': borderRadiusMedium,
+      'border_radius_large': borderRadiusLarge,
       'title_font_size': titleFontSize,
-      'body_font_size': bodyFontSize,
       'subtitle_font_size': subtitleFontSize,
+      'body_font_size': bodyFontSize,
+      'caption_font_size': captionFontSize,
       'button_font_size': buttonFontSize,
+      'padding_small': paddingSmall,
+      'padding_medium': paddingMedium,
+      'padding_large': paddingLarge,
     };
   }
 
+  // Copy with
   AppStyle copyWith({
     Color? primaryColor,
     Color? accentColor,
@@ -84,10 +116,17 @@ class AppStyle {
     Color? tertiaryColor,
     Color? errorColor,
     double? borderThickness,
+    double? borderRadiusSmall,
+    double? borderRadiusMedium,
+    double? borderRadiusLarge,
     double? titleFontSize,
-    double? bodyFontSize,
     double? subtitleFontSize,
+    double? bodyFontSize,
+    double? captionFontSize,
     double? buttonFontSize,
+    double? paddingSmall,
+    double? paddingMedium,
+    double? paddingLarge,
   }) {
     return AppStyle(
       primaryColor: primaryColor ?? this.primaryColor,
@@ -97,10 +136,17 @@ class AppStyle {
       tertiaryColor: tertiaryColor ?? this.tertiaryColor,
       errorColor: errorColor ?? this.errorColor,
       borderThickness: borderThickness ?? this.borderThickness,
+      borderRadiusSmall: borderRadiusSmall ?? this.borderRadiusSmall,
+      borderRadiusMedium: borderRadiusMedium ?? this.borderRadiusMedium,
+      borderRadiusLarge: borderRadiusLarge ?? this.borderRadiusLarge,
       titleFontSize: titleFontSize ?? this.titleFontSize,
-      bodyFontSize: bodyFontSize ?? this.bodyFontSize,
       subtitleFontSize: subtitleFontSize ?? this.subtitleFontSize,
+      bodyFontSize: bodyFontSize ?? this.bodyFontSize,
+      captionFontSize: captionFontSize ?? this.captionFontSize,
       buttonFontSize: buttonFontSize ?? this.buttonFontSize,
+      paddingSmall: paddingSmall ?? this.paddingSmall,
+      paddingMedium: paddingMedium ?? this.paddingMedium,
+      paddingLarge: paddingLarge ?? this.paddingLarge,
     );
   }
 }

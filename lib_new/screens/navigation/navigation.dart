@@ -75,7 +75,7 @@ class _NavigationState extends ConsumerState<Navigation> {
         title: Text(
           title,
           style: TextStyle(
-            color: style.secondaryColor,
+            color: style.primaryColor,
             fontWeight: FontWeight.bold,
           ),
         ),
