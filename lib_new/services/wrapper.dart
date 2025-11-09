@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import '../api/repository.dart';
 import '../providers/auth.dart';
+import '../providers/general.dart';
 import '../providers/user.dart';
 import '../screens/navigation/navigation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-import '../shared/widgets/general/loading.dart';
 import 'auth/authenticate.dart';
 
 class Wrapper extends ConsumerStatefulWidget {
@@ -35,7 +34,7 @@ class _WrapperState extends ConsumerState<Wrapper> {
     try {
       final localUser = await Repository().getUserInfo(firebaseUser.uid);
       await ref.read(userProvider.notifier).setUser(localUser);
-
+      ref.read(generalLoadingProvider.notifier).state = false;
       print("Local user loaded: ${localUser.contact?.firstName}");
     } catch (e, stack) {
       print('Error fetching local user: $e');
@@ -51,7 +50,12 @@ class _WrapperState extends ConsumerState<Wrapper> {
     if (firebaseUser == null) return const Authenticate();
 
     if (!initialized || localUser.id == null) {
-      return Loading();
+      // need to look over this again as not sure we need this really
+      try {
+        _initializeData();
+      } catch (e) {
+        print('Error during initialization: $e');
+      }
     }
 
     if (localUser.isActive == true) return Navigation();

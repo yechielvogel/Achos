@@ -31,6 +31,7 @@ class _CustomInputFieldState extends ConsumerState<CustomInputField> {
 
     return TextFormField(
       obscureText: widget.isPassword,
+      cursorColor: style.themeBlack,
       decoration: InputDecoration(
         hintText: widget.hintText,
         fillColor: style.backgroundColor,
@@ -38,6 +39,12 @@ class _CustomInputFieldState extends ConsumerState<CustomInputField> {
         filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(20),
+          borderSide: BorderSide(
+            color: style.themeBlack,
+          ),
         ),
       ),
       validator: widget.validator,

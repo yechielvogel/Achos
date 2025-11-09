@@ -8,6 +8,7 @@ class CustomButton extends ConsumerWidget {
   final VoidCallback onPressed;
   final double? height;
   final double? width;
+  final bool? isOutline;
 
   const CustomButton({
     Key? key,
@@ -15,6 +16,7 @@ class CustomButton extends ConsumerWidget {
     required this.onPressed,
     this.height,
     this.width,
+    this.isOutline,
   }) : super(key: key);
 
   @override
@@ -27,12 +29,17 @@ class CustomButton extends ConsumerWidget {
         height: height ?? 50.0,
         width: width ?? double.infinity,
         decoration: BoxDecoration(
-          color: style.buttonBackgroundColor,
+          color: isOutline != null
+              ? style.buttonBackgroundColor
+              : style.buttonBackgroundColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: style.buttonBorderColor, width: 1),
           boxShadow: [
             BoxShadow(
-              color: style.buttonBorderColor,
+              color: isOutline != null
+                  ? style.buttonBorderColor
+                  : style.buttonBorderColor,
+              // style.buttonBorderColor,
               blurRadius: 0,
               offset: Offset(5, 5),
             ),

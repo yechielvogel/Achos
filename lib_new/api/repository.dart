@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../services/auth/auth.dart';
 import '../shared/helpers/error_handler.dart';
 import '../types/dtos/app_style.dart';
 import '../types/dtos/hachlata.dart';
@@ -13,7 +12,7 @@ class Repository {
   final SupabaseClient _supabaseClient = Supabase.instance.client;
 
   // creates everything for a user in supabase
-  Future<void> createUser(achosUser.User user) async {
+  Future<int> createUser(achosUser.User user) async {
     try {
       final contactData = user.contact!.toJson();
 
@@ -26,7 +25,7 @@ class Repository {
       final contactId = contactResponse['id'];
 
       final userData = user.toJson();
-      // update the contact dto to have the id
+
       userData['contact'] = contactId;
       userData['school'] = user.school?.id;
       userData['roll'] = user.roll?.id;
@@ -34,9 +33,28 @@ class Repository {
       final userResponse =
           await _supabaseClient.from('user').insert(userData).select().single();
 
-      print('Created user ${userResponse['id']} linked to contact $contactId');
+      final userId = userResponse['id'];
+      print('Created user $userId linked to contact $contactId');
+      return userId;
     } catch (e) {
       print('Error creating user and contact: $e');
+      rethrow;
+    }
+  }
+
+  // update user with firebaseId
+  Future<String> updateUserWithFirebaseId(int userId, String firebaseId) async {
+    try {
+      final user = await _supabaseClient
+          .from('user')
+          .update({'firebase_uid': firebaseId})
+          .eq('id', userId)
+          .select()
+          .single();
+
+      return user['firebase_uid'];
+    } catch (e) {
+      print('Error updating user with firebaseId: $e');
       rethrow;
     }
   }

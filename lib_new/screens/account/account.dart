@@ -4,7 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import '../../providers/general.dart';
 import '../../providers/user.dart';
 import '../../services/auth/auth.dart';
-import '../../shared/widgets/buttons/theme_button.dart';
+import '../../shared/widgets/buttons/custom_button.dart';
 import '../../shared/widgets/input/input_field.dart';
 
 class AccountScreen extends ConsumerStatefulWidget {
@@ -53,7 +53,8 @@ class _AccountScreenState extends ConsumerState<AccountScreen> {
                 child: CustomButton(
                   title: 'Sign out',
                   onPressed: () {
-                    _auth.signOut();
+                    Navigator.of(context).pop();
+                    _auth.signOut(ref);
                   },
                 ),
               ),

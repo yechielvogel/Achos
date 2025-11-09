@@ -15,3 +15,6 @@ final isAdminProvider = Provider<bool>((ref) {
   final user = ref.watch(userProvider);
   return user.roll?.name == 'admin';
 });
+
+// general loading provider
+final generalLoadingProvider = StateProvider<bool>((ref) => false);

@@ -10,8 +10,10 @@ import 'package:flutter/services.dart';
 import 'package:timezone/data/latest.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
+import 'providers/general.dart';
 import 'services/wrapper.dart';
 import 'shared/helpers/error_handler.dart';
+import 'shared/widgets/general/loading.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -53,17 +55,20 @@ Future<void> main() async {
   runApp(ProviderScope(child: const MyApp()));
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends ConsumerWidget {
   const MyApp({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final isLoading = ref.watch(generalLoadingProvider);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Stack(
         children: [
           Wrapper(),
           const ErrorSnackbar(),
+          if (isLoading) Loading(),
         ],
       ),
     );

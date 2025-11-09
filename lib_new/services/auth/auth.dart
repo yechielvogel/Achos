@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import '../../api/repository.dart';
+import '../../providers/user.dart';
 import '../../types/dtos/contact.dart';
 import '../../types/dtos/roll.dart';
 import '../../types/dtos/school.dart';
@@ -32,13 +34,26 @@ class AuthService {
   }
 
   //sign in with email and password
-  Future signInWithEmailAndPassword(String email, String password) async {
+  Future signInWithEmailAndPassword(
+      String email, String password, WidgetRef ref) async {
     try {
       UserCredential result = await _auth.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
       User? user = result.user;
+      // load the user from supabase
+      if (user != null) {
+        try {
+          final localUser = await Repository().getUserInfo(user.uid);
+          await ref.read(userProvider.notifier).setUser(localUser);
+
+          print("Local user loaded: ${localUser.contact?.firstName}");
+        } catch (e, stack) {
+          print('Error fetching local user: $e');
+          print(stack);
+        }
+      }
       return _userFromFirebaseUser(user);
     } catch (e) {
       print(e.toString());
@@ -47,24 +62,12 @@ class AuthService {
   }
 
   // register with email and password
-  Future registerWithEmailAndPassword(
-      String email, String password, String firstName, int schoolId) async {
+  Future registerWithEmailAndPassword(String email, String password,
+      String firstName, String lastName, int schoolId, WidgetRef ref) async {
     try {
-      UserCredential result = await _auth.createUserWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-
-      User? user = result.user;
-
-      await user!.updateDisplayName(firstName);
-      await user.reload();
-
-      // Call repository to create user in the database
-      await repository.createUser(
+      int userId = await repository.createUser(
         achosUser.User(
-            firebaseUid: user.uid,
-            username: firstName,
+            // firebaseUid: user.uid,
             isActive: false,
             school: School(
               id: schoolId,
@@ -72,11 +75,24 @@ class AuthService {
             contact: Contact(
               email: email,
               firstName: firstName,
+              lastName: lastName,
             ),
             roll: Roll(
               id: 2,
             )),
       );
+
+      UserCredential result = await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      User? user = result.user;
+
+      // no that we have firebase id update the user in supabase with firebaseId
+      await repository.updateUserWithFirebaseId(userId, user!.uid);
+      await user!.updateDisplayName(firstName);
+      await user.reload();
 
       return user;
     } catch (e) {
@@ -86,8 +102,9 @@ class AuthService {
   }
 
   // sign out
-  Future signOut() async {
+  Future signOut(WidgetRef ref) async {
     try {
+      ref.read(userProvider.notifier).clearUser();
       return _auth.signOut();
     } catch (e) {
       print(e.toString());
