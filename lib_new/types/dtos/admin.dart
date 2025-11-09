@@ -14,7 +14,7 @@ class Admin {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'user': user?.uid,
       'school': school.toJson(),
     };

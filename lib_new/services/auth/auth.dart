@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import '../../api/repository.dart';
+import '../../types/dtos/contact.dart';
+import '../../types/dtos/roll.dart';
+import '../../types/dtos/school.dart';
 import '../../types/dtos/user.dart' as achosUser;
 
 class AuthService {
@@ -60,11 +63,19 @@ class AuthService {
       // Call repository to create user in the database
       await repository.createUser(
         achosUser.User(
-          firebaseUid: user.uid,
-          username: firstName,
-          isActive: false,
-        ),
-        schoolId,
+            firebaseUid: user.uid,
+            username: firstName,
+            isActive: false,
+            school: School(
+              id: schoolId,
+            ),
+            contact: Contact(
+              email: email,
+              firstName: firstName,
+            ),
+            roll: Roll(
+              id: 2,
+            )),
       );
 
       return user;

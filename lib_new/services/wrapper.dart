@@ -5,10 +5,12 @@ import '../providers/user.dart';
 import '../screens/navigation/navigation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../types/dtos/user.dart';
+import '../shared/widgets/general/loading.dart';
 import 'auth/authenticate.dart';
 
 class Wrapper extends ConsumerStatefulWidget {
+  const Wrapper({super.key});
+
   @override
   _WrapperState createState() => _WrapperState();
 }
@@ -19,38 +21,44 @@ class _WrapperState extends ConsumerState<Wrapper> {
   @override
   void initState() {
     super.initState();
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _initializeData();
-
-      // This kicks off the worker, which will update ordersLoadingProvider
-      // No need to manually set loading here
-      setState(() {
-        initialized = true;
-      });
+      if (mounted) setState(() => initialized = true);
     });
   }
 
   Future<void> _initializeData() async {
-    Repository _repository = Repository();
+    final firebaseUser = ref.read(authStateProvider).value;
 
-    final user = ref.watch(authStateProvider).value;
+    if (firebaseUser == null) return;
 
-    User userTest = await _repository.getUserInfo(user?.uid ?? '');
-    ref.read(userProvider.notifier).setUser(userTest);
+    try {
+      final localUser = await Repository().getUserInfo(firebaseUser.uid);
+      await ref.read(userProvider.notifier).setUser(localUser);
 
-    print("user is ${ref.watch(userProvider).contact?.firstName}");
+      print("Local user loaded: ${localUser.contact?.firstName}");
+    } catch (e, stack) {
+      print('Error fetching local user: $e');
+      print(stack);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final user = ref.watch(authStateProvider).value;
+    final firebaseUser = ref.watch(authStateProvider).value;
+    final localUser = ref.watch(userProvider);
 
-    if (user != null) {
-      print(user.email);
-      return Navigation();
-    } else {
-      return Authenticate();
+    if (firebaseUser == null) return const Authenticate();
+
+    if (!initialized || localUser.id == null) {
+      return Loading();
     }
+
+    if (localUser.isActive == true) return Navigation();
+
+    // need to make a waiting room screen and a update app screen and maybe more
+    return const Scaffold(
+      body: Center(child: Text("Your account is not active yet")),
+    );
   }
 }

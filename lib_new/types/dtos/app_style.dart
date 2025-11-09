@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import 'package:flutter/material.dart';
-
 class AppStyle {
   // Colors
   final Color primaryColor;
@@ -10,6 +8,8 @@ class AppStyle {
   final Color secondaryColor;
   final Color tertiaryColor;
   final Color errorColor;
+  final Color themeBlack;
+  final Color themeWhite;
 
   // Borders
   final double borderThickness;
@@ -36,7 +36,8 @@ class AppStyle {
     this.accentColor = const Color(0xFFC9E4CA),
     this.backgroundColor = Colors.white,
     this.errorColor = const Color(0xFFD9534F),
-
+    this.themeBlack = const Color(0xFF333333),
+    this.themeWhite = const Color(0xFFF5F5F5),
     // Borders
     this.borderThickness = 2.0,
     this.borderRadiusSmall = 4.0,

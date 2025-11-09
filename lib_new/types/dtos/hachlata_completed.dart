@@ -19,7 +19,7 @@ class HachlataCompleted {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'hachlata': hachlata.toJson(),
       'subscription': subscription?.toJson(),
       'completed_at': completedAt.toIso8601String(),

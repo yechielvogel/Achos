@@ -4,7 +4,7 @@ import '../types/dtos/user.dart';
 class UserNotifier extends StateNotifier<User> {
   UserNotifier() : super(User());
 
-  void setUser(User user) {
+  Future<void> setUser(User user) async {
     state = user;
   }
 

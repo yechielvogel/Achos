@@ -15,11 +15,11 @@
     "newpink",
     "tzivos",
     "ueser",
-    "uesname"
+    "uesname",
+    "Vogel",
+    "Yechiel"
   ],
-  "deno.enablePaths": [
-    "supabase/functions"
-  ],
+  "deno.enablePaths": ["supabase/functions"],
   "deno.lint": true,
   "deno.unstable": [
     "bare-node-builtins",

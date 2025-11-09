@@ -1,4 +1,5 @@
 import 'contact.dart';
+import 'roll.dart';
 import 'school.dart';
 
 class User {
@@ -9,6 +10,7 @@ class User {
   final bool isActive;
   final School? school;
   final Contact? contact;
+  final Roll? roll;
 
   User({
     this.id,
@@ -18,17 +20,19 @@ class User {
     this.isActive = false,
     this.school,
     this.contact,
+    this.roll,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'username': username,
       'firebase_uid': firebaseUid,
       'firebase_fcm_token': firebaseFcmToken,
       'is_active': isActive,
       'school': school?.toJson(),
       'contact': contact?.toJson(),
+      'roll': roll?.toJson(),
     };
   }
 
@@ -39,10 +43,14 @@ class User {
       firebaseUid: json['firebase_uid'] as String,
       firebaseFcmToken: json['firebase_fcm_token'] as String?,
       isActive: json['is_active'] as bool,
-      school: json['school'] != null ? School.fromJson(json['school']) : null,
-      contact: (json['contact'] != null && (json['contact'] as List).isNotEmpty)
-          ? Contact.fromJson(
-              (json['contact'] as List).first as Map<String, dynamic>)
+      school: (json['school'] is Map<String, dynamic>)
+          ? School.fromJson(json['school'])
+          : null,
+      contact: (json['contact'] is Map<String, dynamic>)
+          ? Contact.fromJson(json['contact'])
+          : null,
+      roll: (json['roll'] is Map<String, dynamic>)
+          ? Roll.fromJson(json['roll'])
           : null,
     );
   }

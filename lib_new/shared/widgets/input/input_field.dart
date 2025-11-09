@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../types/dtos/app_style.dart';
+import '../../../types/dtos/app_style.dart';
 
 // Example provider for style (replace with your actual provider)
 final styleProvider = Provider<AppStyle>((ref) => AppStyle.defaultStyle());

@@ -1,15 +1,15 @@
 class School {
-  final int id;
+  final int? id;
   final String? name;
 
   School({
-    required this.id,
+    this.id,
     this.name,
   });
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'name': name,
     };
   }

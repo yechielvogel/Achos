@@ -1,8 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../providers/general.dart';
+import '../../providers/user.dart';
 import '../../types/dtos/app_style.dart';
 import '../account/account.dart';
+import '../admin/admin_account.dart';
 import '../home/home.dart';
 
 class Navigation extends ConsumerStatefulWidget {
@@ -88,14 +91,16 @@ class _NavigationState extends ConsumerState<Navigation> {
   Widget build(BuildContext context) {
     final appBars = _buildAppBars(ref);
 
+    final bool isAdmin = ref.read(isAdminProvider);
+
     return Scaffold(
       appBar: appBars[currentIndex],
       body: screens[currentIndex],
-      bottomNavigationBar: buildBottomNavigationBar(),
+      bottomNavigationBar: buildBottomNavigationBar(isAdmin),
     );
   }
 
-  Theme buildBottomNavigationBar() {
+  Theme buildBottomNavigationBar(bool isAdmin) {
     final style = ref.read(styleProvider);
 
     return Theme(
@@ -124,10 +129,33 @@ class _NavigationState extends ConsumerState<Navigation> {
           showSelectedLabels: true,
           showUnselectedLabels: true,
           onTap: (index) {
-            setState(() {
-              currentIndex = index;
-              bottomNavItems = _getBottomNavItems(currentIndex);
-            });
+            if (index == 1) {
+              if (isAdmin) {
+                // Navigate to AdminAccountScreen if the user is an admin
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => AdminAccountScreen(),
+                  ),
+                );
+              } else {
+                // If the user is not an admin, show the Account screen in a modal
+                showModalBottomSheet(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(20),
+                    ),
+                  ),
+                  context: context,
+                  builder: (context) => AccountScreen(),
+                );
+              }
+            } else {
+              // Navigate to the selected screen
+              setState(() {
+                currentIndex = index;
+                bottomNavItems = _getBottomNavItems(currentIndex);
+              });
+            }
           },
           items: bottomNavItems,
         ),

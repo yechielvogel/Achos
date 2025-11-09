@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+import '../services/auth/auth.dart';
 import '../shared/helpers/error_handler.dart';
 import '../types/dtos/app_style.dart';
 import '../types/dtos/hachlata.dart';
@@ -12,30 +13,43 @@ class Repository {
   final SupabaseClient _supabaseClient = Supabase.instance.client;
 
   // creates everything for a user in supabase
-  Future<void> createUser(achosUser.User user, int schoolId) async {
+  Future<void> createUser(achosUser.User user) async {
     try {
-      // Convert User object to JSON and add schoolId
+      final contactData = user.contact!.toJson();
+
+      final contactResponse = await _supabaseClient
+          .from('contact')
+          .insert(contactData)
+          .select()
+          .single();
+
+      final contactId = contactResponse['id'];
+
       final userData = user.toJson();
-      userData['school_id'] = schoolId;
+      // update the contact dto to have the id
+      userData['contact'] = contactId;
+      userData['school'] = user.school?.id;
+      userData['roll'] = user.roll?.id;
 
-      // Insert the user data into the 'user' table
-      final response = await _supabaseClient.from('user').insert(userData);
+      final userResponse =
+          await _supabaseClient.from('user').insert(userData).select().single();
 
-      if (response.error != null) {
-        throw Exception('Failed to create user: ${response.error!.message}');
-      }
+      print('Created user ${userResponse['id']} linked to contact $contactId');
     } catch (e) {
-      print('Error creating user: $e');
+      print('Error creating user and contact: $e');
       rethrow;
     }
   }
 
   // get user profile from supabase
   Future<achosUser.User> getUserInfo(String firebaseUserId) async {
+    // this is for testing only
+    // final AuthService _auth = AuthService();
+    // await _auth.signOut();
     try {
       final response = await _supabaseClient
           .from('user')
-          .select('*, school(*), contact!contact_user_fkey(*)')
+          .select('*, school(*), contact(*), roll(*) ')
           .eq('firebase_uid', firebaseUserId)
           .maybeSingle();
 
@@ -44,6 +58,31 @@ class Repository {
       }
 
       return achosUser.User.fromJson(response);
+    } catch (e, stackTrace) {
+      ErrorHandler.setError(e);
+      print(stackTrace);
+      rethrow;
+    }
+  }
+
+  Future<List<achosUser.User>> getAllSchoolUsers(int schoolId) async {
+    try {
+      final response = await _supabaseClient
+          .from('user')
+          .select('*, roll(*), contact!contact_user_fkey(*)')
+          .eq('school', schoolId);
+
+      // In some SDK versions, response may be a PostgrestResponse
+      // If so, replace with: final data = response.data as List<dynamic>;
+      final data = response as List<dynamic>;
+
+      if (data.isEmpty) {
+        throw Exception('No users found for schoolId: $schoolId');
+      }
+
+      return data
+          .map((user) => achosUser.User.fromJson(user as Map<String, dynamic>))
+          .toList();
     } catch (e, stackTrace) {
       ErrorHandler.setError(e);
       print(stackTrace);

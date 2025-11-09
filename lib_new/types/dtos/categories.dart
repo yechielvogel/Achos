@@ -1,13 +1,13 @@
 import 'school.dart';
 
 class Category {
-  final int id;
+  int? id;
   final String? name;
   final int? position;
   final School? school;
 
   Category({
-    required this.id,
+    this.id,
     this.name,
     this.position,
     this.school,
@@ -15,7 +15,7 @@ class Category {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'name': name,
       'position': position,
       'school': school?.toJson(),

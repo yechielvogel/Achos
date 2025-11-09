@@ -22,7 +22,7 @@ class Hachlata {
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
+      if (id != null) 'id': id,
       'school': school?.toJson(),
       'category': category?.toJson(),
       'name': name,
