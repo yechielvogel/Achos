@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import '../shared/helpers/error_handler.dart';
+import '../types/dtos/app_settings.dart';
 import '../types/dtos/app_style.dart';
 import '../types/dtos/hachlata.dart';
 import '../types/dtos/user.dart' as achosUser;
@@ -76,6 +77,27 @@ class Repository {
       }
 
       return achosUser.User.fromJson(response);
+    } catch (e, stackTrace) {
+      ErrorHandler.setError(e);
+      print(stackTrace);
+      rethrow;
+    }
+  }
+
+  // get app settings
+  Future<AppSettings> getAppSettings(int schoolId) async {
+    try {
+      final response = await _supabaseClient
+          .from('app_settings')
+          .select('*')
+          .eq('school', schoolId)
+          .maybeSingle();
+
+      if (response == null) {
+        throw Exception('App settings not found for school: $schoolId');
+      }
+
+      return AppSettings.fromJson(response);
     } catch (e, stackTrace) {
       ErrorHandler.setError(e);
       print(stackTrace);

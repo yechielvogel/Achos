@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../api/repository.dart';
+import '../providers/app_settings.dart';
 import '../providers/app_users.dart';
 import '../providers/general.dart';
 import '../providers/user.dart';
@@ -21,5 +22,12 @@ class DataService {
     School currentSchool = currentUser.school!;
     List<User> users = await repo.getAllSchoolUsers(currentSchool.id ?? 0);
     ref.read(appUsersProvider.notifier).setAppUsers(users);
+  }
+
+  // get app settings
+  Future<void> getAppSettings() async {
+    final settings =
+        await repo.getAppSettings(ref.read(userProvider).school?.id ?? 0);
+    ref.read(appSettingsProvider.notifier).setAppSettings(settings);
   }
 }
