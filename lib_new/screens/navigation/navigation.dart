@@ -42,7 +42,7 @@ class _NavigationState extends ConsumerState<Navigation> {
         icon: Padding(
           padding: const EdgeInsets.only(bottom: 2, top: 4),
           child: Icon(CupertinoIcons.home,
-              color: index == 0 ? style.primaryColor : style.accentColor),
+              color: index == 0 ? style.themeBlack : style.buttonBorderColor),
         ),
         label: 'Home',
       ),
@@ -50,7 +50,7 @@ class _NavigationState extends ConsumerState<Navigation> {
         icon: Padding(
           padding: const EdgeInsets.only(bottom: 2, top: 4),
           child: Icon(CupertinoIcons.person,
-              color: index == 1 ? style.primaryColor : style.accentColor),
+              color: index == 1 ? style.themeBlack : style.buttonBorderColor),
         ),
         label: 'Account',
       ),
@@ -78,7 +78,7 @@ class _NavigationState extends ConsumerState<Navigation> {
         title: Text(
           title,
           style: TextStyle(
-            color: style.primaryColor,
+            color: style.themeBlack,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -116,14 +116,14 @@ class _NavigationState extends ConsumerState<Navigation> {
           currentIndex: currentIndex,
           selectedLabelStyle: TextStyle(
             fontSize: 13,
-            color: style.primaryColor,
+            color: style.themeBlack,
           ),
           unselectedLabelStyle: TextStyle(
             fontSize: 13,
-            color: style.accentColor,
+            color: style.buttonBorderColor,
           ),
-          selectedItemColor: style.primaryColor,
-          unselectedItemColor: style.accentColor,
+          selectedItemColor: style.themeBlack,
+          unselectedItemColor: style.buttonBorderColor,
           backgroundColor: style.backgroundColor,
           type: BottomNavigationBarType.fixed,
           showSelectedLabels: true,

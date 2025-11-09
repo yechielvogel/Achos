@@ -1,16 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/auth/auth.dart';
+import '../../shared/widgets/buttons/theme_button.dart';
 import '../../shared/widgets/input/input_field.dart';
 
-class SignIn extends StatefulWidget {
+class SignIn extends ConsumerStatefulWidget {
   final Function toggleView;
   const SignIn({super.key, required this.toggleView});
 
   @override
-  State<SignIn> createState() => _SignInState();
+  ConsumerState<SignIn> createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends ConsumerState<SignIn> {
   final AuthService _auth = AuthService();
   final _formKey = GlobalKey<FormState>();
 
@@ -21,10 +23,14 @@ class _SignInState extends State<SignIn> {
 
   @override
   Widget build(BuildContext context) {
+    final style = ref.read(styleProvider);
+
     return loading
         ? CircularProgressIndicator()
         : Scaffold(
+            backgroundColor: style.backgroundColor,
             appBar: AppBar(
+              backgroundColor: style.backgroundColor,
               title: Text('Sign In'),
             ),
             body: Padding(
@@ -49,34 +55,45 @@ class _SignInState extends State<SignIn> {
                       onChanged: (val) => setState(() => password = val),
                     ),
                     SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => loading = true);
-                          dynamic result = await _auth
-                              .signInWithEmailAndPassword(email, password);
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment
+                          .spaceBetween, // Align buttons with space between
+                      children: [
+                        Expanded(
+                          child: CustomButton(
+                            onPressed: () async {
+                              if (_formKey.currentState!.validate()) {
+                                setState(() => loading = true);
+                                dynamic result =
+                                    await _auth.signInWithEmailAndPassword(
+                                        email, password);
 
-                          if (result == null) {
-                            setState(() {
-                              error = 'Please enter a valid email and password';
-                              loading = false;
-                            });
-                          }
-                        }
-                      },
-                      child: Text('Sign In'),
+                                if (result == null) {
+                                  setState(() {
+                                    error =
+                                        'Please enter a valid email and password';
+                                    loading = false;
+                                  });
+                                }
+                              }
+                            },
+                            title: 'Sign In',
+                          ),
+                        ),
+                        SizedBox(width: 16), // Add spacing between the buttons
+                        Expanded(
+                          child: CustomButton(
+                            onPressed: () {
+                              widget.toggleView();
+                            },
+                            title: 'Register',
+                          ),
+                        ),
+                      ],
                     ),
-                    SizedBox(height: 12),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red),
-                    ),
-                    SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () {
-                        widget.toggleView();
-                      },
-                      child: Text('Register'),
+                      style: TextStyle(color: style.errorColor),
                     ),
                   ],
                 ),

@@ -34,6 +34,7 @@ class _CustomInputFieldState extends ConsumerState<CustomInputField> {
       decoration: InputDecoration(
         hintText: widget.hintText,
         fillColor: style.backgroundColor,
+        focusColor: style.themeBlack,
         filled: true,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),

@@ -27,14 +27,14 @@ class CustomButton extends ConsumerWidget {
         height: height ?? 50.0,
         width: width ?? double.infinity,
         decoration: BoxDecoration(
-          color: style.primaryColor,
-          borderRadius: BorderRadius.circular(10),
-          border: Border.all(color: style.secondaryColor, width: 1),
+          color: style.buttonBackgroundColor,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: style.buttonBorderColor, width: 1),
           boxShadow: [
             BoxShadow(
-              color: style.secondaryColor.withOpacity(1),
+              color: style.buttonBorderColor,
               blurRadius: 0,
-              offset: Offset(4, 4),
+              offset: Offset(5, 5),
             ),
           ],
         ),
@@ -42,7 +42,7 @@ class CustomButton extends ConsumerWidget {
         child: Text(
           title,
           style: TextStyle(
-            color: style.themeWhite,
+            color: style.themeBlack,
             fontWeight: FontWeight.bold,
           ),
         ),

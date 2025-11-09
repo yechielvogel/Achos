@@ -1,17 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../services/auth/auth.dart';
+import '../../shared/widgets/buttons/theme_button.dart';
 import '../../shared/widgets/input/input_field.dart';
 
-class Register extends StatefulWidget {
+// Define a provider for AuthService
+final authServiceProvider = Provider((ref) => AuthService());
+
+class Register extends ConsumerStatefulWidget {
   final Function toggleView;
   const Register({super.key, required this.toggleView});
 
   @override
-  State<Register> createState() => _RegisterState();
+  ConsumerState<Register> createState() => _RegisterState();
 }
 
-class _RegisterState extends State<Register> {
-  final AuthService _auth = AuthService();
+class _RegisterState extends ConsumerState<Register> {
   final _formKey = GlobalKey<FormState>();
 
   String email = '';
@@ -23,10 +27,16 @@ class _RegisterState extends State<Register> {
 
   @override
   Widget build(BuildContext context) {
+    // Access the AuthService instance from the provider
+    final authService = ref.watch(authServiceProvider);
+    final style = ref.read(styleProvider);
+
     return loading
         ? CircularProgressIndicator()
         : Scaffold(
+            backgroundColor: style.backgroundColor,
             appBar: AppBar(
+              backgroundColor: style.backgroundColor,
               title: Text('Register'),
             ),
             body: Padding(
@@ -65,32 +75,31 @@ class _RegisterState extends State<Register> {
                       onChanged: (val) => setState(() => school = val),
                     ),
                     SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: () async {
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => loading = true);
-                          int schoolId = int.tryParse(school) ?? 0;
-                          dynamic result =
-                              await _auth.registerWithEmailAndPassword(
-                            email,
-                            password,
-                            name,
-                            schoolId,
-                          );
-                          if (result == null) {
-                            setState(() {
-                              error = 'Registration failed';
-                              loading = false;
-                            });
+                    CustomButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            setState(() => loading = true);
+                            int schoolId = int.tryParse(school) ?? 0;
+                            dynamic result =
+                                await authService.registerWithEmailAndPassword(
+                              email,
+                              password,
+                              name,
+                              schoolId,
+                            );
+                            if (result == null) {
+                              setState(() {
+                                error = 'Registration failed';
+                                loading = false;
+                              });
+                            }
                           }
-                        }
-                      },
-                      child: Text('Register'),
-                    ),
+                        },
+                        title: 'Register'),
                     SizedBox(height: 12),
                     Text(
                       error,
-                      style: TextStyle(color: Colors.red),
+                      style: TextStyle(color: style.errorColor),
                     ),
                   ],
                 ),

@@ -9,6 +9,10 @@ class AppStyle {
   final Color tertiaryColor;
   final Color errorColor;
   final Color themeBlack;
+  final Color buttonBackgroundColor;
+  final Color buttonBorderColor;
+
+  final Color IconColor;
   final Color themeWhite;
 
   // Borders
@@ -30,13 +34,16 @@ class AppStyle {
   final double paddingLarge;
 
   AppStyle({
-    this.primaryColor = const Color(0xFF3B6064),
+    this.primaryColor = const Color(0xFF83C9CB),
     this.secondaryColor = const Color(0xFF87BBA2),
     this.tertiaryColor = const Color(0xFF55828B),
     this.accentColor = const Color(0xFFC9E4CA),
-    this.backgroundColor = Colors.white,
-    this.errorColor = const Color(0xFFD9534F),
-    this.themeBlack = const Color(0xFF333333),
+    this.backgroundColor = const Color(0xFFF4EEE6),
+    this.buttonBackgroundColor = Colors.white,
+    this.buttonBorderColor = const Color(0xFFBDBDBD),
+    this.IconColor = const Color(0xFF55828B),
+    this.errorColor = const Color(0xFFC75B5B),
+    this.themeBlack = const Color(0xFF545252),
     this.themeWhite = const Color(0xFFF5F5F5),
     // Borders
     this.borderThickness = 2.0,
