@@ -2,12 +2,12 @@ import 'hachlata.dart';
 import 'user.dart';
 
 class Subscription {
-  final String? id;
-  final User user;
+  final int? id;
+  final int user;
   final DateTime dateStart;
   final DateTime? dateEnd;
   final Hachlata hachlata;
-  final String? isActive;
+  final bool? isActive;
 
   Subscription({
     this.id,
@@ -21,7 +21,7 @@ class Subscription {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'user': user.id,
+      'user': user,
       'date_start': dateStart.toIso8601String(),
       'date_end': dateEnd?.toIso8601String(),
       'hachlata': hachlata.id,
@@ -33,13 +33,13 @@ class Subscription {
     Map<String, dynamic> json,
   ) {
     return Subscription(
-      id: json['id'] as String?,
+      id: json['id'],
       user: json['user'],
       dateStart: DateTime.parse(json['date_start']),
       dateEnd:
           json['date_end'] != null ? DateTime.parse(json['date_end']) : null,
       hachlata: Hachlata.fromJson(json['hachlata']),
-      isActive: json['is_active'] as String?,
+      isActive: json['is_active'] as bool?,
     );
   }
 }

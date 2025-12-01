@@ -21,64 +21,67 @@ class _HachlataCircleState extends State<HachlataCircle> {
     return GestureDetector(
       onPanUpdate: (details) {
         if (_isComplete) return;
-        RenderBox renderBox = context.findRenderObject() as RenderBox;
-        Offset localPosition = renderBox.globalToLocal(details.globalPosition);
-        setState(() => _points.add(localPosition));
+
+        final rb = context.findRenderObject() as RenderBox;
+        final pos = rb.globalToLocal(details.globalPosition);
+
+        setState(() => _points.add(pos));
       },
-      onPanEnd: (_) async {
-        // Estimate how "filled" it is (simplified for now)
+      onPanEnd: (_) {
         double fillEstimate = _estimateFillLevel();
         if (fillEstimate > 0.99) {
           setState(() => _isComplete = true);
-          // optional haptic feedback or animation
           HapticFeedback.mediumImpact();
         }
       },
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        width: 50,
-        height: 50,
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: _isComplete ? Colors.greenAccent : Colors.grey.shade300,
-          boxShadow: [
-            if (_isComplete)
-              const BoxShadow(
-                color: Colors.green,
-                blurRadius: 10,
-                spreadRadius: 1,
-              )
-          ],
-        ),
-        child: Center(
-          child: Text(
-            widget.hachlata.name, // Display the hachlata.name
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: FontWeight.bold,
-              color: _isComplete ? Colors.white : Colors.black,
+      child: CustomPaint(
+        foregroundPainter: HachlataPainter(_points), // <-- FIXED
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          width: 50,
+          height: 50,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: _isComplete ? Colors.greenAccent : Colors.grey.shade300,
+            boxShadow: [
+              if (_isComplete)
+                const BoxShadow(
+                  color: Colors.green,
+                  blurRadius: 10,
+                  spreadRadius: 1,
+                )
+            ],
+          ),
+          child: Center(
+            child: Text(
+              widget.hachlata.name,
+              style: TextStyle(
+                fontSize: 12,
+                fontWeight: FontWeight.bold,
+                color: _isComplete ? Colors.white : Colors.black,
+              ),
+              textAlign: TextAlign.center,
             ),
-            textAlign: TextAlign.center,
           ),
         ),
       ),
     );
   }
 
-  // crude "fill" estimate based on stroke count density
   double _estimateFillLevel() {
     if (_points.isEmpty) return 0;
-    // simple heuristic: compare number of unique points to circle area
-    final radius = 25.0;
+
+    const radius = 25.0;
     final circleArea = 3.14 * radius * radius;
     final uniquePoints = _points.whereType<Offset>().toSet().length.toDouble();
-    // normalized ratio, tuned for realistic touch density
+
     return (uniquePoints / (circleArea / 8)).clamp(0.0, 1.0);
   }
 }
 
 class HachlataPainter extends CustomPainter {
   final List<Offset?> points;
+
   HachlataPainter(this.points);
 
   @override
@@ -86,9 +89,13 @@ class HachlataPainter extends CustomPainter {
     final paint = Paint()
       ..color = Colors.teal
       ..strokeCap = StrokeCap.round
-      ..strokeWidth = 20.0; // Increased stroke width for a thicker brush
+      ..strokeWidth = 20;
 
-    // Draw all strokes
+    // Clip to the circle
+    canvas.clipPath(
+      Path()..addOval(Rect.fromLTWH(0, 0, size.width, size.height)),
+    );
+
     for (int i = 0; i < points.length - 1; i++) {
       final p1 = points[i];
       final p2 = points[i + 1];

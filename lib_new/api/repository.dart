@@ -143,8 +143,33 @@ class Repository {
 
       return Subscription.fromJson(response);
     } catch (e) {
-      print(
-          'Error creating subscription for userId ${subscription.user.firebaseUid}: $e');
+      print('Error creating subscription for userId ${subscription.user}: $e');
+      rethrow;
+    }
+  }
+
+  // get user subscriptions (that are in date and active )
+  Future<List<Subscription>> getUserSubscriptions(int userId) async {
+    final today = DateTime.now().toIso8601String();
+    try {
+      final response = await _supabaseClient
+          .from('subscription')
+          .select('*, hachlata(*)')
+          .eq('user', userId)
+          .lte('date_start', today)
+          .gte('date_end', today);
+
+      final data = response as List<dynamic>;
+      if (data == null || data.isEmpty) {
+        throw Exception('No subscriptions found for userId: $userId');
+      }
+
+      return data
+          .map((item) => Subscription.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      ErrorHandler.setError(e);
+      print(stackTrace);
       rethrow;
     }
   }

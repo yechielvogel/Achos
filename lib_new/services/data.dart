@@ -54,4 +54,10 @@ class DataService {
     Subscription newSubscription = await repo.createSubscription(subscription);
     ref.read(subscriptionsProvider.notifier).addSubscription(newSubscription);
   }
+
+  // get subscriptions for user
+  Future<void> getUserSubscriptions(int userId) async {
+    final subscriptions = await repo.getUserSubscriptions(userId);
+    ref.read(subscriptionsProvider.notifier).setSubscriptions(subscriptions);
+  }
 }

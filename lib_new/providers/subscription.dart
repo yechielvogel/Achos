@@ -6,7 +6,9 @@ class SubscriptionNotifier extends StateNotifier<List<Subscription>> {
   SubscriptionNotifier() : super([]);
 
   Future<void> addSubscription(Subscription subscription) async {
-    state = [...state, subscription];
+    if (!state.contains(subscription)) {
+      state = [...state, subscription];
+    }
   }
 
   Future<void> removeSubscription(Subscription subscription) async {

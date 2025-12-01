@@ -34,11 +34,11 @@ class _CreateSubscriptionState extends ConsumerState<CreateSubscription> {
     Future<void> handleCreateSubscription() async {
       final currentUser = ref.read(userProvider);
       final subscription = Subscription(
-        user: currentUser,
+        user: currentUser.id ?? 0,
         dateStart: startDate!,
         dateEnd: endDate,
         hachlata: widget.hachlata,
-        isActive: 'true',
+        isActive: true,
       );
 
       await dataService.createSubscription(subscription);
