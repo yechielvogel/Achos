@@ -1,9 +1,12 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../types/dtos/hachlata.dart';
+
 class HachlataCircle extends StatefulWidget {
-  const HachlataCircle({super.key});
+  final Hachlata hachlata;
+
+  const HachlataCircle({super.key, required this.hachlata});
 
   @override
   State<HachlataCircle> createState() => _HachlataCircleState();
@@ -47,9 +50,15 @@ class _HachlataCircleState extends State<HachlataCircle> {
               )
           ],
         ),
-        child: ClipOval(
-          child: CustomPaint(
-            painter: HachlataPainter(_points),
+        child: Center(
+          child: Text(
+            widget.hachlata.name, // Display the hachlata.name
+            style: TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.bold,
+              color: _isComplete ? Colors.white : Colors.black,
+            ),
+            textAlign: TextAlign.center,
           ),
         ),
       ),

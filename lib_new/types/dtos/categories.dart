@@ -27,7 +27,9 @@ class Category {
       id: json['id'] as int,
       name: json['name'] as String?,
       position: json['position'] as int?,
-      school: json['school'] != null ? School.fromJson(json['school']) : null,
+      school: (json['school'] is Map<String, dynamic>)
+          ? School.fromJson(json['school'])
+          : null,
     );
   }
 }

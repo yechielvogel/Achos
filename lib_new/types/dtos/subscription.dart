@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'hachlata.dart';
+import 'user.dart';
 
 class Subscription {
   final String? id;
@@ -21,18 +21,20 @@ class Subscription {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'user': user.uid,
+      'user': user.id,
       'date_start': dateStart.toIso8601String(),
       'date_end': dateEnd?.toIso8601String(),
-      'hachlata': hachlata.toJson(),
+      'hachlata': hachlata.id,
       'is_active': isActive,
     };
   }
 
-  factory Subscription.fromJson(Map<String, dynamic> json, User user) {
+  factory Subscription.fromJson(
+    Map<String, dynamic> json,
+  ) {
     return Subscription(
       id: json['id'] as String?,
-      user: user,
+      user: json['user'],
       dateStart: DateTime.parse(json['date_start']),
       dateEnd:
           json['date_end'] != null ? DateTime.parse(json['date_end']) : null,

@@ -22,15 +22,25 @@ class _CustomListTileState extends ConsumerState<CustomListTile> {
   Widget build(BuildContext context) {
     final style = ref.read(styleProvider);
 
-    return ListTile(
-      title: Text(
-        widget.title,
-        style: TextStyle(
+    return Container(
+      decoration: BoxDecoration(
+        color: style.primaryColor,
+        borderRadius: BorderRadius.circular(15),
+        border: Border.all(
           color: style.primaryColor,
-          fontSize: style.bodyFontSize,
+          width: 1.5,
         ),
       ),
-      onTap: widget.onPressed,
+      child: ListTile(
+        title: Text(
+          widget.title,
+          style: TextStyle(
+            color: style.backgroundColor,
+            fontSize: style.bodyFontSize,
+          ),
+        ),
+        onTap: widget.onPressed,
+      ),
     );
   }
 }

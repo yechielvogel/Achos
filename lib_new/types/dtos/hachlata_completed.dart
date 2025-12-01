@@ -32,7 +32,7 @@ class HachlataCompleted {
       id: json['id'] as String?,
       hachlata: Hachlata.fromJson(json['hachlata']),
       subscription: json['subscription'] != null
-          ? Subscription.fromJson(json['subscription'], user)
+          ? Subscription.fromJson(json['subscription'])
           : null,
       completedAt: DateTime.parse(json['completed_at']),
       user: user,
