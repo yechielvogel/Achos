@@ -6,7 +6,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../shared/helpers/error_handler.dart';
 import '../types/dtos/app_settings.dart';
 import '../types/dtos/app_style.dart';
+import '../types/dtos/categories.dart';
 import '../types/dtos/hachlata.dart';
+import '../types/dtos/subscription.dart';
 import '../types/dtos/user.dart' as achosUser;
 
 class Repository {
@@ -84,6 +86,69 @@ class Repository {
     }
   }
 
+  // get categories
+  Future<List<Category>> getCategories(int schoolId) async {
+    try {
+      final response = await _supabaseClient
+          .from('categories')
+          .select('*')
+          .eq('school', schoolId);
+
+      final data = response as List<dynamic>;
+      if (data == null || data.isEmpty) {
+        throw Exception('No categories found for school ID: $schoolId');
+      }
+
+      return data
+          .map((item) => Category.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      ErrorHandler.setError(e);
+      print(stackTrace);
+      rethrow;
+    }
+  }
+
+  // get hachlatas to choose from
+  Future<List<Hachlata>> getAllHachlatas(int schoolId) async {
+    try {
+      final response = await _supabaseClient
+          .from('hachlata')
+          .select('* , category(*)')
+          .eq('school', schoolId);
+
+      final data = response as List<dynamic>;
+      if (data == null || data.isEmpty) {
+        throw Exception('No hachlatas found for school ID: $schoolId');
+      }
+
+      return data
+          .map((item) => Hachlata.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      ErrorHandler.setError(e);
+      print(stackTrace);
+      rethrow;
+    }
+  }
+
+  // create subscription
+  Future<Subscription> createSubscription(Subscription subscription) async {
+    try {
+      final response = await _supabaseClient
+          .from('subscription')
+          .insert(subscription.toJson())
+          .select()
+          .single();
+
+      return Subscription.fromJson(response);
+    } catch (e) {
+      print(
+          'Error creating subscription for userId ${subscription.user.firebaseUid}: $e');
+      rethrow;
+    }
+  }
+
   // get app settings
   Future<AppSettings> getAppSettings(int schoolId) async {
     try {
@@ -132,10 +197,6 @@ class Repository {
 
   // approves a user in supabase
   Future<void> approveUser() async {}
-
-  // creates a subscription for a hachlata
-  Future<void> createSubscription(
-      DateTime dateStart, DateTime dateEnd, int hachlataId) async {}
 
   // completes a hachlata
   Future<void> completeHachlata(int hachlataId, int subscriptionId) async {}

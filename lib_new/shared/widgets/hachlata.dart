@@ -4,21 +4,21 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../types/dtos/app_style.dart';
 import '../../types/dtos/hachlata.dart';
 
-class HachlataBox extends ConsumerStatefulWidget {
+class HachlataWidget extends ConsumerStatefulWidget {
   final Hachlata hachlata;
   final AppStyle style;
 
-  const HachlataBox({
+  const HachlataWidget({
     Key? key,
     required this.hachlata,
     required this.style,
   }) : super(key: key);
 
   @override
-  ConsumerState<HachlataBox> createState() => _HachlataBoxState();
+  ConsumerState<HachlataWidget> createState() => _HachlataWidgetState();
 }
 
-class _HachlataBoxState extends ConsumerState<HachlataBox> {
+class _HachlataWidgetState extends ConsumerState<HachlataWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(

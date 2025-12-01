@@ -36,7 +36,7 @@ class _ManageUsersState extends ConsumerState<ManageUsers>
 
   Future<void> getUsers() async {
     DataService dataService = DataService(ref);
-    await dataService.getAllUsers();
+    await dataService.getCategories();
   }
 
   @override

@@ -7,6 +7,7 @@ import '../../types/dtos/app_style.dart';
 import '../account/account.dart';
 import '../admin/admin_account.dart';
 import '../home/home.dart';
+import '../manage_hachlotos/manage_hachlatas.dart';
 
 class Navigation extends ConsumerStatefulWidget {
   Navigation({Key? key}) : super(key: key);
@@ -65,6 +66,18 @@ class _NavigationState extends ConsumerState<Navigation> {
 
       if (screen is HomeScreen) {
         title = 'Home';
+        actions = [
+          IconButton(
+            icon: Icon(Icons.add, color: style.themeBlack),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ManageHachlatas(),
+                ),
+              );
+            },
+          ),
+        ];
       }
       if (screen is AccountScreen) {
         title = 'Account';

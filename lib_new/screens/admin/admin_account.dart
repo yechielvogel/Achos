@@ -19,37 +19,49 @@ class _AdminAccountScreenState extends ConsumerState<AdminAccountScreen> {
     final style = ref.read(styleProvider);
 
     final adminActions = [
-      CustomListTile(
-        title: 'Manage Users',
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(20),
+      Padding(
+        padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
+        child: CustomListTile(
+          title: 'Manage Users',
+          onPressed: () {
+            showModalBottomSheet(
+              context: context,
+              isScrollControlled: true,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
               ),
-            ),
-            builder: (context) {
-              return FractionallySizedBox(
-                heightFactor: 0.5,
-                child: ManageUsers(),
-              );
-            },
-          );
-        },
+              builder: (context) {
+                return FractionallySizedBox(
+                  heightFactor: 0.5,
+                  child: ManageUsers(),
+                );
+              },
+            );
+          },
+        ),
       ),
-      CustomListTile(
-        title: 'View Reports',
-        onPressed: () {},
+      Padding(
+        padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
+        child: CustomListTile(
+          title: 'View Reports',
+          onPressed: () {},
+        ),
       ),
-      CustomListTile(
-        title: 'System Settings',
-        onPressed: () {},
+      Padding(
+        padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
+        child: CustomListTile(
+          title: 'System Settings',
+          onPressed: () {},
+        ),
       ),
-      CustomListTile(
-        title: 'Manage hachlatas and categories',
-        onPressed: () {},
+      Padding(
+        padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
+        child: CustomListTile(
+          title: 'Manage hachlatas and categories',
+          onPressed: () {},
+        ),
       ),
     ];
 
@@ -59,7 +71,7 @@ class _AdminAccountScreenState extends ConsumerState<AdminAccountScreen> {
         title: Text(
           'Admin',
           style: TextStyle(
-            color: style.primaryColor,
+            color: style.themeBlack,
             fontSize: style.titleFontSize,
             fontWeight: FontWeight.bold,
           ),
