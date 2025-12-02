@@ -5,8 +5,15 @@ import '../types/dtos/hachlata.dart';
 
 class HachlataCircle extends StatefulWidget {
   final Hachlata hachlata;
+  final VoidCallback? onComplete;
+  final bool completed;
 
-  const HachlataCircle({super.key, required this.hachlata});
+  const HachlataCircle({
+    super.key,
+    required this.hachlata,
+    this.onComplete,
+    this.completed = false,
+  });
 
   @override
   State<HachlataCircle> createState() => _HachlataCircleState();
@@ -14,7 +21,13 @@ class HachlataCircle extends StatefulWidget {
 
 class _HachlataCircleState extends State<HachlataCircle> {
   final List<Offset?> _points = [];
-  bool _isComplete = false;
+  late bool _isComplete;
+
+  @override
+  void initState() {
+    super.initState();
+    _isComplete = widget.completed;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +41,20 @@ class _HachlataCircleState extends State<HachlataCircle> {
         setState(() => _points.add(pos));
       },
       onPanEnd: (_) {
+        if (_isComplete) return;
+
         double fillEstimate = _estimateFillLevel();
         if (fillEstimate > 0.99) {
           setState(() => _isComplete = true);
           HapticFeedback.mediumImpact();
+
+          if (widget.onComplete != null) {
+            widget.onComplete!();
+          }
         }
       },
       child: CustomPaint(
-        foregroundPainter: HachlataPainter(_points), // <-- FIXED
+        foregroundPainter: HachlataPainter(_points),
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 300),
           width: 50,
@@ -91,7 +110,6 @@ class HachlataPainter extends CustomPainter {
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 20;
 
-    // Clip to the circle
     canvas.clipPath(
       Path()..addOval(Rect.fromLTWH(0, 0, size.width, size.height)),
     );

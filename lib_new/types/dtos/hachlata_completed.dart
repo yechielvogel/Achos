@@ -1,13 +1,9 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'hachlata.dart';
-import 'subscription.dart';
-
 class HachlataCompleted {
-  final String? id;
-  final Hachlata hachlata;
-  final Subscription? subscription;
+  final int? id;
+  final int hachlata;
+  final int? subscription;
   final DateTime completedAt;
-  final User user;
+  final int user;
 
   HachlataCompleted({
     this.id,
@@ -19,23 +15,20 @@ class HachlataCompleted {
 
   Map<String, dynamic> toJson() {
     return {
-      if (id != null) 'id': id,
-      'hachlata': hachlata.toJson(),
-      'subscription': subscription?.toJson(),
+      'hachlata': hachlata,
+      'subscription': subscription,
       'completed_at': completedAt.toIso8601String(),
-      'user': user.uid,
+      'user': user,
     };
   }
 
-  factory HachlataCompleted.fromJson(Map<String, dynamic> json, User user) {
+  factory HachlataCompleted.fromJson(Map<String, dynamic> json) {
     return HachlataCompleted(
-      id: json['id'] as String?,
-      hachlata: Hachlata.fromJson(json['hachlata']),
-      subscription: json['subscription'] != null
-          ? Subscription.fromJson(json['subscription'])
-          : null,
+      id: json['id'] as int?,
+      hachlata: json['hachlata'] as int,
+      subscription: json['subscription'] as int?,
       completedAt: DateTime.parse(json['completed_at']),
-      user: user,
+      user: json['user'] as int,
     );
   }
 }

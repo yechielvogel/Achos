@@ -5,15 +5,16 @@ import '../providers/app_hachlatas.dart';
 import '../providers/app_settings.dart';
 import '../providers/app_users.dart';
 import '../providers/categories.dart';
+import '../providers/completed_hachlatas.dart';
 import '../providers/general.dart';
 import '../providers/subscription.dart';
 import '../providers/user.dart';
+import '../types/dtos/hachlata_completed.dart';
 import '../types/dtos/school.dart';
 import '../types/dtos/subscription.dart';
 import '../types/dtos/user.dart';
 
 // this is a class of functions like a layer between the repo and the app
-
 class DataService {
   final WidgetRef ref;
   final Repository repo;
@@ -56,8 +57,22 @@ class DataService {
   }
 
   // get subscriptions for user
-  Future<void> getUserSubscriptions(int userId) async {
-    final subscriptions = await repo.getUserSubscriptions(userId);
+  Future<void> getUserSubscriptions(int userId, DateTime today) async {
+    final subscriptions = await repo.getUserSubscriptions(userId, today);
     ref.read(subscriptionsProvider.notifier).setSubscriptions(subscriptions);
+  }
+
+  // complete a hachlata
+  Future<void> completeHachlata(HachlataCompleted hachlata) async {
+    HachlataCompleted newHachlata = await repo.completeHachlata(hachlata);
+    ref.read(completedHachlatasProvider.notifier).addHachlata(newHachlata);
+  }
+
+  // get completed hachlatas for user for selected day
+  Future<void> getCompletedHachlatas(int userId, DateTime day) async {
+    final completedHachlatas = await repo.getCompletedHachlatas(userId, day);
+    ref
+        .read(completedHachlatasProvider.notifier)
+        .setHachlatas(completedHachlatas);
   }
 }

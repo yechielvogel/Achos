@@ -8,6 +8,7 @@ import '../types/dtos/app_settings.dart';
 import '../types/dtos/app_style.dart';
 import '../types/dtos/categories.dart';
 import '../types/dtos/hachlata.dart';
+import '../types/dtos/hachlata_completed.dart';
 import '../types/dtos/subscription.dart';
 import '../types/dtos/user.dart' as achosUser;
 
@@ -149,8 +150,8 @@ class Repository {
   }
 
   // get user subscriptions (that are in date and active )
-  Future<List<Subscription>> getUserSubscriptions(int userId) async {
-    final today = DateTime.now().toIso8601String();
+  Future<List<Subscription>> getUserSubscriptions(
+      int userId, DateTime today) async {
     try {
       final response = await _supabaseClient
           .from('subscription')
@@ -220,20 +221,53 @@ class Repository {
     }
   }
 
-  // approves a user in supabase
-  Future<void> approveUser() async {}
+  Future<HachlataCompleted> completeHachlata(HachlataCompleted hachlata) async {
+    try {
+      final response = await _supabaseClient
+          .from('hachlata_completed')
+          .insert(hachlata.toJson())
+          .select()
+          .single();
 
-  // completes a hachlata
-  Future<void> completeHachlata(int hachlataId, int subscriptionId) async {}
-
-  // gets user hachlatas for the user for the given day
-  Future<List<Hachlata>> getHachlatas(DateTime date) async {
-    return [];
+      return HachlataCompleted.fromJson(response);
+    } catch (e) {
+      print('Error completing hachlata ${hachlata.hachlata}: $e');
+      rethrow;
+    }
   }
 
-  // gets list of schools (for logging in and signing up)
-  Future<List<Map<String, dynamic>>> getSchools() async {
-    return [];
+  // get completed hachlatas for a given day
+  Future<List<HachlataCompleted>> getCompletedHachlatas(
+      int userId, DateTime today) async {
+    try {
+      final startOfDay =
+          DateTime(today.year, today.month, today.day).toIso8601String();
+      final endOfDay = DateTime(today.year, today.month, today.day, 23, 59, 59)
+          .toIso8601String();
+
+      final response = await _supabaseClient
+          .from('hachlata_completed')
+          .select('*')
+          .eq('user', userId)
+          .gte('completed_at', startOfDay)
+          .lte('completed_at', endOfDay);
+
+      final data = response as List<dynamic>?;
+
+      if (data == null || data.isEmpty) {
+        print('No completed hachlata found for userId: $userId on $today');
+        return [];
+      }
+
+      return data
+          .map((item) =>
+              HachlataCompleted.fromJson(item as Map<String, dynamic>))
+          .toList();
+    } catch (e, stackTrace) {
+      ErrorHandler.setError(e);
+      print(stackTrace);
+      rethrow;
+    }
   }
 
   // gets the app style
