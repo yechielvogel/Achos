@@ -18,3 +18,5 @@ final isAdminProvider = Provider<bool>((ref) {
 
 // general loading provider
 final generalLoadingProvider = StateProvider<bool>((ref) => false);
+
+final dateProvider = StateProvider<DateTime>((ref) => DateTime.now());

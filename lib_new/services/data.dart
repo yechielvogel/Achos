@@ -59,19 +59,23 @@ class DataService {
   // get subscriptions for user
   Future<void> getUserSubscriptions(int userId, DateTime today) async {
     final subscriptions = await repo.getUserSubscriptions(userId, today);
-    ref.read(subscriptionsProvider.notifier).setSubscriptions(subscriptions);
+    await ref
+        .read(subscriptionsProvider.notifier)
+        .setSubscriptions(subscriptions);
   }
 
   // complete a hachlata
   Future<void> completeHachlata(HachlataCompleted hachlata) async {
     HachlataCompleted newHachlata = await repo.completeHachlata(hachlata);
-    ref.read(completedHachlatasProvider.notifier).addHachlata(newHachlata);
+    await ref
+        .read(completedHachlatasProvider.notifier)
+        .addHachlata(newHachlata);
   }
 
   // get completed hachlatas for user for selected day
   Future<void> getCompletedHachlatas(int userId, DateTime day) async {
     final completedHachlatas = await repo.getCompletedHachlatas(userId, day);
-    ref
+    await ref
         .read(completedHachlatasProvider.notifier)
         .setHachlatas(completedHachlatas);
   }

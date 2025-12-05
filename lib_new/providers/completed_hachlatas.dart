@@ -18,8 +18,8 @@ class completedHachlatasNotifier
     state = [];
   }
 
-  void setHachlatas(List<HachlataCompleted> hachlata) {
-    state = hachlata;
+  Future<void> setHachlatas(List<HachlataCompleted> hachlatas) async {
+    state = hachlatas;
   }
 }
 

@@ -1,9 +1,13 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../providers/style.dart';
 import '../types/dtos/hachlata.dart';
 
-class HachlataCircle extends StatefulWidget {
+class HachlataCircle extends ConsumerStatefulWidget {
   final Hachlata hachlata;
   final VoidCallback? onComplete;
   final bool completed;
@@ -12,14 +16,14 @@ class HachlataCircle extends StatefulWidget {
     super.key,
     required this.hachlata,
     this.onComplete,
-    this.completed = false,
+    required this.completed,
   });
 
   @override
-  State<HachlataCircle> createState() => _HachlataCircleState();
+  ConsumerState<HachlataCircle> createState() => _HachlataCircleState();
 }
 
-class _HachlataCircleState extends State<HachlataCircle> {
+class _HachlataCircleState extends ConsumerState<HachlataCircle> {
   final List<Offset?> _points = [];
   late bool _isComplete;
 
@@ -27,10 +31,16 @@ class _HachlataCircleState extends State<HachlataCircle> {
   void initState() {
     super.initState();
     _isComplete = widget.completed;
+
+    if (_isComplete) {
+      _fillRemaining();
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final style = ref.watch(appStyleProvider);
+
     return GestureDetector(
       onPanUpdate: (details) {
         if (_isComplete) return;
@@ -44,8 +54,11 @@ class _HachlataCircleState extends State<HachlataCircle> {
         if (_isComplete) return;
 
         double fillEstimate = _estimateFillLevel();
-        if (fillEstimate > 0.99) {
-          setState(() => _isComplete = true);
+        if (fillEstimate > 0.8) {
+          setState(() {
+            _isComplete = true;
+            _fillRemaining();
+          });
           HapticFeedback.mediumImpact();
 
           if (widget.onComplete != null) {
@@ -53,35 +66,47 @@ class _HachlataCircleState extends State<HachlataCircle> {
           }
         }
       },
-      child: CustomPaint(
-        foregroundPainter: HachlataPainter(_points),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          width: 50,
-          height: 50,
-          decoration: BoxDecoration(
-            shape: BoxShape.circle,
-            color: _isComplete ? Colors.greenAccent : Colors.grey.shade300,
-            boxShadow: [
-              if (_isComplete)
-                const BoxShadow(
-                  color: Colors.green,
-                  blurRadius: 10,
-                  spreadRadius: 1,
-                )
-            ],
-          ),
-          child: Center(
-            child: Text(
-              widget.hachlata.name,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: _isComplete ? Colors.white : Colors.black,
+      child: SizedBox(
+        width: 100,
+        height: 100,
+        child: Stack(
+          alignment: Alignment.center,
+          children: [
+            CustomPaint(
+              foregroundPainter: HachlataPainter(_points, style.accentColor),
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: _isComplete
+                      ? style.accentColor
+                      : style.buttonBackgroundColor,
+                  boxShadow: [
+                    BoxShadow(
+                      color: style.buttonBorderColor,
+                      blurRadius: 0,
+                      offset: const Offset(5, 10),
+                    ),
+                  ],
+                  // border: Border.all(
+                  //   color: style.buttonBorderColor,
+                  //   width: 2,
+                  // ),
+                ),
               ),
-              textAlign: TextAlign.center,
             ),
-          ),
+            Align(
+              alignment: Alignment.center,
+              child: Text(
+                widget.hachlata.name,
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.bold,
+                  color: style.themeBlack,
+                ),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ],
         ),
       ),
     );
@@ -96,17 +121,30 @@ class _HachlataCircleState extends State<HachlataCircle> {
 
     return (uniquePoints / (circleArea / 8)).clamp(0.0, 1.0);
   }
+
+  void _fillRemaining() {
+    const radius = 25.0;
+    final center = Offset(radius, radius);
+    final step = 2 * 3.14 / 360;
+
+    for (double angle = 0; angle < 2 * 3.14; angle += step) {
+      final x = center.dx + radius * 0.9 * cos(angle);
+      final y = center.dy + radius * 0.9 * sin(angle);
+      _points.add(Offset(x, y));
+    }
+  }
 }
 
 class HachlataPainter extends CustomPainter {
   final List<Offset?> points;
+  final Color fillColor;
 
-  HachlataPainter(this.points);
+  HachlataPainter(this.points, this.fillColor);
 
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = Colors.teal
+      ..color = fillColor
       ..strokeCap = StrokeCap.round
       ..strokeWidth = 20;
 

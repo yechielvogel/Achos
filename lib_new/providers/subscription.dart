@@ -19,7 +19,7 @@ class SubscriptionNotifier extends StateNotifier<List<Subscription>> {
     state = [];
   }
 
-  void setSubscriptions(List<Subscription> subscription) {
+  Future<void> setSubscriptions(List<Subscription> subscription) async {
     state = subscription;
   }
 }

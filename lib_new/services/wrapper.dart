@@ -5,6 +5,8 @@ import '../providers/general.dart';
 import '../providers/user.dart';
 import '../screens/navigation/navigation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../shared/widgets/buttons/custom_button.dart';
+import 'auth/auth.dart';
 import 'auth/authenticate.dart';
 
 class Wrapper extends ConsumerStatefulWidget {
@@ -46,6 +48,7 @@ class _WrapperState extends ConsumerState<Wrapper> {
   Widget build(BuildContext context) {
     final firebaseUser = ref.watch(authStateProvider).value;
     final localUser = ref.watch(userProvider);
+    final AuthService _auth = AuthService();
 
     if (firebaseUser == null) return const Authenticate();
 
@@ -61,8 +64,19 @@ class _WrapperState extends ConsumerState<Wrapper> {
     if (localUser.isActive == true) return Navigation();
 
     // need to make a waiting room screen and a update app screen and maybe more
-    return const Scaffold(
-      body: Center(child: Text("Your account is not active yet")),
+    return Scaffold(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Center(child: Text("Your account is not active yet")),
+          CustomButton(
+            title: 'Logout',
+            onPressed: () async {
+              await _auth.signOut(ref);
+            },
+          ),
+        ],
+      ),
     );
   }
 }

@@ -9,6 +9,7 @@ class AppStyle {
   final Color tertiaryColor;
   final Color errorColor;
   final Color themeBlack;
+  final Color lighterBlack;
   final Color buttonBackgroundColor;
   final Color buttonBorderColor;
 
@@ -44,6 +45,7 @@ class AppStyle {
     this.IconColor = const Color(0xFF55828B),
     this.errorColor = const Color(0xFFC75B5B),
     this.themeBlack = const Color(0xFF545252),
+    this.lighterBlack = const Color(0xFF7A7A7A),
     this.themeWhite = const Color(0xFFF5F5F5),
     // Borders
     this.borderThickness = 2.0,

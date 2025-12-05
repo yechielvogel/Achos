@@ -71,9 +71,7 @@ class HachlataBottomSheet extends StatelessWidget {
                     openCreateSubscriptionDialog(context, hachlata);
                   },
                   child: Container(
-                    child: HachlataCircle(
-                      hachlata: hachlata,
-                    ),
+                    child: HachlataCircle(hachlata: hachlata, completed: false),
                   ),
                 );
               },

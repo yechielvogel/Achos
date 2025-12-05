@@ -160,9 +160,10 @@ class Repository {
           .lte('date_start', today)
           .gte('date_end', today);
 
-      final data = response as List<dynamic>;
+      final data = response as List<dynamic>?;
+
       if (data == null || data.isEmpty) {
-        throw Exception('No subscriptions found for userId: $userId');
+        return [];
       }
 
       return data
@@ -171,7 +172,7 @@ class Repository {
     } catch (e, stackTrace) {
       ErrorHandler.setError(e);
       print(stackTrace);
-      rethrow;
+      return [];
     }
   }
 
