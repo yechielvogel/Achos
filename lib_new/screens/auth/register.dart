@@ -23,7 +23,7 @@ class _RegisterState extends ConsumerState<Register> {
   String password = '';
   String firstName = '';
   String lastName = '';
-  String school = '';
+  // String school = '';
   String error = '';
   bool loading = false;
 
@@ -74,13 +74,13 @@ class _RegisterState extends ConsumerState<Register> {
                     : null,
                 onChanged: (val) => setState(() => password = val),
               ),
-              SizedBox(height: 16),
-              CustomInputField(
-                hintText: 'School',
-                validator: (val) =>
-                    val!.isEmpty ? 'Please enter your school' : null,
-                onChanged: (val) => setState(() => school = val),
-              ),
+              // SizedBox(height: 16),
+              // CustomInputField(
+              //   hintText: 'School',
+              //   validator: (val) =>
+              //       val!.isEmpty ? 'Please enter your school' : null,
+              //   onChanged: (val) => setState(() => school = val),
+              // ),
               SizedBox(height: 16),
               CustomButton(
                   onPressed: () async {
@@ -88,7 +88,8 @@ class _RegisterState extends ConsumerState<Register> {
                       setState(() => ref
                           .watch(generalLoadingProvider.notifier)
                           .state = true);
-                      int schoolId = int.tryParse(school) ?? 0;
+                      int schoolId = 1;
+                      // int schoolId = int.tryParse(school) ?? 0;
                       dynamic result =
                           await authService.registerWithEmailAndPassword(email,
                               password, firstName, lastName, schoolId, ref);
