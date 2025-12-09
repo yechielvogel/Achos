@@ -6,6 +6,7 @@ import '../../services/data.dart';
 import '../../shared/widgets/tiles/general_list_tile.dart';
 import '../../providers/categories.dart';
 import '../../providers/app_hachlatas.dart';
+import 'widgets/create_category.dart';
 import 'widgets/hachlata_bottom_sheet.dart';
 
 class ManageHachlatas extends ConsumerStatefulWidget {
@@ -40,14 +41,14 @@ class _ManageHachlatasState extends ConsumerState<ManageHachlatas> {
 
   void showHachlataBottomSheet(BuildContext context, int categoryId) {
     print("categories id: $categoryId");
-    final hachlatas = ref.read(appHachlatasProvider);
+    final hachlatas = ref.watch(appHachlatasProvider);
     final style = ref.read(styleProvider);
 
     // Filter hachlatas by category
     final filteredHachlatas =
         hachlatas.where((hachlata) => hachlata.category == categoryId).toList();
 
-    final category = ref.read(categoriesProvider).firstWhere(
+    final category = ref.watch(categoriesProvider).firstWhere(
           (cat) => cat.id == categoryId,
         );
 
@@ -62,9 +63,29 @@ class _ManageHachlatasState extends ConsumerState<ManageHachlatas> {
         return SizedBox(
           height: screenHeight * 0.8,
           child: HachlataBottomSheet(
-            hachlatas: filteredHachlatas,
             category: category,
             style: style,
+          ),
+        );
+      },
+    );
+  }
+
+  Future<void> openCreateCategoryDialog(BuildContext context) async {
+    final style = ref.read(styleProvider);
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          backgroundColor: style.backgroundColor,
+          child: ConstrainedBox(
+            constraints: BoxConstraints(
+              minHeight: 200,
+            ),
+            child: CreateCategory(),
           ),
         );
       },
@@ -75,6 +96,7 @@ class _ManageHachlatasState extends ConsumerState<ManageHachlatas> {
   Widget build(BuildContext context) {
     final style = ref.read(styleProvider);
     final categories = ref.watch(categoriesProvider);
+    final bool isAdmin = ref.read(isAdminProvider);
 
     return Scaffold(
       appBar: AppBar(
@@ -82,13 +104,32 @@ class _ManageHachlatasState extends ConsumerState<ManageHachlatas> {
           color: style.primaryColor,
         ),
         backgroundColor: style.backgroundColor,
-        title: Text(
-          // this should be changed to category by default and use school settings
-          'Choose a theme',
-          style: TextStyle(
-            color: style.themeBlack,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Text(
+              // this should be changed to category by default and use school settings
+              'Choose a theme',
+              style: TextStyle(
+                color: style.themeBlack,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            if (isAdmin)
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: GestureDetector(
+                  onTap: () => {
+                    openCreateCategoryDialog(context),
+                  },
+                  child: Icon(
+                    Icons.add_circle_outline,
+                    color: style.primaryColor,
+                    size: 20,
+                  ),
+                ),
+              ),
+          ],
         ),
       ),
       backgroundColor: style.backgroundColor,

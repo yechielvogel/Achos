@@ -110,6 +110,22 @@ class Repository {
     }
   }
 
+  // create category
+  Future<Category> createCategory(Category category) async {
+    try {
+      final response = await _supabaseClient
+          .from('categories')
+          .insert(category.toJson())
+          .select()
+          .single();
+
+      return Category.fromJson(response);
+    } catch (e) {
+      print('Error creating category: $e');
+      rethrow;
+    }
+  }
+
   // get hachlatas to choose from
   Future<List<Hachlata>> getAllHachlatas(int schoolId) async {
     try {

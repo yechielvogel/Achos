@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../../providers/app_hachlatas.dart';
 import '../../../providers/general.dart';
 import '../../../test/hachlata_circle.dart';
 import '../../../types/dtos/app_style.dart';
@@ -9,13 +10,11 @@ import 'create_hachlata.dart';
 import 'create_subscription.dart';
 
 class HachlataBottomSheet extends ConsumerStatefulWidget {
-  final List<Hachlata> hachlatas;
   final Category category;
   final AppStyle style;
 
   const HachlataBottomSheet({
     Key? key,
-    required this.hachlatas,
     required this.category,
     required this.style,
   }) : super(key: key);
@@ -28,8 +27,14 @@ class HachlataBottomSheet extends ConsumerStatefulWidget {
 class _HachlataBottomSheetState extends ConsumerState<HachlataBottomSheet> {
   @override
   Widget build(BuildContext context) {
+    final hachlatas = ref.watch(appHachlatasProvider);
+    final style = ref.read(styleProvider);
+
+    final filteredHachlatas = hachlatas
+        .where((hachlata) => hachlata.category == widget.category.id)
+        .toList();
     final isAdmin = ref.watch(isAdminProvider);
-    for (var hachlata in widget.hachlatas) {
+    for (var hachlata in hachlatas) {
       print('Hachlata: ${hachlata.name}, Category: ${hachlata.category}');
     }
 
@@ -120,9 +125,9 @@ class _HachlataBottomSheetState extends ConsumerState<HachlataBottomSheet> {
                 crossAxisSpacing: 16,
                 mainAxisSpacing: 16,
               ),
-              itemCount: widget.hachlatas.length,
+              itemCount: filteredHachlatas.length,
               itemBuilder: (context, index) {
-                final hachlata = widget.hachlatas[index];
+                final hachlata = filteredHachlatas[index];
                 return GestureDetector(
                   onTap: () {
                     openCreateSubscriptionDialog(context, hachlata);

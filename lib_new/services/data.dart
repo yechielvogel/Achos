@@ -9,6 +9,7 @@ import '../providers/completed_hachlatas.dart';
 import '../providers/general.dart';
 import '../providers/subscription.dart';
 import '../providers/user.dart';
+import '../types/dtos/categories.dart';
 import '../types/dtos/hachlata.dart';
 import '../types/dtos/hachlata_completed.dart';
 import '../types/dtos/school.dart';
@@ -47,6 +48,13 @@ class DataService {
     final categories =
         await repo.getCategories(ref.read(userProvider).school?.id ?? 0);
     ref.read(categoriesProvider.notifier).setCategories(categories);
+  }
+
+  // create a hachlata
+  Future<Category> createCategory(Category category) async {
+    Category newCategory = await repo.createCategory(category);
+    ref.read(categoriesProvider.notifier).addCategory(newCategory);
+    return newCategory;
   }
 
   // get all hachlatas

@@ -244,9 +244,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
             return child!;
           },
           child: CustomScrollView(
-            physics: currentZoomLevel == ZoomLevel.day
-                ? NeverScrollableScrollPhysics()
-                : BouncingScrollPhysics(),
+            physics: const ClampingScrollPhysics(),
+
+            // physics: currentZoomLevel == ZoomLevel.day
+            //     ? NeverScrollableScrollPhysics()
+            //     : BouncingScrollPhysics(),
             slivers: filteredHachlatasByDay.entries
                 .where((entry) => entry.value.isNotEmpty)
                 .expand((entry) {
