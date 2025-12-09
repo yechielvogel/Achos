@@ -76,6 +76,7 @@ class _NavigationState extends ConsumerState<Navigation> {
 
   List<AppBar> _buildAppBars(WidgetRef ref) {
     final style = ref.read(styleProvider);
+    final zoomLevel = ref.watch(currentZoomLevelProvider);
 
     return screens.map((screen) {
       if (screen is HomeScreen) {
@@ -90,7 +91,8 @@ class _NavigationState extends ConsumerState<Navigation> {
             children: [
               GestureDetector(
                 onHorizontalDragEnd: (details) {
-                  if (details.primaryVelocity != null) {
+                  if (zoomLevel == ZoomLevel.day &&
+                      details.primaryVelocity != null) {
                     if (details.primaryVelocity! > 0) {
                       HapticFeedback.mediumImpact();
                       _changeDate(-1);
@@ -103,26 +105,30 @@ class _NavigationState extends ConsumerState<Navigation> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    GestureDetector(
-                      onTap: () async => await _changeDate(-1),
-                      child:
-                          Icon(Icons.arrow_back_ios, color: style.primaryColor),
-                    ),
+                    if (zoomLevel == ZoomLevel.day)
+                      GestureDetector(
+                        onTap: () async => await _changeDate(-1),
+                        child: Icon(Icons.arrow_back_ios,
+                            color: style.primaryColor),
+                      )
+                    else
+                      SizedBox(width: 24),
                     GestureDetector(
                       onTap: () {
-                        showModalBottomSheet(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.vertical(
-                              top: Radius.circular(20),
+                        if (zoomLevel == ZoomLevel.day) {
+                          showModalBottomSheet(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.vertical(
+                                top: Radius.circular(20),
+                              ),
                             ),
-                          ),
-                          context: context,
-                          builder: (context) => CustomCalendar(),
-                        );
+                            context: context,
+                            builder: (context) => CustomCalendar(),
+                          );
+                        }
                       },
                       child: Consumer(
                         builder: (context, ref, _) {
-                          final zoomLevel = ref.watch(currentZoomLevelProvider);
                           final date = ref.watch(dateProvider);
                           final jewishDate = JewishDate.fromDateTime(date);
 
@@ -134,18 +140,7 @@ class _NavigationState extends ConsumerState<Navigation> {
                                 color: style.themeBlack,
                               ),
                             );
-                          }
-                          // else if (zoomLevel == ZoomLevel.week) {
-                          //   final parsha = jewishDate.getWeeklyParsha();
-                          //   return Text(
-                          //     parsha,
-                          //     style: TextStyle(
-                          //       fontWeight: FontWeight.w500,
-                          //       color: style.themeBlack,
-                          //     ),
-                          //   );
-                          else if (zoomLevel == ZoomLevel.week) {
-                            // final parsha = jewishDate.getWeeklyParsha();
+                          } else if (zoomLevel == ZoomLevel.week) {
                             return Text(
                               "This week",
                               style: TextStyle(
@@ -169,11 +164,14 @@ class _NavigationState extends ConsumerState<Navigation> {
                         },
                       ),
                     ),
-                    GestureDetector(
-                      onTap: () => _changeDate(1),
-                      child: Icon(Icons.arrow_forward_ios,
-                          color: style.primaryColor),
-                    ),
+                    if (zoomLevel == ZoomLevel.day)
+                      GestureDetector(
+                        onTap: () => _changeDate(1),
+                        child: Icon(Icons.arrow_forward_ios,
+                            color: style.primaryColor),
+                      )
+                    else
+                      SizedBox(width: 24), // Placeholder to maintain spacing
                   ],
                 ),
               ),

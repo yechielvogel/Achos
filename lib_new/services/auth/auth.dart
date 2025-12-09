@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:tzivos_hashem_milwaukee/shared/globals.dart';
 import '../../api/repository.dart';
+import '../../providers/general.dart';
 import '../../providers/user.dart';
 import '../../types/dtos/contact.dart';
 import '../../types/dtos/roll.dart';
@@ -92,6 +93,7 @@ class AuthService {
       // no that we have firebase id update the user in supabase with firebaseId
       await repository.updateUserWithFirebaseId(userId, user!.uid);
       await user!.updateDisplayName(firstName);
+      ref.watch(generalLoadingProvider.notifier).state = false;
       await user.reload();
 
       return user;

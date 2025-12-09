@@ -84,6 +84,8 @@ class _HachlataCircleState extends ConsumerState<HachlataCircle> {
             }
           },
           onPanEnd: (_) {
+            Scrollable.of(context)?.position.isScrollingNotifier.value = true;
+
             if (_isComplete) return;
 
             double fillEstimate = _estimateFillLevel();

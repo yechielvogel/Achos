@@ -90,16 +90,17 @@ class _RegisterState extends ConsumerState<Register> {
                           .state = true);
                       int schoolId = 1;
                       // int schoolId = int.tryParse(school) ?? 0;
-                      dynamic result =
-                          await authService.registerWithEmailAndPassword(email,
-                              password, firstName, lastName, schoolId, ref);
-                      if (result == null) {
-                        setState(() {
-                          error = 'Registration failed';
-                          ref.watch(generalLoadingProvider.notifier).state =
-                              false;
-                        });
-                      }
+
+                      await authService.registerWithEmailAndPassword(
+                          email, password, firstName, lastName, schoolId, ref);
+
+                      // if (result == null) {
+                      //   setState(() {
+                      //     error = 'Registration failed';
+                      //     ref.watch(generalLoadingProvider.notifier).state =
+                      //         false;
+                      //   });
+                      // }
                     }
                   },
                   title: 'Register'),
