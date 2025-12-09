@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/general.dart';
+import '../../services/auth/auth.dart';
+import '../../shared/widgets/buttons/custom_button.dart';
 import '../../shared/widgets/tiles/general_list_tile.dart';
 import 'widgets/manage_users.dart';
 
@@ -18,6 +20,7 @@ class _AdminAccountScreenState extends ConsumerState<AdminAccountScreen> {
   Widget build(BuildContext context) {
     final style = ref.read(styleProvider);
     final screenHeight = MediaQuery.of(context).size.height;
+    final AuthService _auth = AuthService();
 
     final adminActions = [
       Padding(
@@ -89,8 +92,37 @@ class _AdminAccountScreenState extends ConsumerState<AdminAccountScreen> {
         ),
         backgroundColor: style.backgroundColor,
       ),
-      body: ListView(
-        children: adminActions,
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView(
+              children: adminActions,
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(bottom: 32, right: 16, left: 16),
+            child: Row(
+              children: [
+                Expanded(
+                  child: CustomButton(
+                    title: 'Sign out',
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      _auth.signOut(ref);
+                    },
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
+                  child: CustomButton(
+                    title: 'Delete account',
+                    onPressed: () {},
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
