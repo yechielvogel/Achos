@@ -266,6 +266,8 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
               final tileWidth = baseTileWidth;
               final tileHeight = baseTileWidth;
               final childAspectRatio = tileWidth / tileHeight;
+              final tileSize =
+                  100.0 * (currentZoomLevel == ZoomLevel.day ? 1.3 : 1.0);
 
               return [
                 if (currentZoomLevel != ZoomLevel.day)
@@ -301,6 +303,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
                                 (cat) => cat.id == hachlata.category),
                             scale:
                                 currentZoomLevel == ZoomLevel.day ? 1.3 : 1.0,
+                            radius: tileSize / 2, // <-- pass actual radius here
                             onComplete: () {
                               if (!isCompleted)
                                 handelCompleteHachlata(hachlata, day);

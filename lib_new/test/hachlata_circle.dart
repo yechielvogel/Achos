@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -15,6 +13,7 @@ class HachlataCircle extends ConsumerStatefulWidget {
   final bool completed;
   final double scale;
   final bool allowInteraction;
+  final double? radius;
 
   const HachlataCircle({
     super.key,
@@ -24,6 +23,7 @@ class HachlataCircle extends ConsumerStatefulWidget {
     required this.completed,
     required this.allowInteraction,
     this.scale = 1.0,
+    this.radius,
   });
 
   @override
@@ -38,10 +38,6 @@ class _HachlataCircleState extends ConsumerState<HachlataCircle> {
   void initState() {
     super.initState();
     _isComplete = widget.completed;
-
-    if (_isComplete) {
-      _fillRemaining();
-    }
   }
 
   @override
@@ -68,13 +64,17 @@ class _HachlataCircleState extends ConsumerState<HachlataCircle> {
             final rb = context.findRenderObject() as RenderBox;
             final pos = rb.globalToLocal(details.globalPosition);
 
-            setState(() => _points.add(pos));
+            final r = widget.radius ?? 50.0 * widget.scale;
+            final center = Offset(r, r);
+
+            if ((pos - center).distance <= r) {
+              setState(() => _points.add(pos));
+            }
 
             double fillEstimate = _estimateFillLevel();
             if (fillEstimate > 0.8) {
               setState(() {
                 _isComplete = true;
-                _fillRemaining();
               });
               HapticFeedback.mediumImpact();
 
@@ -90,7 +90,6 @@ class _HachlataCircleState extends ConsumerState<HachlataCircle> {
             if (fillEstimate > 0.8) {
               setState(() {
                 _isComplete = true;
-                _fillRemaining();
               });
               HapticFeedback.mediumImpact();
 
@@ -150,30 +149,56 @@ class _HachlataCircleState extends ConsumerState<HachlataCircle> {
   }
 
   double _estimateFillLevel() {
-    if (_points.isEmpty) return 0;
+    if (_points.isEmpty) return 0.0;
 
-    final radius = 50.0 * widget.scale; // Scaled radius
-    final circleArea = pi * radius * radius; // Area of the circle
-    final uniquePoints = _points.whereType<Offset>().toSet().length.toDouble();
+    final r = widget.radius ?? 50.0 * widget.scale;
+    final center = Offset(r, r);
 
-    return (uniquePoints / (circleArea / 8)).clamp(0.0, 1.0);
-  }
+    const int gridSize = 20;
+    final double cellSize = (r * 2) / gridSize;
 
-  void _fillRemaining() {
-    final radius = 50.0 * widget.scale; // Radius of the circle based on scale
-    final center = Offset(radius, radius); // Center of the circle
-    final step =
-        2 * pi / 360; // Step size for iterating over the circle (1 degree)
+    int filledCells = 0;
+    int totalCells = gridSize * gridSize;
 
-    // Add points to fill the entire circle area
-    for (double r = 0; r <= radius; r += 1) {
-      // Increment by 1 for smoother fill
-      for (double angle = 0; angle < 2 * pi; angle += step) {
-        final x = center.dx + r * cos(angle);
-        final y = center.dy + r * sin(angle);
-        _points.add(Offset(x, y));
+    final Set<String> checkedCells = {};
+
+    for (final point in _points) {
+      if (point == null) continue;
+
+      if ((point - center).distance > r) continue;
+
+      int gridX = (point.dx / cellSize).floor();
+      int gridY = (point.dy / cellSize).floor();
+
+      for (int dx = -2; dx <= 2; dx++) {
+        for (int dy = -2; dy <= 2; dy++) {
+          int cx = gridX + dx;
+          int cy = gridY + dy;
+
+          if (cx < 0 || cy < 0 || cx >= gridSize || cy >= gridSize) continue;
+
+          final String key = '$cx,$cy';
+          if (checkedCells.contains(key)) continue;
+
+          final cellCenter = Offset(
+            (cx + 0.5) * cellSize,
+            (cy + 0.5) * cellSize,
+          );
+
+          bool cellIsHit = _points.any((p) {
+            if (p == null) return false;
+            return (p - cellCenter).distance <= 18 * widget.scale;
+          });
+
+          if (cellIsHit) {
+            checkedCells.add(key);
+            filledCells++;
+          }
+        }
       }
     }
+
+    return (filledCells / totalCells).clamp(0.0, 1.0);
   }
 }
 
@@ -203,9 +228,9 @@ class HachlataPainter extends CustomPainter {
       final p2 = points[i + 1];
       if (p1 != null && p2 != null) {
         canvas.drawLine(p1, p2, paint);
-        if (i % 5 == 0) {
-          HapticFeedback.lightImpact();
-        }
+        // if (i % 5 == 0) {
+        //   HapticFeedback.lightImpact();
+        // }
       }
     }
   }
