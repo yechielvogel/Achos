@@ -5,12 +5,14 @@ class Category {
   final String? name;
   final int? position;
   final School? school;
+  final String color;
 
   Category({
     this.id,
     this.name,
     this.position,
     this.school,
+    this.color = '',
   });
 
   Map<String, dynamic> toJson() {
@@ -19,6 +21,7 @@ class Category {
       'name': name,
       'position': position,
       'school': school?.toJson(),
+      'color': color,
     };
   }
 
@@ -30,6 +33,7 @@ class Category {
       school: (json['school'] is Map<String, dynamic>)
           ? School.fromJson(json['school'])
           : null,
+      color: json['color'] as String? ?? '',
     );
   }
 }

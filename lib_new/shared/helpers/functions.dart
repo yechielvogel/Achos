@@ -52,6 +52,19 @@ class Functions {
       6: "Shabbos",
       7: "Sunday",
     };
+
+    final today = DateTime.now();
+    if (date.year == today.year &&
+        date.month == today.month &&
+        date.day == today.day) {
+      return "Today";
+    }
+
     return names[date.weekday]!;
   }
+
+//   String getWeeklyParsha(DateTime date) {
+//   final jewishDate = JewishDate.fromDateTime(date);
+//   return jewishDate.getParsha();
+// }
 }

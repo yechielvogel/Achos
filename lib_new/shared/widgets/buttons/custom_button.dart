@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../input/input_field.dart';
+import '../../../providers/general.dart';
 
 class CustomButton extends ConsumerWidget {
   final String title;
@@ -29,21 +29,20 @@ class CustomButton extends ConsumerWidget {
         height: height ?? 50.0,
         width: width ?? double.infinity,
         decoration: BoxDecoration(
-          color: isOutline != null
-              ? style.buttonBackgroundColor
+          color: isOutline == true
+              ? style.backgroundColor
               : style.buttonBackgroundColor,
           borderRadius: BorderRadius.circular(20),
           border: Border.all(color: style.buttonBorderColor, width: 1),
-          boxShadow: [
-            BoxShadow(
-              color: isOutline != null
-                  ? style.buttonBorderColor
-                  : style.buttonBorderColor,
-              // style.buttonBorderColor,
-              blurRadius: 0,
-              offset: Offset(5, 5),
-            ),
-          ],
+          boxShadow: isOutline == true
+              ? []
+              : [
+                  BoxShadow(
+                    color: style.buttonBorderColor,
+                    blurRadius: 0,
+                    offset: Offset(5, 5),
+                  ),
+                ],
         ),
         alignment: Alignment.center,
         child: Text(

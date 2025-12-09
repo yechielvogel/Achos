@@ -1,10 +1,9 @@
-import 'categories.dart';
 import 'school.dart';
 
 class Hachlata {
   final int? id;
-  final School? school;
-  final Category? category;
+  final int? school;
+  final int? category;
   final String name;
   final String? description;
   final String? photoUrl;
@@ -23,8 +22,8 @@ class Hachlata {
   Map<String, dynamic> toJson() {
     return {
       if (id != null) 'id': id,
-      'school': school?.toJson(),
-      'category': category?.toJson(),
+      'school': school,
+      'category': category,
       'name': name,
       'description': description,
       'photo_url': photoUrl,
@@ -35,12 +34,8 @@ class Hachlata {
   factory Hachlata.fromJson(Map<String, dynamic> json) {
     return Hachlata(
       id: json['id'] as int?,
-      school: (json['school'] is Map<String, dynamic>)
-          ? School.fromJson(json['school'])
-          : null,
-      category: (json['category'] is Map<String, dynamic>)
-          ? Category.fromJson(json['category'])
-          : null,
+      school: json['school'] as int?,
+      category: json['category'] as int?,
       name: json['name'] as String,
       description: json['description'] as String?,
       photoUrl: json['photo_url'] as String?,

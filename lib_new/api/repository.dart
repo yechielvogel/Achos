@@ -93,7 +93,7 @@ class Repository {
       final response = await _supabaseClient
           .from('categories')
           .select('*')
-          .eq('school', schoolId);
+          .or('school.eq.${schoolId},school.is.null');
 
       final data = response as List<dynamic>;
       if (data == null || data.isEmpty) {
@@ -115,7 +115,7 @@ class Repository {
     try {
       final response = await _supabaseClient
           .from('hachlata')
-          .select('* , category(*)')
+          .select('*')
           .eq('school', schoolId);
 
       final data = response as List<dynamic>;
@@ -139,7 +139,7 @@ class Repository {
       final response = await _supabaseClient
           .from('subscription')
           .insert(subscription.toJson())
-          .select()
+          .select('*, hachlata(*)')
           .single();
 
       return Subscription.fromJson(response);
@@ -149,20 +149,41 @@ class Repository {
     }
   }
 
+  // create hachlata
+  Future<Hachlata> createHachlata(Hachlata hachlata) async {
+    try {
+      final response = await _supabaseClient
+          .from('hachlata')
+          .insert(hachlata.toJson())
+          .select()
+          .single();
+
+      return Hachlata.fromJson(response);
+    } catch (e) {
+      print('Error creating subscription for userId ${hachlata.name}: $e');
+      rethrow;
+    }
+  }
+
   // get user subscriptions (that are in date and active )
   Future<List<Subscription>> getUserSubscriptions(
-      int userId, DateTime today) async {
+      int userId, DateTime startDate, DateTime endDate) async {
     try {
+      final formattedStartDate =
+          "${startDate.toIso8601String().split('T').first}";
+      final formattedEndDate = "${endDate.toIso8601String().split('T').first}";
+
       final response = await _supabaseClient
           .from('subscription')
           .select('*, hachlata(*)')
           .eq('user', userId)
-          .lte('date_start', today)
-          .gte('date_end', today);
-
+          .lte('date_start', formattedStartDate)
+          .gte('date_end', formattedEndDate);
       final data = response as List<dynamic>?;
 
       if (data == null || data.isEmpty) {
+        print(
+            'No subscriptions found for userId: $userId between $startDate and $endDate');
         return [];
       }
 
@@ -201,15 +222,13 @@ class Repository {
     try {
       final response = await _supabaseClient
           .from('user')
-          .select('*, roll(*), contact!contact_user_fkey(*)')
+          .select('*, roll(*), contact(*)')
           .eq('school', schoolId);
 
-      // In some SDK versions, response may be a PostgrestResponse
-      // If so, replace with: final data = response.data as List<dynamic>;
-      final data = response as List<dynamic>;
+      final data = response as List<dynamic>? ?? [];
 
       if (data.isEmpty) {
-        throw Exception('No users found for schoolId: $schoolId');
+        return [];
       }
 
       return data
@@ -218,6 +237,18 @@ class Repository {
     } catch (e, stackTrace) {
       ErrorHandler.setError(e);
       print(stackTrace);
+      return [];
+    }
+  }
+
+  // accept a user
+  Future<void> acceptUser(int userId) async {
+    try {
+      await _supabaseClient
+          .from('user')
+          .update({'is_active': true}).eq('id', userId);
+    } catch (e) {
+      print('Error creating subscription for userId ${userId}: $e');
       rethrow;
     }
   }
@@ -239,24 +270,23 @@ class Repository {
 
   // get completed hachlatas for a given day
   Future<List<HachlataCompleted>> getCompletedHachlatas(
-      int userId, DateTime today) async {
+      int userId, DateTime startDate, DateTime endDate) async {
     try {
-      final startOfDay =
-          DateTime(today.year, today.month, today.day).toIso8601String();
-      final endOfDay = DateTime(today.year, today.month, today.day, 23, 59, 59)
-          .toIso8601String();
-
+      final formattedStartDate =
+          "${startDate.toIso8601String().split('T').first}";
+      final formattedEndDate = "${endDate.toIso8601String().split('T').first}";
       final response = await _supabaseClient
           .from('hachlata_completed')
           .select('*')
           .eq('user', userId)
-          .gte('completed_at', startOfDay)
-          .lte('completed_at', endOfDay);
+          .gte('completed_at', formattedStartDate)
+          .lte('completed_at', formattedEndDate);
 
       final data = response as List<dynamic>?;
 
       if (data == null || data.isEmpty) {
-        print('No completed hachlata found for userId: $userId on $today');
+        print(
+            'No completed hachlata found for userId: $userId between $startDate and $endDate');
         return [];
       }
 

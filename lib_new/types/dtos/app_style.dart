@@ -29,6 +29,13 @@ class AppStyle {
   final double captionFontSize;
   final double buttonFontSize;
 
+  // Font weights
+  final FontWeight titleFontWeight;
+  final FontWeight subtitleFontWeight;
+  final FontWeight bodyFontWeight;
+  final FontWeight captionFontWeight;
+  final FontWeight buttonFontWeight;
+
   // Padding
   final double paddingSmall;
   final double paddingMedium;
@@ -36,6 +43,12 @@ class AppStyle {
 
   AppStyle({
     this.primaryColor = const Color(0xFF83C9CB),
+
+    // mint 0xFFC9E4CA
+    // soft pink 0xFFEAD7E2
+    // grey 0xFFE7F1F1
+    // purple 0xFFEAD7E2
+    // orange 0xFFFFC6A4
     this.secondaryColor = const Color(0xFF87BBA2),
     this.tertiaryColor = const Color(0xFF55828B),
     this.accentColor = const Color(0xFFC9E4CA),
@@ -47,18 +60,26 @@ class AppStyle {
     this.themeBlack = const Color(0xFF545252),
     this.lighterBlack = const Color(0xFF7A7A7A),
     this.themeWhite = const Color(0xFFF5F5F5),
+
+    // Font weights
+    this.titleFontWeight = FontWeight.bold,
+    this.subtitleFontWeight = FontWeight.w600,
+    this.bodyFontWeight = FontWeight.normal,
+    this.captionFontWeight = FontWeight.w300,
+    this.buttonFontWeight = FontWeight.w500,
+
     // Borders
-    this.borderThickness = 2.0,
+    this.borderThickness = 1.0,
     this.borderRadiusSmall = 4.0,
     this.borderRadiusMedium = 8.0,
-    this.borderRadiusLarge = 16.0,
+    this.borderRadiusLarge = 12.0,
 
-    // Fonts
-    this.titleFontSize = 22.0,
-    this.subtitleFontSize = 18.0,
-    this.bodyFontSize = 16.0,
+    // Font sizes
+    this.titleFontSize = 20.0,
+    this.subtitleFontSize = 16.0,
+    this.bodyFontSize = 14.0,
     this.captionFontSize = 12.0,
-    this.buttonFontSize = 14.0,
+    this.buttonFontSize = 16.0,
 
     // Padding
     this.paddingSmall = 8.0,
@@ -79,15 +100,20 @@ class AppStyle {
       secondaryColor: Color(int.parse(map['secondary_color'] ?? '0xFF50E3C2')),
       tertiaryColor: Color(int.parse(map['tertiary_color'] ?? '0xFF9013FE')),
       errorColor: Color(int.parse(map['error_color'] ?? '0xFFD0021B')),
-      borderThickness: (map['border_thickness'] ?? 2.0).toDouble(),
+      borderThickness: (map['border_thickness'] ?? 1.0).toDouble(),
       borderRadiusSmall: (map['border_radius_small'] ?? 4.0).toDouble(),
       borderRadiusMedium: (map['border_radius_medium'] ?? 8.0).toDouble(),
-      borderRadiusLarge: (map['border_radius_large'] ?? 16.0).toDouble(),
-      titleFontSize: (map['title_font_size'] ?? 22.0).toDouble(),
-      subtitleFontSize: (map['subtitle_font_size'] ?? 18.0).toDouble(),
-      bodyFontSize: (map['body_font_size'] ?? 16.0).toDouble(),
+      borderRadiusLarge: (map['border_radius_large'] ?? 12.0).toDouble(),
+      titleFontSize: (map['title_font_size'] ?? 20.0).toDouble(),
+      subtitleFontSize: (map['subtitle_font_size'] ?? 16.0).toDouble(),
+      bodyFontSize: (map['body_font_size'] ?? 14.0).toDouble(),
       captionFontSize: (map['caption_font_size'] ?? 12.0).toDouble(),
-      buttonFontSize: (map['button_font_size'] ?? 14.0).toDouble(),
+      buttonFontSize: (map['button_font_size'] ?? 16.0).toDouble(),
+      titleFontWeight: FontWeight.values[map['title_font_weight'] ?? 7],
+      subtitleFontWeight: FontWeight.values[map['subtitle_font_weight'] ?? 5],
+      bodyFontWeight: FontWeight.values[map['body_font_weight'] ?? 4],
+      captionFontWeight: FontWeight.values[map['caption_font_weight'] ?? 3],
+      buttonFontWeight: FontWeight.values[map['button_font_weight'] ?? 5],
       paddingSmall: (map['padding_small'] ?? 8.0).toDouble(),
       paddingMedium: (map['padding_medium'] ?? 16.0).toDouble(),
       paddingLarge: (map['padding_large'] ?? 24.0).toDouble(),
@@ -111,6 +137,11 @@ class AppStyle {
       'body_font_size': bodyFontSize,
       'caption_font_size': captionFontSize,
       'button_font_size': buttonFontSize,
+      'title_font_weight': titleFontWeight.index,
+      'subtitle_font_weight': subtitleFontWeight.index,
+      'body_font_weight': bodyFontWeight.index,
+      'caption_font_weight': captionFontWeight.index,
+      'button_font_weight': buttonFontWeight.index,
       'padding_small': paddingSmall,
       'padding_medium': paddingMedium,
       'padding_large': paddingLarge,
@@ -134,6 +165,11 @@ class AppStyle {
     double? bodyFontSize,
     double? captionFontSize,
     double? buttonFontSize,
+    FontWeight? titleFontWeight,
+    FontWeight? subtitleFontWeight,
+    FontWeight? bodyFontWeight,
+    FontWeight? captionFontWeight,
+    FontWeight? buttonFontWeight,
     double? paddingSmall,
     double? paddingMedium,
     double? paddingLarge,
@@ -154,6 +190,11 @@ class AppStyle {
       bodyFontSize: bodyFontSize ?? this.bodyFontSize,
       captionFontSize: captionFontSize ?? this.captionFontSize,
       buttonFontSize: buttonFontSize ?? this.buttonFontSize,
+      titleFontWeight: titleFontWeight ?? this.titleFontWeight,
+      subtitleFontWeight: subtitleFontWeight ?? this.subtitleFontWeight,
+      bodyFontWeight: bodyFontWeight ?? this.bodyFontWeight,
+      captionFontWeight: captionFontWeight ?? this.captionFontWeight,
+      buttonFontWeight: buttonFontWeight ?? this.buttonFontWeight,
       paddingSmall: paddingSmall ?? this.paddingSmall,
       paddingMedium: paddingMedium ?? this.paddingMedium,
       paddingLarge: paddingLarge ?? this.paddingLarge,

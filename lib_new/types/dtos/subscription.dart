@@ -23,7 +23,7 @@ class Subscription {
       if (id != null) 'id': id,
       'user': user,
       'date_start': dateStart.toIso8601String(),
-      'date_end': dateEnd?.toIso8601String(),
+      if (dateEnd != null) 'date_end': dateEnd?.toIso8601String(),
       'hachlata': hachlata.id,
       'is_active': isActive,
     };

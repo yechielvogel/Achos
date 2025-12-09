@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../shared/widgets/input/input_field.dart';
+import '../../providers/general.dart';
 import '../../shared/widgets/tiles/general_list_tile.dart';
 import 'widgets/manage_users.dart';
 
@@ -17,6 +17,7 @@ class _AdminAccountScreenState extends ConsumerState<AdminAccountScreen> {
   @override
   Widget build(BuildContext context) {
     final style = ref.read(styleProvider);
+    final screenHeight = MediaQuery.of(context).size.height;
 
     final adminActions = [
       Padding(
@@ -25,39 +26,46 @@ class _AdminAccountScreenState extends ConsumerState<AdminAccountScreen> {
           title: 'Manage Users',
           onPressed: () {
             showModalBottomSheet(
+              backgroundColor: Colors.transparent,
               context: context,
               isScrollControlled: true,
-              shape: RoundedRectangleBorder(
+              shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.vertical(
                   top: Radius.circular(20),
                 ),
               ),
               builder: (context) {
-                return FractionallySizedBox(
-                  heightFactor: 0.5,
-                  child: ManageUsers(),
-                );
+                return SizedBox(
+                    height: screenHeight * 0.6,
+                    child: Container(
+                        decoration: BoxDecoration(
+                          color: style.backgroundColor,
+                          borderRadius: const BorderRadius.vertical(
+                            top: Radius.circular(20),
+                          ),
+                        ),
+                        child: ManageUsers()));
               },
             );
           },
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
+        padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
         child: CustomListTile(
           title: 'View Reports',
           onPressed: () {},
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
+        padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
         child: CustomListTile(
           title: 'System Settings',
           onPressed: () {},
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(top: 8, right: 16, left: 16),
+        padding: const EdgeInsets.only(top: 16, right: 16, left: 16),
         child: CustomListTile(
           title: 'Manage hachlatas and categories',
           onPressed: () {},
@@ -68,6 +76,9 @@ class _AdminAccountScreenState extends ConsumerState<AdminAccountScreen> {
     return Scaffold(
       backgroundColor: style.backgroundColor,
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: style.primaryColor,
+        ),
         title: Text(
           'Admin',
           style: TextStyle(

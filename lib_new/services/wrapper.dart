@@ -48,6 +48,7 @@ class _WrapperState extends ConsumerState<Wrapper> {
   Widget build(BuildContext context) {
     final firebaseUser = ref.watch(authStateProvider).value;
     final localUser = ref.watch(userProvider);
+    final style = ref.read(styleProvider);
     final AuthService _auth = AuthService();
 
     if (firebaseUser == null) return const Authenticate();
@@ -65,15 +66,31 @@ class _WrapperState extends ConsumerState<Wrapper> {
 
     // need to make a waiting room screen and a update app screen and maybe more
     return Scaffold(
+      backgroundColor: style.backgroundColor,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Center(child: Text("Your account is not active yet")),
-          CustomButton(
-            title: 'Logout',
-            onPressed: () async {
-              await _auth.signOut(ref);
-            },
+          Padding(
+            padding: const EdgeInsets.only(right: 30, left: 30),
+            child: SizedBox(
+              width: 400,
+              child: Center(
+                  child: Text(
+                      textAlign: TextAlign.center,
+                      "Your account isn’t active yet. Please wait for an admin to approve your access.")),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.only(top: 30),
+            child: SizedBox(
+              width: 100,
+              child: CustomButton(
+                title: 'Logout',
+                onPressed: () async {
+                  await _auth.signOut(ref);
+                },
+              ),
+            ),
           ),
         ],
       ),

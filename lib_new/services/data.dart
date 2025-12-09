@@ -9,6 +9,7 @@ import '../providers/completed_hachlatas.dart';
 import '../providers/general.dart';
 import '../providers/subscription.dart';
 import '../providers/user.dart';
+import '../types/dtos/hachlata.dart';
 import '../types/dtos/hachlata_completed.dart';
 import '../types/dtos/school.dart';
 import '../types/dtos/subscription.dart';
@@ -27,6 +28,11 @@ class DataService {
     School currentSchool = currentUser.school!;
     List<User> users = await repo.getAllSchoolUsers(currentSchool.id ?? 0);
     ref.read(appUsersProvider.notifier).setAppUsers(users);
+  }
+
+  // accept a user
+  Future<void> acceptUser(int userId) async {
+    await repo.acceptUser(userId);
   }
 
   // get app settings
@@ -56,9 +62,18 @@ class DataService {
     ref.read(subscriptionsProvider.notifier).addSubscription(newSubscription);
   }
 
+  // create a hachlata
+  Future<Hachlata> createHachlata(Hachlata hachlata) async {
+    Hachlata newHachlata = await repo.createHachlata(hachlata);
+    ref.read(appHachlatasProvider.notifier).addHachlata(newHachlata);
+    return newHachlata;
+  }
+
   // get subscriptions for user
-  Future<void> getUserSubscriptions(int userId, DateTime today) async {
-    final subscriptions = await repo.getUserSubscriptions(userId, today);
+  Future<void> getUserSubscriptions(
+      int userId, DateTime startDate, DateTime endDate) async {
+    final subscriptions =
+        await repo.getUserSubscriptions(userId, startDate, endDate);
     await ref
         .read(subscriptionsProvider.notifier)
         .setSubscriptions(subscriptions);
@@ -73,8 +88,10 @@ class DataService {
   }
 
   // get completed hachlatas for user for selected day
-  Future<void> getCompletedHachlatas(int userId, DateTime day) async {
-    final completedHachlatas = await repo.getCompletedHachlatas(userId, day);
+  Future<void> getCompletedHachlatas(
+      int userId, DateTime startDate, DateTime endDate) async {
+    final completedHachlatas =
+        await repo.getCompletedHachlatas(userId, startDate, endDate);
     await ref
         .read(completedHachlatasProvider.notifier)
         .setHachlatas(completedHachlatas);

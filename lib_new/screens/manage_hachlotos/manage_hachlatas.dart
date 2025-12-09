@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/general.dart';
 import '../../services/data.dart';
-import '../../shared/widgets/input/input_field.dart';
 import '../../shared/widgets/tiles/general_list_tile.dart';
 import '../../providers/categories.dart';
 import '../../providers/app_hachlatas.dart';
@@ -44,9 +44,12 @@ class _ManageHachlatasState extends ConsumerState<ManageHachlatas> {
     final style = ref.read(styleProvider);
 
     // Filter hachlatas by category
-    final filteredHachlatas = hachlatas
-        .where((hachlata) => hachlata.category?.id == categoryId)
-        .toList();
+    final filteredHachlatas =
+        hachlatas.where((hachlata) => hachlata.category == categoryId).toList();
+
+    final category = ref.read(categoriesProvider).firstWhere(
+          (cat) => cat.id == categoryId,
+        );
 
     print(filteredHachlatas);
     print(hachlatas);
@@ -54,10 +57,17 @@ class _ManageHachlatasState extends ConsumerState<ManageHachlatas> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      builder: (context) => HachlataBottomSheet(
-        hachlatas: filteredHachlatas,
-        style: style,
-      ),
+      builder: (context) {
+        final screenHeight = MediaQuery.of(context).size.height;
+        return SizedBox(
+          height: screenHeight * 0.8,
+          child: HachlataBottomSheet(
+            hachlatas: filteredHachlatas,
+            category: category,
+            style: style,
+          ),
+        );
+      },
     );
   }
 
@@ -68,9 +78,13 @@ class _ManageHachlatasState extends ConsumerState<ManageHachlatas> {
 
     return Scaffold(
       appBar: AppBar(
+        iconTheme: IconThemeData(
+          color: style.primaryColor,
+        ),
         backgroundColor: style.backgroundColor,
         title: Text(
-          'Choose a category',
+          // this should be changed to category by default and use school settings
+          'Choose a theme',
           style: TextStyle(
             color: style.themeBlack,
             fontWeight: FontWeight.bold,

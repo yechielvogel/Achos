@@ -38,6 +38,7 @@ Future<void> main() async {
 
   try {
     await Supabase.initialize(
+        // this should all really be in a env file
         url: 'https://bnulkbhekxssnnjbwcnn.supabase.co',
         anonKey:
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJudWxrYmhla3hzc25uamJ3Y25uIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTkzMDI0NDMsImV4cCI6MjA3NDg3ODQ0M30.B92iCvOp3P-p07NMED9io9zJKNIFbOY7aPhpT9k4CsA');
@@ -67,7 +68,7 @@ class MyApp extends ConsumerWidget {
       home: Stack(
         children: [
           Wrapper(),
-          const ErrorSnackbar(),
+          ErrorSnackbar(),
           if (isLoading) Loading(),
         ],
       ),

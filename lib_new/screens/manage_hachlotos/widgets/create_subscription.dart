@@ -23,8 +23,8 @@ class CreateSubscription extends ConsumerStatefulWidget {
 }
 
 class _CreateSubscriptionState extends ConsumerState<CreateSubscription> {
-  DateTime? startDate;
-  DateTime? endDate;
+  DateTime startDate = DateTime.now();
+  DateTime endDate = DateTime.now().add(const Duration(days: 30));
 
   @override
   Widget build(BuildContext context) {
@@ -49,70 +49,84 @@ class _CreateSubscriptionState extends ConsumerState<CreateSubscription> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(
-            'Create Subscription',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-              color: appStyle.themeBlack,
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              'Create Subscription',
+              style: TextStyle(
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
+                color: appStyle.themeBlack,
+              ),
             ),
           ),
           const SizedBox(height: 16),
-          Expanded(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                // Start Date Picker
-                Text(
-                  'Start Date',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: appStyle.themeBlack,
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              // Start Date Picker
+              Padding(
+                padding: const EdgeInsets.only(top: 16, bottom: 16),
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    'Start Date',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: appStyle.subtitleFontWeight,
+                      color: appStyle.themeBlack,
+                    ),
                   ),
                 ),
-                SizedBox(
-                  height: 100,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: DateTime.now(),
-                    onDateTimeChanged: (date) {
-                      setState(() {
-                        startDate = date;
-                      });
-                    },
+              ),
+              SizedBox(
+                height: 100,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: DateTime.now(),
+                  onDateTimeChanged: (date) {
+                    setState(() {
+                      startDate = date;
+                    });
+                  },
+                ),
+              ),
+              const SizedBox(height: 16),
+              // End Date Picker
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 16, top: 16),
+                  child: Text(
+                    'End Date',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: appStyle.subtitleFontWeight,
+                      color: appStyle.themeBlack,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 16),
-                // End Date Picker
-                Text(
-                  'End Date',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: appStyle.themeBlack,
-                  ),
+              ),
+              SizedBox(
+                height: 100,
+                child: CupertinoDatePicker(
+                  mode: CupertinoDatePickerMode.date,
+                  initialDateTime: DateTime.now().add(const Duration(days: 30)),
+                  onDateTimeChanged: (date) {
+                    setState(() {
+                      endDate = date;
+                    });
+                  },
                 ),
-                SizedBox(
-                  height: 100,
-                  child: CupertinoDatePicker(
-                    mode: CupertinoDatePickerMode.date,
-                    initialDateTime: DateTime.now(),
-                    onDateTimeChanged: (date) {
-                      setState(() {
-                        endDate = date;
-                      });
-                    },
-                  ),
-                ),
-              ],
-            ),
+              ),
+            ],
           ),
           const SizedBox(height: 16),
           Row(
             children: [
               Expanded(
                 child: CustomButton(
+                  isOutline: true,
                   title: 'Cancel',
                   onPressed: () {
                     Navigator.of(context).pop();

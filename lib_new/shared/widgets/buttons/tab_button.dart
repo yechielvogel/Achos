@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../input/input_field.dart';
+import '../../../providers/general.dart';
 
 class CustomTabButton extends ConsumerStatefulWidget {
   final String title;
@@ -28,15 +28,6 @@ class _CustomTabButtonState extends ConsumerState<CustomTabButton> {
       onTap: widget.onPressed,
       child: Container(
         padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
-        decoration: BoxDecoration(
-          border: Border(
-            bottom: BorderSide(
-              color:
-                  widget.isSelected ? style.primaryColor : Colors.transparent,
-              width: 2,
-            ),
-          ),
-        ),
         child: Text(
           widget.title,
           style: TextStyle(

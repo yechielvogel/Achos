@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kosher_dart/kosher_dart.dart';
 import '../../providers/general.dart';
@@ -88,36 +89,93 @@ class _NavigationState extends ConsumerState<Navigation> {
             mainAxisSize: MainAxisSize.min,
             children: [
               GestureDetector(
-                onTap: () async => await _changeDate(-1),
-                child: Icon(Icons.arrow_back_ios, color: style.primaryColor),
-              ),
-              const SizedBox(width: 6),
-              GestureDetector(
-                onTap: () {
-                  showModalBottomSheet(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.vertical(
-                        top: Radius.circular(20),
+                onHorizontalDragEnd: (details) {
+                  if (details.primaryVelocity != null) {
+                    if (details.primaryVelocity! > 0) {
+                      HapticFeedback.mediumImpact();
+                      _changeDate(-1);
+                    } else if (details.primaryVelocity! < 0) {
+                      HapticFeedback.mediumImpact();
+                      _changeDate(1);
+                    }
+                  }
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    GestureDetector(
+                      onTap: () async => await _changeDate(-1),
+                      child:
+                          Icon(Icons.arrow_back_ios, color: style.primaryColor),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        showModalBottomSheet(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(20),
+                            ),
+                          ),
+                          context: context,
+                          builder: (context) => CustomCalendar(),
+                        );
+                      },
+                      child: Consumer(
+                        builder: (context, ref, _) {
+                          final zoomLevel = ref.watch(currentZoomLevelProvider);
+                          final date = ref.watch(dateProvider);
+                          final jewishDate = JewishDate.fromDateTime(date);
+
+                          if (zoomLevel == ZoomLevel.day) {
+                            return Text(
+                              "${Functions().getEnglishDay(date)} ${Functions().getHebrewDay(date)}",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: style.themeBlack,
+                              ),
+                            );
+                          }
+                          // else if (zoomLevel == ZoomLevel.week) {
+                          //   final parsha = jewishDate.getWeeklyParsha();
+                          //   return Text(
+                          //     parsha,
+                          //     style: TextStyle(
+                          //       fontWeight: FontWeight.w500,
+                          //       color: style.themeBlack,
+                          //     ),
+                          //   );
+                          else if (zoomLevel == ZoomLevel.week) {
+                            // final parsha = jewishDate.getWeeklyParsha();
+                            return Text(
+                              "This week",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: style.themeBlack,
+                              ),
+                            );
+                          } else if (zoomLevel == ZoomLevel.month) {
+                            String hebrewMonth = jewishDate.toString();
+                            hebrewMonth =
+                                hebrewMonth.replaceAll(RegExp(r'[0-9]'), '');
+                            return Text(
+                              hebrewMonth,
+                              style: TextStyle(
+                                fontWeight: FontWeight.w500,
+                                color: style.themeBlack,
+                              ),
+                            );
+                          }
+                          return SizedBox.shrink();
+                        },
                       ),
                     ),
-                    context: context,
-                    builder: (context) => CustomCalendar(),
-                  );
-                },
-                child: Text(
-                  "${Functions().getEnglishDay(ref.watch(dateProvider))} ${Functions().getHebrewDay(ref.watch(dateProvider))}",
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    color: ref.watch(dateProvider).day == DateTime.now().day
-                        ? style.primaryColor
-                        : style.themeBlack,
-                  ),
+                    GestureDetector(
+                      onTap: () => _changeDate(1),
+                      child: Icon(Icons.arrow_forward_ios,
+                          color: style.primaryColor),
+                    ),
+                  ],
                 ),
-              ),
-              const SizedBox(width: 6),
-              GestureDetector(
-                onTap: () => _changeDate(1),
-                child: Icon(Icons.arrow_forward_ios, color: style.primaryColor),
               ),
             ],
           ),

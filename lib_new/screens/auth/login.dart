@@ -62,7 +62,7 @@ class _SignInState extends ConsumerState<SignIn> {
                         widget.toggleView();
                       },
                       title: 'Register',
-                      isOutline: true,
+                      // isOutline: true,
                     ),
                   ),
                   SizedBox(width: 16),
