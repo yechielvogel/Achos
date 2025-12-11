@@ -40,15 +40,9 @@ class _CreateHachlataState extends ConsumerState<CreateHachlata> {
         description: hachlataDescription,
         category: widget.categoryId,
       );
-      Hachlata newCreatedHachlata =
-          await dataService.createHachlata(newHachlata);
-      final subscription = Subscription(
-        user: user.id ?? 0,
-        dateStart: DateTime.now(),
-        hachlata: newCreatedHachlata,
-        isActive: true,
-      );
-      await dataService.createSubscription(subscription);
+
+      await dataService.createHachlata(newHachlata);
+      // await dataService.createSubscription(subscription);
     }
 
     return Padding(

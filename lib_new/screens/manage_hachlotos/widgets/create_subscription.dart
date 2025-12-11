@@ -35,8 +35,10 @@ class _CreateSubscriptionState extends ConsumerState<CreateSubscription> {
       final currentUser = ref.read(userProvider);
       final subscription = Subscription(
         user: currentUser.id ?? 0,
-        dateStart: startDate!,
-        dateEnd: endDate,
+        dateStart: DateTime(DateTime.now().year, DateTime.now().month, 1),
+        // dateEnd: DateTime.now().add(const Duration(
+        //   days: 365,
+        // )),
         hachlata: widget.hachlata,
         isActive: true,
       );
@@ -61,67 +63,67 @@ class _CreateSubscriptionState extends ConsumerState<CreateSubscription> {
             ),
           ),
           const SizedBox(height: 16),
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              // Start Date Picker
-              Padding(
-                padding: const EdgeInsets.only(top: 16, bottom: 16),
-                child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    'Start Date',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: appStyle.subtitleFontWeight,
-                      color: appStyle.themeBlack,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 100,
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime: DateTime.now(),
-                  onDateTimeChanged: (date) {
-                    setState(() {
-                      startDate = date;
-                    });
-                  },
-                ),
-              ),
-              const SizedBox(height: 16),
-              // End Date Picker
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 16, top: 16),
-                  child: Text(
-                    'End Date',
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: appStyle.subtitleFontWeight,
-                      color: appStyle.themeBlack,
-                    ),
-                  ),
-                ),
-              ),
-              SizedBox(
-                height: 100,
-                child: CupertinoDatePicker(
-                  mode: CupertinoDatePickerMode.date,
-                  initialDateTime: DateTime.now().add(const Duration(days: 30)),
-                  onDateTimeChanged: (date) {
-                    setState(() {
-                      endDate = date;
-                    });
-                  },
-                ),
-              ),
-            ],
-          ),
-          const SizedBox(height: 16),
+          // Column(
+          //   mainAxisAlignment: MainAxisAlignment.start,
+          //   children: [
+          //     // Start Date Picker
+          //     Padding(
+          //       padding: const EdgeInsets.only(top: 16, bottom: 16),
+          //       child: Align(
+          //         alignment: Alignment.centerLeft,
+          //         child: Text(
+          //           'Start Date',
+          //           style: TextStyle(
+          //             fontSize: 16,
+          //             fontWeight: appStyle.subtitleFontWeight,
+          //             color: appStyle.themeBlack,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       height: 100,
+          //       child: CupertinoDatePicker(
+          //         mode: CupertinoDatePickerMode.date,
+          //         initialDateTime: DateTime.now(),
+          //         onDateTimeChanged: (date) {
+          //           setState(() {
+          //             startDate = date;
+          //           });
+          //         },
+          //       ),
+          //     ),
+          //     const SizedBox(height: 16),
+          //     // End Date Picker
+          //     Align(
+          //       alignment: Alignment.centerLeft,
+          //       child: Padding(
+          //         padding: const EdgeInsets.only(bottom: 16, top: 16),
+          //         child: Text(
+          //           'End Date',
+          //           style: TextStyle(
+          //             fontSize: 16,
+          //             fontWeight: appStyle.subtitleFontWeight,
+          //             color: appStyle.themeBlack,
+          //           ),
+          //         ),
+          //       ),
+          //     ),
+          //     SizedBox(
+          //       height: 100,
+          //       child: CupertinoDatePicker(
+          //         mode: CupertinoDatePickerMode.date,
+          //         initialDateTime: DateTime.now().add(const Duration(days: 30)),
+          //         onDateTimeChanged: (date) {
+          //           setState(() {
+          //             endDate = date;
+          //           });
+          //         },
+          //       ),
+          //     ),
+          //   ],
+          // ),
+          // const SizedBox(height: 16),
           Row(
             children: [
               Expanded(

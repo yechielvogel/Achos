@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../providers/app_hachlatas.dart';
 import '../../../providers/general.dart';
+import '../../../providers/subscription.dart';
 import '../../../test/hachlata_circle.dart';
 import '../../../types/dtos/app_style.dart';
 import '../../../types/dtos/categories.dart';
@@ -28,6 +29,7 @@ class _HachlataBottomSheetState extends ConsumerState<HachlataBottomSheet> {
   @override
   Widget build(BuildContext context) {
     final hachlatas = ref.watch(appHachlatasProvider);
+    final subscriptions = ref.watch(subscriptionsProvider);
     final style = ref.read(styleProvider);
 
     final filteredHachlatas = hachlatas
@@ -71,7 +73,7 @@ class _HachlataBottomSheetState extends ConsumerState<HachlataBottomSheet> {
             backgroundColor: widget.style.backgroundColor,
             child: ConstrainedBox(
               constraints: BoxConstraints(
-                minHeight: 200,
+                minHeight: 100,
               ),
               child: CreateSubscription(
                 hachlata: hachlata,
@@ -128,6 +130,11 @@ class _HachlataBottomSheetState extends ConsumerState<HachlataBottomSheet> {
               itemCount: filteredHachlatas.length,
               itemBuilder: (context, index) {
                 final hachlata = filteredHachlatas[index];
+
+                // Check if there are any subscriptions for this hachlata
+                final hasSubscription = subscriptions.any(
+                    (subscription) => subscription.hachlata.id == hachlata.id);
+
                 return GestureDetector(
                   onTap: () {
                     openCreateSubscriptionDialog(context, hachlata);
@@ -135,7 +142,8 @@ class _HachlataBottomSheetState extends ConsumerState<HachlataBottomSheet> {
                   child: Container(
                     child: HachlataCircle(
                       hachlata: hachlata,
-                      completed: false,
+                      completed:
+                          hasSubscription, // Set completed based on the subscription check
                       category: widget.category,
                       allowInteraction: false,
                     ),
