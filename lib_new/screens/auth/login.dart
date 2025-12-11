@@ -76,8 +76,6 @@ class _SignInState extends ConsumerState<SignIn> {
 
                           dynamic result = await _auth
                               .signInWithEmailAndPassword(email, password, ref);
-                          ref.watch(generalLoadingProvider.notifier).state =
-                              false;
                           if (result == null) {
                             setState(() {
                               error = 'Please enter a valid email and password';

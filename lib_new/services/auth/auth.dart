@@ -48,7 +48,7 @@ class AuthService {
         try {
           final localUser = await Repository().getUserInfo(user.uid);
           await ref.read(userProvider.notifier).setUser(localUser);
-
+          ref.watch(generalLoadingProvider.notifier).state = false;
           print("Local user loaded: ${localUser.contact?.firstName}");
         } catch (e, stack) {
           print('Error fetching local user: $e');
@@ -89,11 +89,10 @@ class AuthService {
       );
 
       User? user = result.user;
-
-      // no that we have firebase id update the user in supabase with firebaseId
+      ref.watch(generalLoadingProvider.notifier).state = false;
+      // now that we have firebase id update the user in supabase with firebaseId
       await repository.updateUserWithFirebaseId(userId, user!.uid);
       await user!.updateDisplayName(firstName);
-      ref.watch(generalLoadingProvider.notifier).state = false;
       await user.reload();
 
       return user;

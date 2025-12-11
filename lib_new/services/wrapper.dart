@@ -24,6 +24,7 @@ class _WrapperState extends ConsumerState<Wrapper> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await _initializeData();
+      ref.watch(generalLoadingProvider.notifier).state = false;
       if (mounted) setState(() => initialized = true);
     });
   }
@@ -54,7 +55,6 @@ class _WrapperState extends ConsumerState<Wrapper> {
     if (firebaseUser == null) return const Authenticate();
 
     if (!initialized || localUser.id == null) {
-      // need to look over this again as not sure we need this really
       try {
         _initializeData();
       } catch (e) {
