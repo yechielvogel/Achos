@@ -194,7 +194,8 @@ class Repository {
           .select('*, hachlata(*)')
           .eq('user', userId)
           .lte('date_start', formattedStartDate)
-          .gte('date_end', formattedEndDate);
+          .or('date_end.gte.$formattedEndDate,date_end.is.null');
+
       final data = response as List<dynamic>?;
 
       if (data == null || data.isEmpty) {

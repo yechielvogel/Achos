@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/app_hachlatas.dart';
 import '../../providers/categories.dart';
 import '../../providers/completed_hachlatas.dart';
 import '../../providers/general.dart';
@@ -8,7 +9,10 @@ import '../../providers/style.dart';
 import '../../providers/subscription.dart';
 import '../../providers/user.dart';
 import '../../services/data.dart';
+import '../../shared/widgets/general/confeti.dart';
+import '../../shared/widgets/general/welcome_flow.dart';
 import '../../test/hachlata_circle.dart';
+import '../../types/dtos/categories.dart';
 import '../../types/dtos/hachlata.dart';
 import '../../types/dtos/hachlata_completed.dart';
 
@@ -20,6 +24,8 @@ class HomeScreen extends ConsumerStatefulWidget {
   @override
   ConsumerState<HomeScreen> createState() => _HomeScreenState();
 }
+
+final GlobalKey<ConfettiLayerState> _confettiKey = GlobalKey();
 
 class _HomeScreenState extends ConsumerState<HomeScreen>
     with TickerProviderStateMixin {
@@ -57,7 +63,46 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
       final endOfMonth = DateTime(today.year, today.month + 1, 0);
 
       await _fetchDataForDate(startOfMonth, endOfMonth);
+      if (ref.read(subscriptionsProvider).isEmpty) {
+        openBeginningDialog(context);
+      }
     });
+  }
+
+  Future<void> openBeginningDialog(BuildContext context) async {
+    final dataService = DataService(ref);
+    await dataService.getAllHachlatas();
+    final style = ref.read(styleProvider);
+    final categories = ref.read(categoriesProvider);
+    final subscriptions = ref.read(subscriptionsProvider);
+    final appHachlatas = ref.read(appHachlatasProvider);
+
+    // Group hachlatas by category
+    final hachlatasByCategory = <Category, List<Hachlata>>{};
+    for (final category in categories) {
+      hachlatasByCategory[category] = subscriptions.isNotEmpty
+          ? subscriptions
+              .where((sub) => sub.hachlata.category == category.id)
+              .map((sub) => sub.hachlata)
+              .toList()
+          : appHachlatas
+              .where((hachlata) => hachlata.category == category.id)
+              .toList();
+    }
+
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) => WelcomeFlowDialog(
+        categories: categories
+            .where((category) => category.name?.toLowerCase() != "personal")
+            .toList(),
+        hachlatasByCategory: hachlatasByCategory,
+        onComplete: (hachlata) {
+          print("Completed hachlata: ${hachlata.name}");
+        },
+      ),
+    );
   }
 
   Future<void> _fetchDataForDate(DateTime start, DateTime end) async {
@@ -67,6 +112,17 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
     await dataService.getCategories();
     await dataService.getUserSubscriptions(userId ?? 0, start, end);
     await dataService.getCompletedHachlatas(userId ?? 0, start, end);
+    await loadConfetti();
+  }
+
+  Future<void> loadConfetti() async {
+    List<HachlataCompleted> hachlataCompleted =
+        ref.watch(completedHachlatasProvider);
+    List<Hachlata> hachlatas =
+        ref.watch(subscriptionsProvider).map((sub) => sub.hachlata).toList();
+    List<Category> categories = ref.watch(categoriesProvider);
+    _confettiKey.currentState
+        ?.setPileFromCompleted(hachlataCompleted, hachlatas, categories);
   }
 
   Map<DateTime, List<Hachlata>> _filterHachlatasByRange(
@@ -121,9 +177,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           .where((sub) =>
               sub.hachlata.id == hachlata.id &&
               (day.isAfter(sub.dateStart) ||
-                  day.isAtSameMomentAs(sub.dateStart)) &&
-              (day.isBefore(sub.dateEnd!) ||
-                  day.isAtSameMomentAs(sub.dateEnd!)))
+                  day.isAtSameMomentAs(sub.dateStart)))
           .toList();
 
       if (allSubsForDay.isEmpty) return;
@@ -137,6 +191,16 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
 
       final dataService = DataService(ref);
       dataService.completeHachlata(newHachlataCompleted);
+      final color = hachlata.category != null
+          ? Color(int.parse(
+              ref
+                  .read(categoriesProvider)
+                  .firstWhere((c) => c.id == hachlata.category)
+                  .color,
+            ))
+          : Colors.blue;
+
+      _confettiKey.currentState?.shoot(color);
     } else {
       setState(() {});
       ref.read(errorProvider.notifier).state =
@@ -206,6 +270,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
   Widget build(BuildContext context) {
     var currentStartDate = ref.watch(currentStartDateProvider);
     var currentEndDate = ref.watch(currentEndDateProvider);
+    final subscriptions = ref.watch(subscriptionsProvider);
     final categories = ref.watch(categoriesProvider);
     final style = ref.watch(appStyleProvider);
 
@@ -213,6 +278,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
         _filterHachlatasByRange(currentStartDate, currentEndDate);
     var filteredCompletedByDay =
         _filterCompletedHachlatasByRange(currentStartDate, currentEndDate);
+
+    // Check if there are no hachlatas to display
+
+    // Show dialog if no hachlatas are available
 
     return Scaffold(
       backgroundColor: style.backgroundColor,
@@ -243,90 +312,94 @@ class _HomeScreenState extends ConsumerState<HomeScreen>
           builder: (context, value, child) {
             return child!;
           },
-          child: CustomScrollView(
-            physics: const ClampingScrollPhysics(),
+          child: Stack(children: [
+            Positioned.fill(
+              child: IgnorePointer(
+                child: ConfettiLayer(key: _confettiKey),
+              ),
+            ),
+            CustomScrollView(
+              physics: const ClampingScrollPhysics(),
+              slivers: filteredHachlatasByDay.entries
+                  .where((entry) => entry.value.isNotEmpty)
+                  .expand((entry) {
+                final day = entry.key;
+                final hachlatas = entry.value;
+                final completedForDay = filteredCompletedByDay[day] ?? [];
 
-            // physics: currentZoomLevel == ZoomLevel.day
-            //     ? NeverScrollableScrollPhysics()
-            //     : BouncingScrollPhysics(),
-            slivers: filteredHachlatasByDay.entries
-                .where((entry) => entry.value.isNotEmpty)
-                .expand((entry) {
-              final day = entry.key;
-              final hachlatas = entry.value;
-              final completedForDay = filteredCompletedByDay[day] ?? [];
+                final crossAxisCount = _columnsForZoom(currentZoomLevel);
+                final screenWidth = MediaQuery.of(context).size.width;
+                final spacing = currentZoomLevel == ZoomLevel.day ? 20 : 16;
 
-              final crossAxisCount = _columnsForZoom(currentZoomLevel);
-              final screenWidth = MediaQuery.of(context).size.width;
-              final spacing = currentZoomLevel == ZoomLevel.day ? 20 : 16;
+                final baseTileWidth =
+                    (screenWidth - spacing * (crossAxisCount - 1) - 32) /
+                        crossAxisCount;
+                final tileWidth = baseTileWidth;
+                final tileHeight = baseTileWidth;
+                final childAspectRatio = tileWidth / tileHeight;
+                final tileSize =
+                    100.0 * (currentZoomLevel == ZoomLevel.day ? 1.3 : 1.0);
 
-              final baseTileWidth =
-                  (screenWidth - spacing * (crossAxisCount - 1) - 32) /
-                      crossAxisCount;
-              final tileWidth = baseTileWidth;
-              final tileHeight = baseTileWidth;
-              final childAspectRatio = tileWidth / tileHeight;
-              final tileSize =
-                  100.0 * (currentZoomLevel == ZoomLevel.day ? 1.3 : 1.0);
+                return [
+                  if (currentZoomLevel != ZoomLevel.day)
+                    SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: Text(
+                          "${day.day}/${day.month}",
+                          style: const TextStyle(fontWeight: FontWeight.bold),
+                        ),
+                      ),
+                    ),
+                  SliverPadding(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                    sliver: SliverGrid(
+                      delegate: SliverChildBuilderDelegate(
+                        (context, index) {
+                          final hachlata = hachlatas[index];
+                          final isCompleted = completedForDay
+                              .any((c) => c.hachlata == hachlata.id);
 
-              return [
-                if (currentZoomLevel != ZoomLevel.day)
-                  SliverToBoxAdapter(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      child: Text(
-                        "${day.day}/${day.month}",
-                        style: const TextStyle(fontWeight: FontWeight.bold),
+                          return AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            switchInCurve: Curves.easeIn,
+                            switchOutCurve: Curves.easeOut,
+                            child: HachlataCircle(
+                              key: ValueKey('${hachlata.id}-$isCompleted'),
+                              hachlata: hachlata,
+                              completed: isCompleted,
+                              category: categories.firstWhere(
+                                  (cat) => cat.id == hachlata.category),
+                              scale:
+                                  currentZoomLevel == ZoomLevel.day ? 1.3 : 1.0,
+                              radius: tileSize / 2,
+                              onComplete: () {
+                                if (!isCompleted)
+                                  handelCompleteHachlata(hachlata, day);
+                              },
+                              allowInteraction:
+                                  currentZoomLevel == ZoomLevel.day
+                                      ? true
+                                      : false,
+                            ),
+                          );
+                        },
+                        childCount: hachlatas.length,
+                      ),
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: crossAxisCount,
+                        mainAxisSpacing: spacing.toDouble(),
+                        crossAxisSpacing: spacing.toDouble(),
+                        childAspectRatio: childAspectRatio,
                       ),
                     ),
                   ),
-                SliverPadding(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                  sliver: SliverGrid(
-                    delegate: SliverChildBuilderDelegate(
-                      (context, index) {
-                        final hachlata = hachlatas[index];
-                        final isCompleted = completedForDay
-                            .any((c) => c.hachlata == hachlata.id);
-
-                        return AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 300),
-                          switchInCurve: Curves.easeIn,
-                          switchOutCurve: Curves.easeOut,
-                          child: HachlataCircle(
-                            key: ValueKey('${hachlata.id}-$isCompleted'),
-                            hachlata: hachlata,
-                            completed: isCompleted,
-                            category: categories.firstWhere(
-                                (cat) => cat.id == hachlata.category),
-                            scale:
-                                currentZoomLevel == ZoomLevel.day ? 1.3 : 1.0,
-                            radius: tileSize / 2, // <-- pass actual radius here
-                            onComplete: () {
-                              if (!isCompleted)
-                                handelCompleteHachlata(hachlata, day);
-                            },
-                            allowInteraction: currentZoomLevel == ZoomLevel.day
-                                ? true
-                                : false,
-                          ),
-                        );
-                      },
-                      childCount: hachlatas.length,
-                    ),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: crossAxisCount,
-                      mainAxisSpacing: spacing.toDouble(),
-                      crossAxisSpacing: spacing.toDouble(),
-                      childAspectRatio: childAspectRatio,
-                    ),
-                  ),
-                ),
-              ];
-            }).toList(),
-          ),
+                ];
+              }).toList(),
+            ),
+          ]),
         ),
       ),
     );

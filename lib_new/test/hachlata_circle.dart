@@ -41,6 +41,15 @@ class _HachlataCircleState extends ConsumerState<HachlataCircle> {
   }
 
   @override
+  void didUpdateWidget(covariant HachlataCircle oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.completed != widget.completed) {
+      _isComplete = widget.completed;
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     final tileSize = 100.0 * widget.scale;
 

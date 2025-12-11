@@ -4,7 +4,6 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:kosher_dart/kosher_dart.dart';
 import '../../providers/general.dart';
-import '../../providers/user.dart';
 import '../../shared/helpers/functions.dart';
 import '../../shared/widgets/general/calendar.dart';
 import '../../types/dtos/app_style.dart';
