@@ -94,7 +94,8 @@ class _ManageUsersState extends ConsumerState<ManageUsers>
                   return Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: CustomListTile(
-                      title: user.username ?? 'No Name',
+                      title:
+                          "${user.contact?.firstName ?? ""} ${user.contact?.lastName ?? ""}",
                       onPressed: () {
                         // Handle tile tap
                       },
